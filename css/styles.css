@@ -1,0 +1,218 @@
+/* ===================================
+   Schuldschein-Generator Styles
+   =================================== */
+
+/* Base Styles */
+.preview-container {
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.form-section {
+    background: #f9fafb;
+    border-left: 4px solid #1e40af;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ===================================
+   Dark Mode Styles
+   =================================== */
+html.dark body {
+    background: #111827 !important;
+    color: #f3f4f6;
+}
+
+html.dark .preview-container {
+    background: #1f2937;
+    color: #f3f4f6;
+}
+
+html.dark .form-section {
+    background: #374151;
+    border-left-color: #60a5fa;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+    background: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+    border-color: #60a5fa;
+}
+
+html.dark input:read-only {
+    background: #4b5563;
+    color: #d1d5db;
+}
+
+html.dark label {
+    color: #e5e7eb;
+}
+
+html.dark h1,
+html.dark h2 {
+    color: #f3f4f6;
+}
+
+html.dark header {
+    background: #1e3a8a !important;
+}
+
+html.dark footer {
+    background: #1f2937 !important;
+}
+
+html.dark .text-gray-500 {
+    color: #9ca3af !important;
+}
+
+html.dark .text-gray-600 {
+    color: #d1d5db !important;
+}
+
+html.dark .text-gray-700 {
+    color: #e5e7eb !important;
+}
+
+html.dark .text-gray-800 {
+    color: #f3f4f6 !important;
+}
+
+html.dark .border-gray-300 {
+    border-color: #4b5563 !important;
+}
+
+/* Dark Mode für Datenschutzbox */
+html.dark .bg-green-50 {
+    background: #065f46 !important;
+}
+
+html.dark .border-green-500 {
+    border-color: #10b981 !important;
+}
+
+html.dark .text-green-700 {
+    color: #d1fae5 !important;
+}
+
+html.dark .text-green-500 {
+    color: #34d399 !important;
+}
+
+/* Dark Mode für Legal Notice */
+html.dark .bg-yellow-50 {
+    background: #78350f !important;
+}
+
+html.dark .border-yellow-400 {
+    border-color: #fbbf24 !important;
+}
+
+html.dark .bg-yellow-50 p {
+    color: #fef3c7 !important;
+}
+
+/* ===================================
+   Glow Effects
+   =================================== */
+@keyframes text-glow-yellow {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(250, 204, 21, 0.5); }
+    100% { background-color: transparent; }
+}
+
+@keyframes text-glow-green {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(34, 197, 94, 0.5); }
+    100% { background-color: transparent; }
+}
+
+@keyframes text-glow-red {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(239, 68, 68, 0.5); }
+    100% { background-color: transparent; }
+}
+
+.text-glow-change {
+    animation: text-glow-yellow 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.text-glow-valid {
+    animation: text-glow-green 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.text-glow-invalid {
+    animation: text-glow-red 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* ===================================
+   Toggle Switches
+   =================================== */
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background-color: #cbd5e1;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+html.dark .toggle-switch {
+    background-color: #4b5563;
+}
+
+.toggle-switch.active {
+    background-color: #3b82f6;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-slider {
+    transform: translateX(30px);
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+.container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}

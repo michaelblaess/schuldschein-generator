@@ -1,0 +1,15 @@
+Schuldschein Generator
+Copyright (c) 2025 Michael Blaess
+https://schuldschein-generator.de
+https://github.com/michaelblaess/schuldschein-generator
+
+Licensed under the Apache License, Version 2.0.
+
+Disclaimer / Hinweis:
+"Schuldschein Generator" is not a registered trademark.
+This site is not affiliated with financial service providers, banks, or legal advisors.
+Dieses Tool stellt keine Rechtsberatung dar. Nutzung auf eigenes Risiko.
+
+Third-party components:
+- jsPDF (https://github.com/parallax/jsPDF) — MIT License (v2.5.1)
+- Tailwind CSS (https://tailwindcss.com/) — MIT License (v3.x)

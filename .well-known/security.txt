@@ -1,0 +1,3 @@
+Contact: mailto:info@schuldschein-generator.de
+Preferred-Languages: de, en
+Policy: https://schuldschein-generator.de/impressum.html
