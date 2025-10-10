@@ -1,245 +1,474 @@
+<!--
+  SPDX-License-Identifier: Apache-2.0
+  Copyright (c) 2025 Michael Blaess
+-->
+
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Online Schuldschein-Generator</title>
-    
+
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="./css/styles.css">
-</head>
-<body class="bg-gray-50">
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body class="bg-gray-50">
     <!-- Header -->
     <header class="bg-blue-900 text-white py-6 shadow-lg no-print">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-3xl font-bold mb-2" id="header-title">🧾 Online-Schuldschein-Generator</h1>
-                    <p class="text-blue-200" id="header-subtitle">Erstellen Sie rechtssichere Darlehensverträge nach §§ 488 ff. BGB – komplett in Ihrem Browser</p>
-                </div>
-                <div class="flex items-center gap-6">
-                    <!-- Language Toggle -->
-                    <div class="flex items-center gap-2">
-                        <div class="toggle-switch" onclick="toggleLanguage()" id="languageToggle">
-                            <div class="toggle-slider">🇩🇪</div>
-                        </div>
-                    </div>
-                    <!-- Dark Mode Toggle -->
-                    <div class="flex items-center gap-2">
-                        <div class="toggle-switch" onclick="toggleDarkMode()" id="darkModeToggle">
-                            <div class="toggle-slider">☀️</div>
-                        </div>
-                    </div>
-                </div>
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-3xl font-bold mb-2" id="header-title">
+              🧾 Online-Schuldschein-Generator
+            </h1>
+            <p class="text-blue-200" id="header-subtitle">
+              Erstellen Sie rechtssichere Darlehensverträge nach §§ 488 ff. BGB – komplett in Ihrem
+              Browser
+            </p>
+          </div>
+          <div class="flex items-center gap-6">
+            <!-- Language Toggle -->
+            <div class="flex items-center gap-2">
+              <div class="toggle-switch" onclick="toggleLanguage()" id="languageToggle">
+                <div class="toggle-slider">🇩🇪</div>
+              </div>
             </div>
+            <!-- Dark Mode Toggle -->
+            <div class="flex items-center gap-2">
+              <div class="toggle-switch" onclick="toggleDarkMode()" id="darkModeToggle">
+                <div class="toggle-slider">☀️</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Datenschutz-Hinweis -->
     <div class="container mx-auto px-4 mt-4 no-print">
-        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-green-700" id="privacy-notice">
-                        <strong>🔒 Datenschutzhinweis:</strong> Alle Eingaben bleiben ausschließlich in Ihrem Browser. Es werden keine Daten übertragen oder gespeichert.
-                    </p>
-                </div>
-            </div>
+      <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700" id="privacy-notice">
+              <strong>🔒 Datenschutzhinweis:</strong> Alle Eingaben bleiben ausschließlich in Ihrem
+              Browser. Es werden keine Daten übertragen oder gespeichert.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Linke Spalte: Formular -->
-            <div class="space-y-6 no-print">
-                
-                <!-- Darlehensgeber -->
-                <div class="form-section bg-white rounded-lg p-6 shadow">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-lender">👤 Darlehensgeber/in</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-name-lender">Name</span> *</label>
-                            <input type="text" id="geber_name" data-field="geber_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-address-lender">Adresse</span> *</label>
-                            <textarea id="geber_adresse" data-field="geber_adresse" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-birthdate-lender">Geburtsdatum</span> *</label>
-                            <input type="date" id="geber_geburt" data-field="geber_geburt" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-id-lender">Personalausweisnummer</span></label>
-                            <input type="text" id="geber_ausweis" data-field="geber_ausweis" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-iban-lender">IBAN für Rückzahlung</span></label>
-                            <input type="text" id="geber_iban" data-field="geber_iban" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Darlehensnehmer -->
-                <div class="form-section bg-white rounded-lg p-6 shadow">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-borrower">👥 Darlehensnehmer/in</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-name-borrower">Name</span> *</label>
-                            <input type="text" id="nehmer_name" data-field="nehmer_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-address-borrower">Adresse</span> *</label>
-                            <textarea id="nehmer_adresse" data-field="nehmer_adresse" required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-birthdate-borrower">Geburtsdatum</span> *</label>
-                            <input type="date" id="nehmer_geburt" data-field="nehmer_geburt" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-id-borrower">Personalausweisnummer</span></label>
-                            <input type="text" id="nehmer_ausweis" data-field="nehmer_ausweis" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Darlehensdetails -->
-                <div class="form-section bg-white rounded-lg p-6 shadow">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-loan-details">💰 Darlehensdetails</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-loan-amount">Darlehenssumme (€)</span> *</label>
-                            <input type="text" id="summe" data-field="summe" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="1.000,00">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-interest-rate">Zinssatz (% p.a.)</span></label>
-                            <input type="number" id="zinssatz" data-field="zinssatz" min="0" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="0">
-                            <p class="text-xs text-gray-500 mt-1" id="text-interest-default">Standard: 0% (zinslos)</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-default-interest">Verzugszins (% p.a.)</span> *</label>
-                            <input type="number" id="verzugszins" data-field="verzugszins" required min="0" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="5">
-                            <p class="text-xs text-gray-500 mt-1" id="text-default-interest-note">Standard: 5% über Basiszinssatz</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-duration">Laufzeit (Monate)</span> *</label>
-                            <input type="number" id="laufzeit" data-field="laufzeit" required min="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="6">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-contract-date">Vertragsdatum</span> *</label>
-                            <input type="date" id="vertragsdatum" data-field="vertragsdatum" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-due-date">Fälligkeitsdatum</span></label>
-                            <input type="text" id="faelligkeitsdatum" data-field="faelligkeitsdatum" readonly class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md" value="(wird automatisch berechnet)">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-repayment-type">Rückzahlungsart</span> *</label>
-                            <select id="rueckzahlungsart" data-field="rueckzahlungsart" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="einmal" id="opt-lumpsum">Einmalzahlung</option>
-                                <option value="raten" id="opt-installments">Ratenzahlung</option>
-                            </select>
-                        </div>
-                        <div id="rhythmus_container" style="display: none;">
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-repayment-rhythm">Rückzahlungsrhythmus</span></label>
-                            <select id="rhythmus" data-field="rhythmus" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="monatlich" id="opt-monthly">Monatlich</option>
-                                <option value="vierteljaehrlich" id="opt-quarterly">Vierteljährlich</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-payout-type">Auszahlungsart</span> *</label>
-                            <select id="auszahlungsart" data-field="auszahlungsart" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="bar" id="opt-cash">Bar</option>
-                                <option value="ueberweisung" id="opt-transfer">Überweisung</option>
-                                <option value="paypal" id="opt-paypal">PayPal</option>
-                                <option value="sonstiges" id="opt-other">Sonstiges</option>
-                            </select>
-                        </div>
-                        <div id="nehmer_iban_container" style="display: none;">
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-borrower-iban">IBAN der Darlehensnehmerin</span></label>
-                            <input type="text" id="nehmer_iban" data-field="nehmer_iban" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-purpose">Zweck</span></label>
-                            <textarea id="zweck" data-field="zweck" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-jurisdiction">Gerichtsstand (Ort)</span> *</label>
-                            <input type="text" id="gerichtsstand" data-field="gerichtsstand" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Zeuge -->
-                <div class="form-section bg-white rounded-lg p-6 shadow">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-witness">👁 Zeuge/Zeugin (optional)</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-name-witness">Name</span></label>
-                            <input type="text" id="zeuge_name" data-field="zeuge_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-address-witness">Adresse</span></label>
-                            <textarea id="zeuge_adresse" data-field="zeuge_adresse" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-birthdate-witness">Geburtsdatum</span></label>
-                            <input type="date" id="zeuge_geburt" data-field="zeuge_geburt" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1"><span id="text-id-witness">Personalausweisnummer</span></label>
-                            <input type="text" id="zeuge_ausweis" data-field="zeuge_ausweis" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Buttons -->
-                <div class="flex gap-4">
-                    <button onclick="resetForm()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition" id="btn-reset">
-                        🔄 <span id="text-reset">Zurücksetzen</span>
-                    </button>
-                </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Linke Spalte: Formular -->
+        <div class="space-y-6 no-print">
+          <!-- Darlehensgeber -->
+          <div class="form-section bg-white rounded-lg p-6 shadow">
+            <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-lender">
+              👤 Darlehensgeber/in
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-name-lender">Name</span> *</label
+                >
+                <input
+                  type="text"
+                  id="geber_name"
+                  data-field="geber_name"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-address-lender">Adresse</span> *</label
+                >
+                <textarea
+                  id="geber_adresse"
+                  data-field="geber_adresse"
+                  required
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-birthdate-lender">Geburtsdatum</span> *</label
+                >
+                <input
+                  type="date"
+                  id="geber_geburt"
+                  data-field="geber_geburt"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-id-lender">Personalausweisnummer</span></label
+                >
+                <input
+                  type="text"
+                  id="geber_ausweis"
+                  data-field="geber_ausweis"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-iban-lender">IBAN für Rückzahlung</span></label
+                >
+                <input
+                  type="text"
+                  id="geber_iban"
+                  data-field="geber_iban"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
             </div>
+          </div>
 
-            <!-- Rechte Spalte: Vorschau -->
-            <div class="lg:sticky lg:top-4 h-fit">
-                <div class="preview-container rounded-lg p-8 mb-4" id="previewContainer">
-                    <div id="preview" class="text-sm leading-relaxed"></div>
-                </div>
-                <button onclick="generatePDF()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg" id="btn-pdf">
-                    📄 <span id="text-download-pdf">PDF herunterladen</span>
-                </button>
+          <!-- Darlehensnehmer -->
+          <div class="form-section bg-white rounded-lg p-6 shadow">
+            <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-borrower">
+              👥 Darlehensnehmer/in
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-name-borrower">Name</span> *</label
+                >
+                <input
+                  type="text"
+                  id="nehmer_name"
+                  data-field="nehmer_name"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-address-borrower">Adresse</span> *</label
+                >
+                <textarea
+                  id="nehmer_adresse"
+                  data-field="nehmer_adresse"
+                  required
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-birthdate-borrower">Geburtsdatum</span> *</label
+                >
+                <input
+                  type="date"
+                  id="nehmer_geburt"
+                  data-field="nehmer_geburt"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-id-borrower">Personalausweisnummer</span></label
+                >
+                <input
+                  type="text"
+                  id="nehmer_ausweis"
+                  data-field="nehmer_ausweis"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
             </div>
+          </div>
+
+          <!-- Darlehensdetails -->
+          <div class="form-section bg-white rounded-lg p-6 shadow">
+            <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-loan-details">
+              💰 Darlehensdetails
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-loan-amount">Darlehenssumme (€)</span> *</label
+                >
+                <input
+                  type="text"
+                  id="summe"
+                  data-field="summe"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value="1.000,00"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-interest-rate">Zinssatz (% p.a.)</span></label
+                >
+                <input
+                  type="number"
+                  id="zinssatz"
+                  data-field="zinssatz"
+                  min="0"
+                  step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value="0"
+                />
+                <p class="text-xs text-gray-500 mt-1" id="text-interest-default">
+                  Standard: 0% (zinslos)
+                </p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-default-interest">Verzugszins (% p.a.)</span> *</label
+                >
+                <input
+                  type="number"
+                  id="verzugszins"
+                  data-field="verzugszins"
+                  required
+                  min="0"
+                  step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value="5"
+                />
+                <p class="text-xs text-gray-500 mt-1" id="text-default-interest-note">
+                  Standard: 5% über Basiszinssatz
+                </p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-duration">Laufzeit (Monate)</span> *</label
+                >
+                <input
+                  type="number"
+                  id="laufzeit"
+                  data-field="laufzeit"
+                  required
+                  min="1"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value="6"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-contract-date">Vertragsdatum</span> *</label
+                >
+                <input
+                  type="date"
+                  id="vertragsdatum"
+                  data-field="vertragsdatum"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-due-date">Fälligkeitsdatum</span></label
+                >
+                <input
+                  type="text"
+                  id="faelligkeitsdatum"
+                  data-field="faelligkeitsdatum"
+                  readonly
+                  class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
+                  value="(wird automatisch berechnet)"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-repayment-type">Rückzahlungsart</span> *</label
+                >
+                <select
+                  id="rueckzahlungsart"
+                  data-field="rueckzahlungsart"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="einmal" id="opt-lumpsum">Einmalzahlung</option>
+                  <option value="raten" id="opt-installments">Ratenzahlung</option>
+                </select>
+              </div>
+              <div id="rhythmus_container" style="display: none">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-repayment-rhythm">Rückzahlungsrhythmus</span></label
+                >
+                <select
+                  id="rhythmus"
+                  data-field="rhythmus"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="monatlich" id="opt-monthly">Monatlich</option>
+                  <option value="vierteljaehrlich" id="opt-quarterly">Vierteljährlich</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-payout-type">Auszahlungsart</span> *</label
+                >
+                <select
+                  id="auszahlungsart"
+                  data-field="auszahlungsart"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="bar" id="opt-cash">Bar</option>
+                  <option value="ueberweisung" id="opt-transfer">Überweisung</option>
+                  <option value="paypal" id="opt-paypal">PayPal</option>
+                  <option value="sonstiges" id="opt-other">Sonstiges</option>
+                </select>
+              </div>
+              <div id="nehmer_iban_container" style="display: none">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-borrower-iban">IBAN der Darlehensnehmerin</span></label
+                >
+                <input
+                  type="text"
+                  id="nehmer_iban"
+                  data-field="nehmer_iban"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-purpose">Zweck</span></label
+                >
+                <textarea
+                  id="zweck"
+                  data-field="zweck"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-jurisdiction">Gerichtsstand (Ort)</span> *</label
+                >
+                <input
+                  type="text"
+                  id="gerichtsstand"
+                  data-field="gerichtsstand"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Zeuge -->
+          <div class="form-section bg-white rounded-lg p-6 shadow">
+            <h2 class="text-xl font-bold text-gray-800 mb-4" id="label-witness">
+              👁 Zeuge/Zeugin (optional)
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-name-witness">Name</span></label
+                >
+                <input
+                  type="text"
+                  id="zeuge_name"
+                  data-field="zeuge_name"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-address-witness">Adresse</span></label
+                >
+                <textarea
+                  id="zeuge_adresse"
+                  data-field="zeuge_adresse"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-birthdate-witness">Geburtsdatum</span></label
+                >
+                <input
+                  type="date"
+                  id="zeuge_geburt"
+                  data-field="zeuge_geburt"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  ><span id="text-id-witness">Personalausweisnummer</span></label
+                >
+                <input
+                  type="text"
+                  id="zeuge_ausweis"
+                  data-field="zeuge_ausweis"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex gap-4">
+            <button
+              onclick="resetForm()"
+              class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition"
+              id="btn-reset"
+            >
+              🔄 <span id="text-reset">Zurücksetzen</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Rechte Spalte: Vorschau -->
+        <div class="lg:sticky lg:top-4 h-fit">
+          <div class="preview-container rounded-lg p-8 mb-4" id="previewContainer">
+            <div id="preview" class="text-sm leading-relaxed"></div>
+          </div>
+          <button
+            onclick="generatePDF()"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg"
+            id="btn-pdf"
+          >
+            📄 <span id="text-download-pdf">PDF herunterladen</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-gray-300 py-6 mt-12 no-print">
-        <div class="container mx-auto px-4 text-center">
-            <p class="mb-2" id="footer-copyright">© 2025 Online-Schuldschein-Generator</p>
-            <p class="text-sm text-gray-400" id="footer-disclaimer">Keine Rechtsberatung • Keine Datenspeicherung • Mustervorlage ohne Gewähr</p>
-        </div>
+      <div class="container mx-auto px-4 text-center">
+        <p class="mb-2" id="footer-copyright">© 2025 Online-Schuldschein-Generator</p>
+        <p class="text-sm text-gray-400" id="footer-disclaimer">
+          Keine Rechtsberatung • Keine Datenspeicherung • Mustervorlage ohne Gewähr
+        </p>
+      </div>
     </footer>
 
     <!-- Translations -->
     <script src="./translations/de-de.js"></script>
     <script src="./translations/en-us.js"></script>
     <script src="./translations/i18n.js"></script>
-    
+
     <!-- Custom Scripts -->
     <script src="./js/common.js"></script>
     <script src="./js/pdf.js"></script>
-</body>
+  </body>
 </html>

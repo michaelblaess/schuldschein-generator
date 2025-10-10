@@ -108,6 +108,9 @@
 2. 💰 Erweiterte Zinsberechnungen
 3. 🎨 Druckversion
 
+### Code-Refactoring
+1. common.js umbenenennen nach core.js
+2. Validierungen nach validation.js auslagern
 ---
 
 **Stand:** 2025-01-08  
