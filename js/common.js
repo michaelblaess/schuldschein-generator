@@ -3,26 +3,20 @@
 // ===================================
 
 // Übersetzungen werden aus separaten JS-Dateien geladen (window.TRANSLATIONS)
-// Sprache wird ausschließlich über window.i18n verwaltet
+// Sprache wird ausschließlich über window.translation (TranslationController) verwaltet
 
 // Sprache wechseln
 function toggleLanguage() {
-    // Hole aktuelles Locale von window.i18n
-    const currentLocale = window.i18n.getLocale();
+    // Hole aktuelles Locale vom TranslationController
+    const currentLocale = window.translation.getLocale();
 
     // Toggle zwischen de-DE und en-US
     const newLocale = currentLocale === 'de-DE' ? 'en-US' : 'de-DE';
 
-    // Setze neues Locale (persistiert in localStorage)
-    window.i18n.setLocale(newLocale);
+    // Setze neues Locale (persistiert in localStorage, triggert Events, wendet Übersetzungen an)
+    window.translation.setLocale(newLocale);
 
-    // UI aktualisieren
-    const toggle = document.getElementById('languageToggle');
-    toggle.classList.toggle('active');
-    toggle.querySelector('.toggle-slider').textContent = newLocale === 'de-DE' ? '🇩🇪' : '🇬🇧';
-
-    // Übersetzungen und Vorschau aktualisieren
-    applyTranslations();
+    // Vorschau aktualisieren
     updatePreview();
 
     // Alle Felder beim Sprachwechsel aufleuchten lassen
@@ -39,17 +33,22 @@ function toggleLanguage() {
 }
 
 // Übersetzungen anwenden
+// Thin Wrapper um TranslationController.apply() mit ID-spezifischen Fallbacks
 function applyTranslations() {
     // Hole Übersetzungen für aktuelles Locale
-    const trans = window.TRANSLATIONS[window.i18n.locale];
+    const locale = window.translation.getLocale();
+    const trans = window.TRANSLATIONS[locale];
 
     // Robuster Fallback bei fehlenden Übersetzungen
     if (!trans) {
-        console.warn('Translations not found for locale:', window.i18n.locale);
+        console.warn('Translations not found for locale:', locale);
         return;
     }
 
-    // Hilfsfunktion: Element aktualisieren (robust gegen fehlende Keys)
+    // Controller apply() aufrufen (data-i18n, data-i18n-attr)
+    window.translation.apply(document);
+
+    // ID-spezifische Updates (Legacy-Support für Elemente ohne data-i18n)
     const updateElement = (id, key, isHTML = false) => {
         const el = document.getElementById(id);
         if (el && trans[key] !== undefined) {
@@ -74,7 +73,7 @@ function applyTranslations() {
     updateElement('label-loan-details', 'label-loan-details');
     updateElement('label-witness', 'label-witness');
 
-    // Alle Text-Spans mit IDs
+    // Alle Text-Spans mit IDs (Legacy-Support)
     const textIds = [
         'text-name-lender', 'text-address-lender', 'text-birthdate-lender', 'text-id-lender', 'text-iban-lender',
         'text-name-borrower', 'text-address-borrower', 'text-birthdate-borrower', 'text-id-borrower',
@@ -113,14 +112,6 @@ function applyTranslations() {
     if (zweckInput && trans['placeholder-purpose'] !== undefined) {
         zweckInput.placeholder = trans['placeholder-purpose'];
     }
-
-    // Generische data-i18n Unterstützung (Fallback)
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (key && trans[key] !== undefined) {
-            el.textContent = trans[key];
-        }
-    });
 }
 
 // Dark Mode
@@ -139,37 +130,37 @@ function formatCurrencyInput(input) {
         input.value = '';
         return;
     }
-    
+
     let num = parseInt(value);
     let formatted = (num / 100).toLocaleString('de-DE', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
-    
+
     input.value = formatted;
 }
 
 // IBAN Validierung
 function validateIBAN(input) {
     const iban = input.value.replace(/\s/g, '');
-    
+
     if (iban.length === 0) {
         return;
     }
-    
+
     // Einfache IBAN-Validierung (Format-Check)
     const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]+$/;
     const isValid = ibanRegex.test(iban) && iban.length >= 15 && iban.length <= 34;
-    
+
     // Glow-Effekt auf Input-Feld
     input.classList.remove('text-glow-valid', 'text-glow-invalid');
-    
+
     if (isValid) {
         input.classList.add('text-glow-valid');
     } else {
         input.classList.add('text-glow-invalid');
     }
-    
+
     setTimeout(() => {
         input.classList.remove('text-glow-valid', 'text-glow-invalid');
     }, 1000);
@@ -182,7 +173,7 @@ function addGlowToSpecificField(fieldName) {
         el.classList.remove('text-glow-change');
         void el.offsetWidth; // Trigger reflow
         el.classList.add('text-glow-change');
-        
+
         setTimeout(() => {
             el.classList.remove('text-glow-change');
         }, 1000);
@@ -209,21 +200,21 @@ function betragInWorten(betrag) {
     const zehn = ['zehn', 'elf', 'zwölf', 'dreizehn', 'vierzehn', 'fünfzehn', 'sechzehn', 'siebzehn', 'achtzehn', 'neunzehn'];
     const zehner = ['', '', 'zwanzig', 'dreißig', 'vierzig', 'fünfzig', 'sechzig', 'siebzig', 'achtzig', 'neunzig'];
     const hunderter = ['', 'einhundert', 'zweihundert', 'dreihundert', 'vierhundert', 'fünfhundert', 'sechshundert', 'siebenhundert', 'achthundert', 'neunhundert'];
-    
+
     // Betrag von deutschem Format parsen
     const cleanBetrag = betrag.replace(/\./g, '').replace(',', '.');
     const num = Math.floor(parseFloat(cleanBetrag));
-    
+
     if (num === 0 || isNaN(num)) return 'null';
-    
+
     let result = '';
-    
+
     // Millionen
     if (num >= 1000000) {
         const mio = Math.floor(num / 1000000);
         result += convertHundreds(mio) + ' Million' + (mio > 1 ? 'en' : '') + ' ';
     }
-    
+
     // Tausender
     const rest = num % 1000000;
     if (rest >= 1000) {
@@ -234,22 +225,22 @@ function betragInWorten(betrag) {
             result += convertHundreds(tsd) + 'tausend';
         }
     }
-    
+
     // Hunderter
     const h = num % 1000;
     if (h > 0) {
         result += convertHundreds(h);
     }
-    
+
     return result.trim() + ' Euro';
-    
+
     function convertHundreds(n) {
         let str = '';
         const h = Math.floor(n / 100);
         const rest = n % 100;
-        
+
         if (h > 0) str += hunderter[h];
-        
+
         if (rest >= 10 && rest < 20) {
             str += zehn[rest - 10];
         } else {
@@ -261,7 +252,7 @@ function betragInWorten(betrag) {
             }
             if (z > 0) str += zehner[z];
         }
-        
+
         return str;
     }
 }
@@ -314,10 +305,11 @@ function updatePreview() {
 
 // Vertragstext generieren
 function generiereVertragstext(d) {
-    const trans = window.TRANSLATIONS[window.i18n.locale];
+    const locale = window.translation.getLocale();
+    const trans = window.TRANSLATIONS[locale];
     const summeWorten = betragInWorten(d.summe);
     const hatZeuge = d.zeuge_name && d.zeuge_name.trim() !== '';
-    
+
     // Auszahlungstext je nach Art
     let auszahlungsText = '';
     if (d.auszahlungsart === 'bar') {
@@ -329,11 +321,11 @@ function generiereVertragstext(d) {
     } else if (d.auszahlungsart === 'sonstiges') {
         auszahlungsText = trans['text-by-other'];
     }
-    
+
     return `
         <div class="space-y-4">
             <h1 class="text-2xl font-bold text-center mb-6">${trans['contract-title']}</h1>
-            
+
             <div class="mb-4">
                 <p><strong>${trans['contract-lender']}</strong></p>
                 <p data-preview="geber_name">${d.geber_name || '[Name]'}</p>
@@ -341,7 +333,7 @@ function generiereVertragstext(d) {
                 <p>${trans['contract-birthdate']} <span data-preview="geber_geburt">${formatiereDatum(d.geber_geburt) || '[Datum]'}</span></p>
                 <p>${trans['contract-id']} <span data-preview="geber_ausweis">${d.geber_ausweis || '[Nummer]'}</span></p>
             </div>
-            
+
             <div class="mb-4">
                 <p><strong>${trans['contract-borrower']}</strong></p>
                 <p data-preview="nehmer_name">${d.nehmer_name || '[Name]'}</p>
@@ -349,45 +341,45 @@ function generiereVertragstext(d) {
                 <p>${trans['contract-birthdate']} <span data-preview="nehmer_geburt">${formatiereDatum(d.nehmer_geburt) || '[Datum]'}</span></p>
                 <p>${trans['contract-id']} <span data-preview="nehmer_ausweis">${d.nehmer_ausweis || '[Nummer]'}</span></p>
             </div>
-            
+
             <div class="my-6 border-t-2 border-gray-300"></div>
-            
+
             <h2 class="font-bold mt-6 mb-2">§ 1 ${trans['section-loan-amount']}</h2>
             <p>${trans['text-loan-granted']} <strong data-preview="summe">${d.summe || '0,00'} EUR</strong> (${trans['text-in-words']} <em data-preview="summe">${summeWorten}</em>).</p>
-            
+
             ${d.zweck ? `
             <h2 class="font-bold mt-4 mb-2">§ 2 ${trans['section-purpose']}</h2>
             <p>${trans['text-purpose-granted']} <span data-preview="zweck">${d.zweck}</span></p>
             ` : ''}
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '3' : '2'} ${trans['section-disbursement']}</h2>
             <p>${trans['text-disbursement-made']} ${auszahlungsText}.</p>
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '4' : '3'} ${trans['section-repayment']}</h2>
             <p>${trans['text-repayment-made']} ${d.rueckzahlungsart === 'einmal' ? trans['text-lump-sum'] + ' <strong data-preview="faelligkeitsdatum">' + (d.faelligkeitsdatum || '[Datum]') + '</strong>' : trans['text-in-installments'] + ' <span data-preview="rhythmus">' + d.rhythmus + '</span>'}.</p>
             <p>${trans['text-repayment-to']}</p>
             <p>IBAN: <strong data-preview="geber_iban">${formatiereIBAN(d.geber_iban)}</strong></p>
             <p>${trans['text-account-holder']} <span data-preview="geber_name">${d.geber_name || '[Name]'}</span></p>
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '5' : '4'} ${trans['section-interest']}</h2>
             <p>${trans['text-loan-interest']} ${parseFloat(d.zinssatz) > 0 ? trans['text-with-interest'] + ' <strong data-preview="zinssatz">' + d.zinssatz + ' % p.a.</strong>' : trans['text-interest-free']}.</p>
             <p>${trans['text-default-interest-text']} <strong data-preview="verzugszins">${d.verzugszins || '5'} ${trans['text-percentage-points']}</strong> ${trans['text-charged']}.</p>
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '6' : '5'} ${trans['section-written-form']}</h2>
             <p>${trans['text-written-form-text']}</p>
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '7' : '6'} ${trans['section-jurisdiction']}</h2>
             <p>${trans['text-jurisdiction-text']} <strong data-preview="gerichtsstand">${d.gerichtsstand || '[Ort]'}</strong>.</p>
-            
+
             <h2 class="font-bold mt-4 mb-2">§ ${d.zweck ? '8' : '7'} ${trans['section-severability']}</h2>
             <p>${trans['text-severability-text']}</p>
-            
+
             <div class="my-6 border-t-2 border-gray-300"></div>
-            
+
             <div class="mt-8">
                 <p><strong><span data-preview="gerichtsstand">${d.gerichtsstand || '[Ort]'}</span>, <span data-preview="vertragsdatum">${formatiereDatum(d.vertragsdatum) || '[Datum]'}</span></strong></p>
             </div>
-            
+
             <div class="grid grid-cols-2 gap-8 mt-12">
                 <div>
                     <p class="mb-12">_______________________________</p>
@@ -400,7 +392,7 @@ function generiereVertragstext(d) {
                     <p class="text-xs text-gray-600">(${trans['contract-borrower'].replace(':', '')})</p>
                 </div>
             </div>
-            
+
             ${hatZeuge ? `
             <div class="my-6 border-t-2 border-gray-300"></div>
             <h2 class="font-bold mt-6 mb-2">${trans['witness-confirmation']}</h2>
@@ -418,9 +410,9 @@ function generiereVertragstext(d) {
                 <p class="text-xs text-gray-600">(${trans['witness-label'].replace(':', '')})</p>
             </div>
             ` : ''}
-            
+
             <div class="my-6 border-t-2 border-gray-300"></div>
-            
+
             <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-xs">
                 <p class="font-bold mb-1">⚠️ ${trans['legal-notice-title']}</p>
                 <p>${trans['legal-notice-text']}</p>
@@ -431,7 +423,9 @@ function generiereVertragstext(d) {
 
 // Formular zurücksetzen
 function resetForm() {
-    const trans = window.TRANSLATIONS[window.i18n.locale];
+    const locale = window.translation.getLocale();
+    const trans = window.TRANSLATIONS[locale];
+
     if (confirm(trans['confirm-reset'])) {
         document.querySelectorAll('input, select, textarea').forEach(el => {
             if (el.type === 'date' && el.id === 'vertragsdatum') {
@@ -460,7 +454,40 @@ function resetForm() {
 
 // Initialisierung
 document.addEventListener('DOMContentLoaded', function() {
+    // ===================================
+    // Translation Controller initialisieren
+    // ===================================
+    window.translation = new TranslationController();
+    window.translation.init();
+
+    // ===================================
+    // Event-Listener für Sprachwechsel
+    // ===================================
+    window.addEventListener('translation:change', () => {
+        const locale = window.translation.getLocale();
+        const languageToggle = document.getElementById('languageToggle');
+
+        if (languageToggle) {
+            // Toggle-UI synchronisieren
+            if (locale === 'en-US') {
+                languageToggle.classList.add('active');
+                languageToggle.querySelector('.toggle-slider').textContent = '🇬🇧';
+            } else {
+                languageToggle.classList.remove('active');
+                languageToggle.querySelector('.toggle-slider').textContent = '🇩🇪';
+            }
+        }
+
+        // Formular-Übersetzungen anwenden (Labels, Placeholder, etc.)
+        applyTranslations();
+
+        // Vorschau aktualisieren (da sich Übersetzungen geändert haben)
+        updatePreview();
+    });
+
+    // ===================================
     // Dark Mode wiederherstellen
+    // ===================================
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -471,13 +498,10 @@ document.addEventListener('DOMContentLoaded', function() {
         toggle.querySelector('.toggle-slider').textContent = '🌙';
     }
 
-    // Stelle sicher dass window.i18n initialisiert ist
-    if (!window.i18n.locale) {
-        window.i18n.init();
-    }
-
-    // Toggle-Button-Status setzen basierend auf aktuellem Locale
-    const currentLocale = window.i18n.locale;
+    // ===================================
+    // Toggle-Button-Status initial setzen
+    // ===================================
+    const currentLocale = window.translation.getLocale();
     const languageToggle = document.getElementById('languageToggle');
 
     if (currentLocale === 'en-US') {
@@ -488,22 +512,28 @@ document.addEventListener('DOMContentLoaded', function() {
         languageToggle.querySelector('.toggle-slider').textContent = '🇩🇪';
     }
 
-    // Übersetzungen anwenden (nach i18n.init())
+    // ===================================
+    // Übersetzungen anwenden
+    // ===================================
     applyTranslations();
-    
+
+    // ===================================
     // Heutiges Datum als Standard
+    // ===================================
     const heute = new Date().toISOString().split('T')[0];
     document.getElementById('vertragsdatum').value = heute;
-    
-    // Event Listener mit data-field Attribut
+
+    // ===================================
+    // Event Listener für Formularfelder
+    // ===================================
     document.querySelectorAll('input, select, textarea').forEach(el => {
         el.addEventListener('input', function() {
             const field = this.getAttribute('data-field');
-            
+
             if (field === 'summe') {
                 formatCurrencyInput(this);
             }
-            
+
             // Abhängige Felder behandeln
             if (field === 'laufzeit' || field === 'vertragsdatum') {
                 updatePreview();
@@ -526,30 +556,39 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
+    // ===================================
     // IBAN Validierung
+    // ===================================
     document.getElementById('geber_iban').addEventListener('input', function() {
         validateIBAN(this);
     });
-    
+
     document.getElementById('nehmer_iban').addEventListener('input', function() {
         validateIBAN(this);
     });
-    
+
+    // ===================================
+    // Dynamische Container Ein-/Ausblenden
+    // ===================================
     document.getElementById('rueckzahlungsart').addEventListener('change', function() {
-        document.getElementById('rhythmus_container').style.display = 
+        document.getElementById('rhythmus_container').style.display =
             this.value === 'raten' ? 'block' : 'none';
     });
-    
+
     document.getElementById('auszahlungsart').addEventListener('change', function() {
-        document.getElementById('nehmer_iban_container').style.display = 
+        document.getElementById('nehmer_iban_container').style.display =
             this.value === 'ueberweisung' ? 'block' : 'none';
     });
-    
+
+    // ===================================
     // Initiale Vorschau
+    // ===================================
     updatePreview();
-    
+
+    // ===================================
     // Alle Felder beim ersten Laden aufleuchten lassen
+    // ===================================
     setTimeout(() => {
         document.querySelectorAll('[data-preview]').forEach(el => {
             el.classList.add('text-glow-change');
