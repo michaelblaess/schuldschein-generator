@@ -9,6 +9,11 @@
     window.TRANSLATIONS['de-DE'] = {
         "header-title": "🧾 Online-Schuldschein-Generator",
         "header-subtitle": "Erstellen Sie rechtssichere Darlehensverträge nach §§ 488 ff. BGB – komplett in Ihrem Browser",
+        "nav-generator": "Generator",
+        "nav-about": "Über",
+        "nav-impressum": "Impressum",
+        "nav-privacy": "Datenschutz",
+        "nav-terms": "Nutzungsbedingungen",
         "privacy-notice": "<strong>🔒 Datenschutzhinweis:</strong> Alle Eingaben bleiben ausschließlich in Ihrem Browser. Es werden keine Daten übertragen oder gespeichert.",
         "label-lender": "👤 Darlehensgeber/in",
         "label-borrower": "👥 Darlehensnehmer/in",

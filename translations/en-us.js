@@ -9,6 +9,11 @@
     window.TRANSLATIONS['en-US'] = {
         "header-title": "🧾 Online Promissory Note Generator",
         "header-subtitle": "Create legally compliant loan agreements according to §§ 488 ff. BGB – completely in your browser",
+        "nav-generator": "Generator",
+        "nav-about": "About",
+        "nav-impressum": "Imprint",
+        "nav-privacy": "Privacy",
+        "nav-terms": "Terms of Use",
         "privacy-notice": "<strong>🔒 Privacy Notice:</strong> All inputs remain exclusively in your browser. No data is transmitted or stored.",
         "label-lender": "👤 Lender",
         "label-borrower": "👥 Borrower",

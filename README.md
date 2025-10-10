@@ -8,6 +8,7 @@ Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan a
 ---
 
 ## 🚀 Funktionen
+
 - Formular → **Live-Vorschau** → **PDF-Download** (100 % client-seitig)
 - **Keine Speicherung**, keine Cookies, kein Tracking
 - **Dark/Light Mode** mit Toggle (lokal gemerkt)
@@ -20,6 +21,7 @@ Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan a
 ---
 
 ## 📁 Projektstruktur (aktuell)
+
 ```
 .
 ├── index.html
@@ -42,44 +44,52 @@ Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan a
 ---
 
 ## 🌍 Internationalisierung (i18n)
+
 - `translations/de-de.js`, `translations/en-us.js` registrieren Dictionaries unter `window.TRANSLATIONS[locale]`.
 - `translations/i18n.js` stellt `i18n.t('key')` und `i18n.setLocale('de-DE'|'en-US')` bereit.
 - Sprache wird in `localStorage` gemerkt; Fallback anhand `navigator.language`.
 
 ---
 
-## 🎨 Theming (Dark/Light)
-- Initialer Modus aus `localStorage('theme')` oder `prefers-color-scheme`
-- `<html class="dark">` wird zur Laufzeit gesetzt/entfernt
-- Toggle-Button wechselt und speichert den Zustand
+## UI & Styling
+
+Dieses Projekt nutzt **DaisyUI (Tailwind)** für alle Seiten. Theming via `data-theme`.  
+Bitte **kein** eigenes Dark-Mode-CSS hinzufügen.
 
 ---
 
 ## 🧪 Verwendung
+
 1. **Lokal öffnen:** `index.html` im Browser (kein Server nötig)  
-   *(Für CORS-freies Testen ist der lokale Aufruf ausreichend, da Übersetzungen per JS eingebunden sind.)*
-2. **Formular ausfüllen:** Pflichtfelder beachten  
-3. **Vorschau prüfen:** Rechte Spalte aktualisiert sich live  
+   _(Für CORS-freies Testen ist der lokale Aufruf ausreichend, da Übersetzungen per JS eingebunden sind.)_
+2. **Formular ausfüllen:** Pflichtfelder beachten
+3. **Vorschau prüfen:** Rechte Spalte aktualisiert sich live
 4. **PDF generieren:** Button „PDF herunterladen“
 
 ---
 
 ## 🔧 Anpassungen
-- **Styles:** `css/styles.css` (Farben, Abstände, Dark/Light)  
-- **PDF-Engine:** `js/pdf.js` (jsPDF austauschbar gegen pdf-lib)  
-- **Translations:** `translations/de-de.js` / `en-us.js` (Keys erweitern/übersetzen)  
+
+- **Styles:** `css/styles.css` (Farben, Abstände, Dark/Light)
+- **PDF-Engine:** `js/pdf.js` (jsPDF austauschbar gegen pdf-lib)
+- **Translations:** `translations/de-de.js` / `en-us.js` (Keys erweitern/übersetzen)
 
 Neue Sprache hinzufügen:
+
 ```js
 // translations/fr-fr.js
 window.TRANSLATIONS = window.TRANSLATIONS || {};
-window.TRANSLATIONS['fr-FR'] = { /* ... keys wie de-DE/en-US ... */ };
+window.TRANSLATIONS["fr-FR"] = {
+  /* ... keys wie de-DE/en-US ... */
+};
 ```
+
 Dann in `index.html` einbinden und im Language-Toggle anbieten.
 
 ---
 
 ## 🐛 Bekannte Einschränkungen
+
 - PDF-Layout ist „vertraglich“ optimiert, aber kein Satzsystem (jsPDF)
 - Keine Server-Validierung (alles client-seitig)
 - Moderne Browser empfohlen (2020+)
@@ -89,6 +99,7 @@ Siehe ggf. `offene_punkte.md` für To-dos/Ideen.
 ---
 
 ## 🔒 Datenschutz
+
 - **Keine Server-Verbindung**
 - **Keine Speicherung**, **keine Cookies**
 - Alle Eingaben bleiben im **Browser** (Client-side only)
@@ -96,6 +107,7 @@ Siehe ggf. `offene_punkte.md` für To-dos/Ideen.
 ---
 
 ## ⚖️ Rechtlicher Hinweis / Legal Notice
+
 „Schuldschein Generator“ ist **kein eingetragenes Warenzeichen**.  
 Diese Website steht in **keinem Zusammenhang** mit Finanzdienstleistern, Banken oder Rechtsberatern.  
 **Disclaimer:** Keine Rechtsberatung. Nutzung auf eigenes Risiko.
@@ -107,12 +119,14 @@ This site is **not affiliated** with financial service providers, banks, or lega
 ---
 
 ## 🪪 Lizenz / License
+
 Apache-2.0 © 2025 Michael Blaess  
 Siehe `LICENSE` (unverändert) und `NOTICE` (Attribution & Hinweise).
 
 ---
 
 ## 📫 Kontakt
+
 **info@schuldschein-generator.de**
 
 Repo: https://github.com/michaelblaess/schuldschein-generator  

@@ -4,33 +4,7 @@
 
 // Übersetzungen werden aus separaten JS-Dateien geladen (window.TRANSLATIONS)
 // Sprache wird ausschließlich über window.translation (TranslationController) verwaltet
-
-// Sprache wechseln
-function toggleLanguage() {
-    // Hole aktuelles Locale vom TranslationController
-    const currentLocale = window.translation.getLocale();
-
-    // Toggle zwischen de-DE und en-US
-    const newLocale = currentLocale === 'de-DE' ? 'en-US' : 'de-DE';
-
-    // Setze neues Locale (persistiert in localStorage, triggert Events, wendet Übersetzungen an)
-    window.translation.setLocale(newLocale);
-
-    // Vorschau aktualisieren
-    updatePreview();
-
-    // Alle Felder beim Sprachwechsel aufleuchten lassen
-    setTimeout(() => {
-        document.querySelectorAll('[data-preview]').forEach(el => {
-            el.classList.add('text-glow-change');
-        });
-        setTimeout(() => {
-            document.querySelectorAll('[data-preview]').forEach(el => {
-                el.classList.remove('text-glow-change');
-            });
-        }, 1000);
-    }, 100);
-}
+// Theme wird über DaisyUI data-theme verwaltet
 
 // Übersetzungen anwenden
 // Thin Wrapper um TranslationController.apply() mit ID-spezifischen Fallbacks
@@ -112,15 +86,6 @@ function applyTranslations() {
     if (zweckInput && trans['placeholder-purpose'] !== undefined) {
         zweckInput.placeholder = trans['placeholder-purpose'];
     }
-}
-
-// Dark Mode
-function toggleDarkMode() {
-    document.documentElement.classList.toggle('dark');
-    const toggle = document.getElementById('darkModeToggle');
-    toggle.classList.toggle('active');
-    toggle.querySelector('.toggle-slider').textContent = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
-    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 }
 
 // Betragsformatierung
@@ -455,28 +420,71 @@ function resetForm() {
 // Initialisierung
 document.addEventListener('DOMContentLoaded', function() {
     // ===================================
+    // DaisyUI Theme Toggle (light/dracula)
+    // ===================================
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Restore theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    root.setAttribute('data-theme', savedTheme);
+
+    if (themeToggle) {
+        themeToggle.checked = (savedTheme === 'dracula');
+
+        // Toggle event
+        themeToggle.addEventListener('change', () => {
+            const newTheme = themeToggle.checked ? 'dracula' : 'light';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+
+    // ===================================
     // Translation Controller initialisieren
     // ===================================
     window.translation = new TranslationController();
     window.translation.init();
 
     // ===================================
-    // Event-Listener für Sprachwechsel
+    // DaisyUI Language Toggle Setup
+    // ===================================
+    const languageToggle = document.getElementById('languageToggle');
+    const languageCheckbox = languageToggle.querySelector('input[type="checkbox"]');
+    const currentLocale = window.translation.getLocale();
+
+    // Initial state
+    languageCheckbox.checked = (currentLocale === 'en-US');
+
+    // Change event
+    languageCheckbox.addEventListener('change', () => {
+        const newLocale = languageCheckbox.checked ? 'en-US' : 'de-DE';
+        window.translation.setLocale(newLocale);
+
+        // Vorschau aktualisieren
+        updatePreview();
+
+        // Glow-Effekt auf allen Feldern
+        setTimeout(() => {
+            document.querySelectorAll('[data-preview]').forEach(el => {
+                el.classList.add('text-glow-change');
+            });
+            setTimeout(() => {
+                document.querySelectorAll('[data-preview]').forEach(el => {
+                    el.classList.remove('text-glow-change');
+                });
+            }, 1000);
+        }, 100);
+    });
+
+    // ===================================
+    // Event-Listener für Sprachwechsel (extern getriggert)
     // ===================================
     window.addEventListener('translation:change', () => {
         const locale = window.translation.getLocale();
-        const languageToggle = document.getElementById('languageToggle');
 
-        if (languageToggle) {
-            // Toggle-UI synchronisieren
-            if (locale === 'en-US') {
-                languageToggle.classList.add('active');
-                languageToggle.querySelector('.toggle-slider').textContent = '🇬🇧';
-            } else {
-                languageToggle.classList.remove('active');
-                languageToggle.querySelector('.toggle-slider').textContent = '🇩🇪';
-            }
-        }
+        // Checkbox synchronisieren
+        languageCheckbox.checked = (locale === 'en-US');
 
         // Formular-Übersetzungen anwenden (Labels, Placeholder, etc.)
         applyTranslations();
@@ -484,33 +492,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Vorschau aktualisieren (da sich Übersetzungen geändert haben)
         updatePreview();
     });
-
-    // ===================================
-    // Dark Mode wiederherstellen
-    // ===================================
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-        const toggle = document.getElementById('darkModeToggle');
-        toggle.classList.add('active');
-        toggle.querySelector('.toggle-slider').textContent = '🌙';
-    }
-
-    // ===================================
-    // Toggle-Button-Status initial setzen
-    // ===================================
-    const currentLocale = window.translation.getLocale();
-    const languageToggle = document.getElementById('languageToggle');
-
-    if (currentLocale === 'en-US') {
-        languageToggle.classList.add('active');
-        languageToggle.querySelector('.toggle-slider').textContent = '🇬🇧';
-    } else {
-        languageToggle.classList.remove('active');
-        languageToggle.querySelector('.toggle-slider').textContent = '🇩🇪';
-    }
 
     // ===================================
     // Übersetzungen anwenden
