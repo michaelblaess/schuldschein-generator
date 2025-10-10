@@ -3,21 +3,28 @@
 // ===================================
 
 // Übersetzungen werden aus separaten JS-Dateien geladen (window.TRANSLATIONS)
-let currentLanguage = 'de-DE';
+// Sprache wird ausschließlich über window.i18n verwaltet
 
 // Sprache wechseln
 function toggleLanguage() {
-    currentLanguage = currentLanguage === 'de-DE' ? 'en-US' : 'de-DE';
+    // Hole aktuelles Locale von window.i18n
+    const currentLocale = window.i18n.getLocale();
+
+    // Toggle zwischen de-DE und en-US
+    const newLocale = currentLocale === 'de-DE' ? 'en-US' : 'de-DE';
+
+    // Setze neues Locale (persistiert in localStorage)
+    window.i18n.setLocale(newLocale);
+
+    // UI aktualisieren
     const toggle = document.getElementById('languageToggle');
     toggle.classList.toggle('active');
-    toggle.querySelector('.toggle-slider').textContent = currentLanguage === 'de-DE' ? '🇩🇪' : '🇬🇧';
-    
-    // i18n.setLocale nutzen
-    window.i18n.setLocale(currentLanguage);
-    
+    toggle.querySelector('.toggle-slider').textContent = newLocale === 'de-DE' ? '🇩🇪' : '🇬🇧';
+
+    // Übersetzungen und Vorschau aktualisieren
     applyTranslations();
     updatePreview();
-    
+
     // Alle Felder beim Sprachwechsel aufleuchten lassen
     setTimeout(() => {
         document.querySelectorAll('[data-preview]').forEach(el => {
@@ -33,55 +40,87 @@ function toggleLanguage() {
 
 // Übersetzungen anwenden
 function applyTranslations() {
-    const trans = window.TRANSLATIONS[currentLanguage];
-    if (!trans) return;
-    
+    // Hole Übersetzungen für aktuelles Locale
+    const trans = window.TRANSLATIONS[window.i18n.locale];
+
+    // Robuster Fallback bei fehlenden Übersetzungen
+    if (!trans) {
+        console.warn('Translations not found for locale:', window.i18n.locale);
+        return;
+    }
+
+    // Hilfsfunktion: Element aktualisieren (robust gegen fehlende Keys)
+    const updateElement = (id, key, isHTML = false) => {
+        const el = document.getElementById(id);
+        if (el && trans[key] !== undefined) {
+            if (isHTML) {
+                el.innerHTML = trans[key];
+            } else {
+                el.textContent = trans[key];
+            }
+        }
+    };
+
     // Header und Footer
-    document.getElementById('header-title').textContent = trans['header-title'];
-    document.getElementById('header-subtitle').textContent = trans['header-subtitle'];
-    document.getElementById('privacy-notice').innerHTML = trans['privacy-notice'];
-    document.getElementById('footer-copyright').textContent = trans['footer-copyright'];
-    document.getElementById('footer-disclaimer').textContent = trans['footer-disclaimer'];
-    
+    updateElement('header-title', 'header-title');
+    updateElement('header-subtitle', 'header-subtitle');
+    updateElement('privacy-notice', 'privacy-notice', true);
+    updateElement('footer-copyright', 'footer-copyright');
+    updateElement('footer-disclaimer', 'footer-disclaimer');
+
     // Labels
-    document.getElementById('label-lender').textContent = trans['label-lender'];
-    document.getElementById('label-borrower').textContent = trans['label-borrower'];
-    document.getElementById('label-loan-details').textContent = trans['label-loan-details'];
-    document.getElementById('label-witness').textContent = trans['label-witness'];
-    
+    updateElement('label-lender', 'label-lender');
+    updateElement('label-borrower', 'label-borrower');
+    updateElement('label-loan-details', 'label-loan-details');
+    updateElement('label-witness', 'label-witness');
+
     // Alle Text-Spans mit IDs
     const textIds = [
         'text-name-lender', 'text-address-lender', 'text-birthdate-lender', 'text-id-lender', 'text-iban-lender',
         'text-name-borrower', 'text-address-borrower', 'text-birthdate-borrower', 'text-id-borrower',
         'text-name-witness', 'text-address-witness', 'text-birthdate-witness', 'text-id-witness',
-        'text-loan-amount', 'text-interest-rate', 'text-interest-default', 
+        'text-loan-amount', 'text-interest-rate', 'text-interest-default',
         'text-default-interest', 'text-default-interest-note',
         'text-duration', 'text-contract-date', 'text-due-date',
         'text-repayment-type', 'text-repayment-rhythm', 'text-payout-type',
         'text-borrower-iban', 'text-purpose', 'text-jurisdiction',
         'text-reset', 'text-download-pdf'
     ];
-    
+
     textIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             const baseKey = id.replace(/-lender|-borrower|-witness/g, '');
-            el.textContent = trans[baseKey] || trans[id] || el.textContent;
+            const translationKey = trans[baseKey] || trans[id];
+            if (translationKey !== undefined) {
+                el.textContent = translationKey;
+            }
         }
     });
-    
+
     // Options
-    document.getElementById('opt-lumpsum').textContent = trans['opt-lumpsum'];
-    document.getElementById('opt-installments').textContent = trans['opt-installments'];
-    document.getElementById('opt-monthly').textContent = trans['opt-monthly'];
-    document.getElementById('opt-quarterly').textContent = trans['opt-quarterly'];
-    document.getElementById('opt-cash').textContent = trans['opt-cash'];
-    document.getElementById('opt-transfer').textContent = trans['opt-transfer'];
-    document.getElementById('opt-paypal').textContent = trans['opt-paypal'];
-    document.getElementById('opt-other').textContent = trans['opt-other'];
-    
+    updateElement('opt-lumpsum', 'opt-lumpsum');
+    updateElement('opt-installments', 'opt-installments');
+    updateElement('opt-monthly', 'opt-monthly');
+    updateElement('opt-quarterly', 'opt-quarterly');
+    updateElement('opt-cash', 'opt-cash');
+    updateElement('opt-transfer', 'opt-transfer');
+    updateElement('opt-paypal', 'opt-paypal');
+    updateElement('opt-other', 'opt-other');
+
     // Placeholder
-    document.getElementById('zweck').placeholder = trans['placeholder-purpose'];
+    const zweckInput = document.getElementById('zweck');
+    if (zweckInput && trans['placeholder-purpose'] !== undefined) {
+        zweckInput.placeholder = trans['placeholder-purpose'];
+    }
+
+    // Generische data-i18n Unterstützung (Fallback)
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (key && trans[key] !== undefined) {
+            el.textContent = trans[key];
+        }
+    });
 }
 
 // Dark Mode
@@ -275,7 +314,7 @@ function updatePreview() {
 
 // Vertragstext generieren
 function generiereVertragstext(d) {
-    const trans = window.TRANSLATIONS[currentLanguage];
+    const trans = window.TRANSLATIONS[window.i18n.locale];
     const summeWorten = betragInWorten(d.summe);
     const hatZeuge = d.zeuge_name && d.zeuge_name.trim() !== '';
     
@@ -392,7 +431,7 @@ function generiereVertragstext(d) {
 
 // Formular zurücksetzen
 function resetForm() {
-    const trans = window.TRANSLATIONS[currentLanguage];
+    const trans = window.TRANSLATIONS[window.i18n.locale];
     if (confirm(trans['confirm-reset'])) {
         document.querySelectorAll('input, select, textarea').forEach(el => {
             if (el.type === 'date' && el.id === 'vertragsdatum') {
@@ -424,24 +463,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dark Mode wiederherstellen
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
         document.documentElement.classList.add('dark');
         const toggle = document.getElementById('darkModeToggle');
         toggle.classList.add('active');
         toggle.querySelector('.toggle-slider').textContent = '🌙';
     }
-    
-    // Sprache aus i18n übernehmen
-    currentLanguage = window.i18n.locale || 'de-DE';
-    
-    if (currentLanguage === 'en-US') {
-        const toggle = document.getElementById('languageToggle');
-        toggle.classList.add('active');
-        toggle.querySelector('.toggle-slider').textContent = '🇬🇧';
+
+    // Stelle sicher dass window.i18n initialisiert ist
+    if (!window.i18n.locale) {
+        window.i18n.init();
     }
-    
-    // Übersetzungen anwenden
+
+    // Toggle-Button-Status setzen basierend auf aktuellem Locale
+    const currentLocale = window.i18n.locale;
+    const languageToggle = document.getElementById('languageToggle');
+
+    if (currentLocale === 'en-US') {
+        languageToggle.classList.add('active');
+        languageToggle.querySelector('.toggle-slider').textContent = '🇬🇧';
+    } else {
+        languageToggle.classList.remove('active');
+        languageToggle.querySelector('.toggle-slider').textContent = '🇩🇪';
+    }
+
+    // Übersetzungen anwenden (nach i18n.init())
     applyTranslations();
     
     // Heutiges Datum als Standard

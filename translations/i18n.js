@@ -77,32 +77,40 @@
             return value;
         },
         
+        // Aktuelles Locale abrufen
+        getLocale: function() {
+            if (!this.locale) {
+                this.init();
+            }
+            return this.locale;
+        },
+
         // Locale ändern
         setLocale: function(newLocale) {
             newLocale = this._normalizeLocale(newLocale);
-            
+
             if (!window.TRANSLATIONS[newLocale]) {
                 console.error('Locale not available:', newLocale);
                 return false;
             }
-            
+
             this.locale = newLocale;
-            
+
             // In localStorage speichern
             localStorage.setItem('language', newLocale);
-            
+
             // document.lang aktualisieren
             document.documentElement.lang = newLocale;
-            
+
             // Custom Event für Locale-Änderung
             const event = new CustomEvent('i18n:change', {
                 detail: { locale: newLocale }
             });
             window.dispatchEvent(event);
-            
+
             return true;
         },
-        
+
         // Verfügbare Locales abrufen
         getAvailableLocales: function() {
             return Object.keys(window.TRANSLATIONS || {});
