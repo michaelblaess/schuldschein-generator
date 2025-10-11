@@ -1,0 +1,269 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<main class="page-wrap p-4 md:p-6">
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-start">
+    <!-- Formular -->
+    <section id="formSection" class="space-y-4 no-print">
+      <!-- Darlehensgeber -->
+      <fieldset class="card bg-base-100 border border-base-300">
+        <div class="card-body p-4 sm:p-6">
+          <legend class="card-title text-base mb-3" id="label-lender" data-i18n="label-lender">👤 Darlehensgeber/in</legend>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-name-lender" class="label-text" data-i18n="text-name">Name</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="geber_name" data-field="geber_name" type="text" class="input input-bordered input-sm" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-address-lender" class="label-text" data-i18n="text-address">Adresse</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <textarea id="geber_adresse" data-field="geber_adresse" class="textarea textarea-bordered" rows="3" required></textarea>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-birthdate-lender" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="geber_geburt" data-field="geber_geburt" type="date" class="input input-bordered input-sm" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-id-lender" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
+            </div>
+            <input id="geber_ausweis" data-field="geber_ausweis" type="text" class="input input-bordered input-sm" />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-iban-lender" class="label-text" data-i18n="text-iban-return">IBAN für Rückzahlung</span>
+            </div>
+            <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Darlehensnehmer -->
+      <fieldset class="card bg-base-100 border border-base-300">
+        <div class="card-body p-4 sm:p-6">
+          <legend class="card-title text-base mb-3" id="label-borrower" data-i18n="label-borrower">👥 Darlehensnehmer/in</legend>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-name-borrower" class="label-text" data-i18n="text-name">Name</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="nehmer_name" data-field="nehmer_name" type="text" class="input input-bordered input-sm" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-address-borrower" class="label-text" data-i18n="text-address">Adresse</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <textarea id="nehmer_adresse" data-field="nehmer_adresse" class="textarea textarea-bordered" rows="3" required></textarea>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-birthdate-borrower" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="nehmer_geburt" data-field="nehmer_geburt" type="date" class="input input-bordered input-sm" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-id-borrower" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
+            </div>
+            <input id="nehmer_ausweis" data-field="nehmer_ausweis" type="text" class="input input-bordered input-sm" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Darlehensdetails -->
+      <fieldset class="card bg-base-100 border border-base-300">
+        <div class="card-body p-4 sm:p-6">
+          <legend class="card-title text-base mb-3" id="label-loan-details" data-i18n="label-loan-details">💰 Darlehensdetails</legend>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-loan-amount" class="label-text" data-i18n="text-loan-amount">Darlehenssumme (€)</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="summe" data-field="summe" type="text" class="input input-bordered input-sm" value="1.000,00" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-interest-rate" class="label-text" data-i18n="text-interest-rate">Zinssatz (% p.a.)</span>
+            </div>
+            <input id="zinssatz" data-field="zinssatz" type="number" min="0" step="0.01" class="input input-bordered input-sm" value="0" />
+            <div class="label py-0">
+              <span id="text-interest-default" class="label-text-alt" data-i18n="text-interest-default">Standard: 0% (zinslos)</span>
+            </div>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-default-interest" class="label-text" data-i18n="text-default-interest">Verzugszins (% p.a.)</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="verzugszins" data-field="verzugszins" type="number" min="0" step="0.01" class="input input-bordered input-sm" value="5" required />
+            <div class="label py-0">
+              <span id="text-default-interest-note" class="label-text-alt" data-i18n="text-default-interest-note">Standard: 5% über Basiszinssatz</span>
+            </div>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-duration" class="label-text" data-i18n="text-duration">Laufzeit (Monate)</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="laufzeit" data-field="laufzeit" type="number" min="1" class="input input-bordered input-sm" value="6" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-contract-date" class="label-text" data-i18n="text-contract-date">Vertragsdatum</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="vertragsdatum" data-field="vertragsdatum" type="date" class="input input-bordered input-sm" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-due-date" class="label-text" data-i18n="text-due-date">Fälligkeitsdatum</span>
+            </div>
+            <input id="faelligkeitsdatum" data-field="faelligkeitsdatum" type="text" class="input input-bordered input-sm" readonly value="(wird automatisch berechnet)" />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-repayment-type" class="label-text" data-i18n="text-repayment-type">Rückzahlungsart</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <select id="rueckzahlungsart" data-field="rueckzahlungsart" class="select select-bordered select-sm">
+              <option value="einmal" id="opt-lumpsum">Einmalzahlung</option>
+              <option value="raten" id="opt-installments">Ratenzahlung</option>
+            </select>
+          </label>
+
+          <label class="form-control" id="rhythmus_container" style="display: none">
+            <div class="label py-1">
+              <span id="text-repayment-rhythm" class="label-text" data-i18n="text-repayment-rhythm">Rückzahlungsrhythmus</span>
+            </div>
+            <select id="rhythmus" data-field="rhythmus" class="select select-bordered select-sm">
+              <option value="monatlich" id="opt-monthly">Monatlich</option>
+              <option value="vierteljaehrlich" id="opt-quarterly">Vierteljährlich</option>
+            </select>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-payout-type" class="label-text" data-i18n="text-payout-type">Auszahlungsart</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <select id="auszahlungsart" data-field="auszahlungsart" class="select select-bordered select-sm">
+              <option value="bar" id="opt-cash">Bar</option>
+              <option value="ueberweisung" id="opt-transfer">Überweisung</option>
+              <option value="paypal" id="opt-paypal">PayPal</option>
+              <option value="sonstiges" id="opt-other">Sonstiges</option>
+            </select>
+          </label>
+
+          <label class="form-control" id="nehmer_iban_container" style="display: none">
+            <div class="label py-1">
+              <span id="text-borrower-iban" class="label-text" data-i18n="text-borrower-iban">IBAN der Darlehensnehmerin</span>
+            </div>
+            <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm" />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-purpose" class="label-text" data-i18n="text-purpose">Zweck</span>
+            </div>
+            <textarea id="zweck" data-field="zweck" class="textarea textarea-bordered" rows="3" placeholder="z.B. Kauf eines Autos"></textarea>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-jurisdiction" class="label-text" data-i18n="text-jurisdiction">Gerichtsstand (Ort)</span>
+              <span class="label-text-alt text-error">*</span>
+            </div>
+            <input id="gerichtsstand" data-field="gerichtsstand" type="text" class="input input-bordered input-sm" required />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Zeuge -->
+      <fieldset class="card bg-base-100 border border-base-300">
+        <div class="card-body p-4 sm:p-6">
+          <legend class="card-title text-base mb-3" id="label-witness" data-i18n="label-witness">👁 Zeuge/Zeugin (optional)</legend>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-name-witness" class="label-text" data-i18n="text-name">Name</span>
+            </div>
+            <input id="zeuge_name" data-field="zeuge_name" type="text" class="input input-bordered input-sm" />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-address-witness" class="label-text" data-i18n="text-address">Adresse</span>
+            </div>
+            <textarea id="zeuge_adresse" data-field="zeuge_adresse" class="textarea textarea-bordered" rows="3"></textarea>
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-birthdate-witness" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
+            </div>
+            <input id="zeuge_geburt" data-field="zeuge_geburt" type="date" class="input input-bordered input-sm" />
+          </label>
+
+          <label class="form-control">
+            <div class="label py-1">
+              <span id="text-id-witness" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
+            </div>
+            <input id="zeuge_ausweis" data-field="zeuge_ausweis" type="text" class="input input-bordered input-sm" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Buttons -->
+      <div class="flex gap-3">
+        <button onclick="resetForm()" class="btn btn-error flex-1 tooltip" data-tip="Alle Eingaben löschen" id="btn-reset">🔄 <span id="text-reset">Zurücksetzen</span></button>
+      </div>
+    </section>
+
+    <!-- Divider (Desktop only) -->
+    <div class="hidden lg:flex items-stretch">
+      <div class="divider divider-horizontal mx-0"></div>
+    </div>
+
+    <!-- Vorschau -->
+    <section id="previewSection" class="card bg-base-100 border border-base-300 lg:sticky lg:top-4 h-fit">
+      <div class="card-body p-4 sm:p-8">
+        <div id="preview" class="prose prose-sm max-w-none"></div>
+      </div>
+      <div class="card-body pt-0 p-4">
+        <button onclick="generatePDF()" class="btn btn-primary w-full tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf">📄 <span id="text-download-pdf">PDF herunterladen</span></button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Page-specific scripts: nur im Generator laden -->
+  <script src="/translations/de-de.js" is:inline></script>
+  <script src="/translations/en-us.js" is:inline></script>
+  <script src="/js/TranslationController.js" is:inline></script>
+  <script src="/js/common.js" is:inline></script>
+  <script src="/js/pdf.js" is:inline></script>
+</main>

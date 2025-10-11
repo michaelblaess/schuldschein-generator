@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Privacy Policy">
+  <div class="page-wrap p-4 md:p-6">
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <article class="prose prose-sm sm:prose-base max-w-none">
+          <h1>Privacy Policy</h1>
+          <p><em>Effective: 2025‑10‑09</em></p>
+          <p>This website (“Schuldschein Generator”) is a <strong>static, purely client-side application</strong>. You can use it without registration. We operate the site such that <strong>no personal data is stored on our server</strong> and <strong>no cookies are set</strong>. Certain <strong>settings are stored locally</strong> in your browser (Local Storage).</p>
+
+          <hr>
+          <h2>1. Controller (Art. 4 No. 7 GDPR)</h2>
+          <p><strong>Michael Blaess</strong><br>Kurze Str. 2, 15345 Rehfelde, Germany<br>E‑mail: <a href="mailto:info@schuldschein-generator.de">info@schuldschein-generator.de</a></p>
+          <p>No Data Protection Officer is appointed, as the legal requirements are not met.</p>
+
+          <hr>
+          <h2>2. Types of Data and Purposes of Processing</h2>
+          <h3>2.1 Use of the Application (client-side, no server storage)</h3>
+          <ul>
+            <li><strong>No input is transmitted to a server.</strong> All form entries remain in your browser.</li>
+            <li><strong>No cookies.</strong></li>
+            <li><strong>Local Storage (settings only):</strong>
+              <ul>
+                <li>Keys: <code>locale</code> (language), <code>theme</code> (dark/light mode).</li>
+                <li>Purpose: convenience and restoring display preferences.</li>
+                <li>Legal basis: <strong>Art. 6 (1) (f) GDPR</strong> (legitimate interests).</li>
+                <li>Retention: until you delete the data in your browser.</li>
+              </ul>
+            </li>
+          </ul>
+          <h3>2.2 Hosting Provider Server Logs (technically necessary)</h3>
+          <p>Typical <strong>server log files</strong> (e.g., for attack mitigation, error analysis) may include: IP address, date/time, requested URL, referrer URL, user agent. Legal basis: <strong>Art. 6 (1) (f) GDPR</strong>.</p>
+          <h3>2.3 CDN Libraries</h3>
+          <p>When loading external libraries (e.g., Tailwind, jsPDF) via CDNs, your IP address is transmitted to the CDN servers. Legal basis: <strong>Art. 6 (1) (f) GDPR</strong>.</p>
+          <h3>2.4 Contact by E‑mail</h3>
+          <p>We process your data to handle your request. Legal basis: <strong>Art. 6 (1) (b)</strong> or <strong>(f) GDPR</strong>.</p>
+
+          <hr>
+          <h2>3. No Disclosure / No Third Country Transfers</h2>
+          <p>No disclosure for advertising or analytics. Transfers to CDN/hosting providers only arise from the <strong>technical provision</strong> of the website.</p>
+
+          <hr>
+          <h2>4. Legal Bases (Overview)</h2>
+          <ul>
+            <li><strong>Art. 6 (1) (f) GDPR</strong> — legitimate interests (operation, security, convenience, CDN delivery).</li>
+            <li><strong>Art. 6 (1) (b) GDPR</strong> — contract/pre-contractual communication (e.g., by e‑mail).</li>
+          </ul>
+
+          <hr>
+          <h2>5. Your Rights (Art. 12–22 GDPR)</h2>
+          <p>You have the rights of <strong>access</strong>, <strong>rectification</strong>, <strong>erasure</strong>, <strong>restriction</strong>, <strong>data portability</strong>, and the <strong>right to object</strong> to processing based on <strong>Art. 6 (1) (f) GDPR</strong>. You also have the right to lodge a complaint with a <strong>supervisory authority</strong> (Art. 77 GDPR).</p>
+
+          <hr>
+          <h2>6. Deleting Local Storage Data</h2>
+          <p>Delete via browser settings (site data) or dev tools → Application → Local Storage → remove <code>locale</code> and <code>theme</code>.</p>
+
+          <hr>
+          <h2>7. Security</h2>
+          <p>Client-side processing reduces server-side risk; note that e‑mail transmission may have vulnerabilities.</p>
+
+          <hr>
+          <h2>8. Changes</h2>
+          <p>We may update this policy when needed. The current version on this page applies.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</Base>

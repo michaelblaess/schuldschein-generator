@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: small tweaks for navbar dropdown stacking in dev */
+.navbar, .dropdown { overflow: visible; }
+
+/* Page wrap: 10% whitespace left/right on desktop */
+@media (min-width: 1024px) {
+  .page-wrap {
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+}

@@ -1,0 +1,88 @@
+/* Copied from original css/styles.css for Astro public serving */
+/* ===================================
+   Schuldschein-Generator Styles
+   (DaisyUI Edition - Minimalistic)
+   =================================== */
+
+/* ===================================
+   Glow Effects (für Feld-Highlights)
+   =================================== */
+@keyframes text-glow-yellow {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(250, 204, 21, 0.5); }
+    100% { background-color: transparent; }
+}
+
+@keyframes text-glow-green {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(34, 197, 94, 0.5); }
+    100% { background-color: transparent; }
+}
+
+@keyframes text-glow-red {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(239, 68, 68, 0.5); }
+    100% { background-color: transparent; }
+}
+
+.text-glow-change {
+    animation: text-glow-yellow 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.text-glow-valid {
+    animation: text-glow-green 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.text-glow-invalid {
+    animation: text-glow-red 1s ease-in-out;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+    }
+
+    .prose {
+        max-width: 100% !important;
+    }
+}
+
+/* (Tailwind steuert Grid-Spalten via lg:grid-cols-[1fr_auto_1fr]) */
+
+/* ===================================
+   Preview Typography (prose-like)
+   Styles for dynamically injected contract content
+   =================================== */
+#preview .ssg-doc { color: inherit; }
+#preview .ssg-doc > * + * { margin-top: 1rem; }
+#preview .ssg-doc h1 { font-size: 1.5rem; line-height: 1.25; font-weight: 700; margin: 0.5rem 0 1rem; }
+#preview .ssg-doc h2 { font-size: 1.125rem; line-height: 1.35; font-weight: 600; margin: 1rem 0 0.5rem; }
+#preview .ssg-doc p { margin: 0.5rem 0; line-height: 1.6; }
+#preview .ssg-doc strong { font-weight: 600; }
+#preview .ssg-doc ul { list-style: disc inside; margin: 0.5rem 0; }
+#preview .ssg-doc ol { list-style: decimal inside; margin: 0.5rem 0; }
+#preview .ssg-doc .mb-6 { margin-bottom: 1.5rem; }
+#preview .ssg-doc .my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+#preview .ssg-doc .mt-6 { margin-top: 1.5rem; }
+#preview .ssg-doc .p-4 { padding: 1rem; }
+#preview .ssg-doc .text-center { text-align: center; }
+#preview .ssg-doc .text-xs { font-size: 0.75rem; }
+#preview .ssg-doc .text-sm { font-size: 0.875rem; }
+#preview .ssg-doc .font-bold { font-weight: 700; }
+#preview .ssg-doc .border-t-2 { border-top: 2px solid var(--fallback-b3, #e5e7eb); }
+#preview .ssg-doc .border-gray-300 { border-color: #d1d5db; }
+#preview .ssg-doc .bg-yellow-50 { background-color: #fffbeb; }
+#preview .ssg-doc .border-yellow-400 { border-color: #f59e0b; }

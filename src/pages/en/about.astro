@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="About">
+  <div class="page-wrap p-4 md:p-6">
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <article class="prose prose-sm sm:prose-base max-w-none">
+          <h1>About this Project</h1>
+          <p><strong>Goal:</strong> Create a <strong>private promissory note</strong> PDF in <strong>2–3 minutes</strong> — free, anonymous, and without a server.
+          I have repeatedly seen that <strong>payment discipline among friends</strong> suffers without a written agreement. This tool helps make things fair and clear.</p>
+
+          <h2>Idea &amp; Approach</h2>
+          <p>The generator is deliberately <strong>simple</strong> — in usage and in code — so that <strong>beginners</strong> can follow along.</p>
+          <ul>
+            <li><strong>Stack:</strong> Vanilla <strong>JavaScript</strong>, <strong>Tailwind CSS</strong>, <strong>DaisyUI</strong>, <strong>jsPDF</strong>, <strong>HTML5</strong></li>
+            <li><strong>Client-only:</strong> No storage, no cookies, <strong>no server communication</strong>. Everything runs in the <strong>browser</strong>.</li>
+            <li><strong>Open Source:</strong> GitHub → <a href="https://github.com/michaelblaess/schuldschein-generator" target="_blank" rel="noopener noreferrer">github.com/michaelblaess/schuldschein-generator</a></li>
+          </ul>
+
+          <h2>What you get</h2>
+          <ul>
+            <li>Fill out form → <strong>Live preview</strong> → <strong>Download PDF</strong></li>
+            <li>Optional: <strong>witness</strong> field, <strong>custom document title</strong>, <strong>watermark</strong></li>
+            <li>Automation: <strong>due date</strong> (contract date + term), <strong>IBAN plausibility check</strong>, <strong>amount in words</strong></li>
+          </ul>
+
+          <h2>Legal Notes</h2>
+          <ul>
+            <li>This tool does <strong>not provide legal advice</strong>. Use at your own risk.</li>
+            <li>“Schuldschein Generator” is <strong>not a registered trademark</strong>.</li>
+            <li>No affiliation with <strong>financial service providers, banks, or legal advisors</strong>.</li>
+            <li>Please review the document before use; <strong>consult a lawyer if in doubt</strong>.</li>
+          </ul>
+
+          <h2>Project Status</h2>
+          <ul>
+            <li><strong>Hobby project</strong> — contributions, ideas and issues are welcome.</li>
+            <li>Goal: lean, robust solution without dependencies and without tracking.</li>
+          </ul>
+
+          <h2>Thanks</h2>
+          <p><strong>Special thanks to Jette</strong> for the inspiration and motivation to build this project.</p>
+
+          <h2>Contact</h2>
+          <p><a href="mailto:info@schuldschein-generator.de">info@schuldschein-generator.de</a></p>
+        </article>
+      </div>
+    </div>
+  </div>
+</Base>

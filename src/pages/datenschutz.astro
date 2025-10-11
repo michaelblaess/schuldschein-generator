@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Datenschutzerklärung">
+  <div class="page-wrap p-4 md:p-6">
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <article class="prose prose-sm sm:prose-base max-w-none">
+          <h1>Datenschutzerklärung</h1>
+          <p><em>Stand: 09.10.2025</em></p>
+          <p>Diese Website („Schuldschein‑Generator“) ist als <strong>statische, rein clientseitige Anwendung</strong> konzipiert. Sie kann ohne Registrierung genutzt werden. Wir betreiben die Seite so, dass <strong>keine personenbezogenen Daten auf unserem Server gespeichert</strong> werden und <strong>keine Cookies gesetzt</strong> werden. Einzelne <strong>Einstellungen werden ausschließlich lokal</strong> in Ihrem Browser gespeichert (Local Storage).</p>
+
+          <hr>
+          <h2>1. Verantwortlicher (Art. 4 Nr. 7 DSGVO)</h2>
+          <p><strong>Michael Blaess</strong><br>Kurze Str. 2, 15345 Rehfelde, Deutschland<br>E‑Mail: <a href="mailto:info@schuldschein-generator.de">info@schuldschein-generator.de</a></p>
+          <p>Ein/e Datenschutzbeauftragte/r ist nicht benannt, da die gesetzlichen Voraussetzungen hierfür nicht vorliegen.</p>
+
+          <hr>
+          <h2>2. Arten der Daten und Verarbeitungszwecke</h2>
+          <h3>2.1 Nutzung der Anwendung (clientseitig, ohne Server‑Speicherung)</h3>
+          <ul>
+            <li><strong>Keine Eingaben werden an einen Server übermittelt.</strong> Alle Formulareingaben verbleiben in Ihrem Browser.</li>
+            <li><strong>Keine Cookies.</strong></li>
+            <li><strong>Local Storage (nur Einstellungen):</strong>
+              <ul>
+                <li>Schlüssel/Keys: <code>locale</code> (Sprachauswahl), <code>theme</code> (Dark/Light‑Mode).</li>
+                <li>Zweck: Komfortfunktionen; Wiederherstellung Ihrer Anzeigeeinstellungen.</li>
+                <li>Rechtsgrundlage: <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.</li>
+                <li>Speicherdauer: bis zur manuellen Löschung im Browser.</li>
+              </ul>
+            </li>
+          </ul>
+          <h3>2.2 Server‑Protokolle des Hosting‑Providers (technisch notwendig)</h3>
+          <p>Übliche <strong>Server‑Logfiles</strong> (z. B. zur Abwehr von Angriffen, Fehleranalyse): IP‑Adresse, Datum/Uhrzeit, URL, Referrer, User‑Agent. Rechtsgrundlage: <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.</p>
+          <h3>2.3 Einbindung externer Bibliotheken über CDN</h3>
+          <p>Beim Seitenaufruf wird Ihre IP‑Adresse an die jeweiligen CDN‑Server übertragen (z. B. Tailwind, jsPDF). Rechtsgrundlage: <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.</p>
+          <h3>2.4 Kontakt per E‑Mail</h3>
+          <p>Verarbeitung Ihrer Angaben zur Bearbeitung der Anfrage. Rechtsgrundlage: <strong>Art. 6 Abs. 1 lit. b</strong> bzw. <strong>lit. f DSGVO</strong>.</p>
+
+          <hr>
+          <h2>3. Keine Weitergabe / keine Drittländerübermittlung</h2>
+          <p>Keine Weitergabe zu Werbe- oder Analysezwecken. Übermittlungen an CDN-/Hosting-Anbieter ergeben sich ausschließlich aus der <strong>technischen Bereitstellung</strong>.</p>
+
+          <hr>
+          <h2>4. Rechtsgrundlagen im Überblick</h2>
+          <ul>
+            <li><strong>Art. 6 Abs. 1 lit. f DSGVO</strong> – Berechtigtes Interesse.</li>
+            <li><strong>Art. 6 Abs. 1 lit. b DSGVO</strong> – Vertrag/Anbahnung (z. B. E‑Mail).</li>
+          </ul>
+
+          <hr>
+          <h2>5. Ihre Rechte (Art. 12–22 DSGVO)</h2>
+          <p>Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch; Beschwerde bei einer Datenschutz‑Aufsichtsbehörde (Art. 77 DSGVO).</p>
+
+          <hr>
+          <h2>6. So löschen Sie Local‑Storage‑Daten</h2>
+          <p>Browserdaten/Website‑Daten löschen oder via Entwicklertools <code>locale</code>/<code>theme</code> entfernen.</p>
+
+          <hr>
+          <h2>7. Sicherheit</h2>
+          <p>Clientseitige Verarbeitung reduziert serverseitige Risiken; E‑Mail‑Übertragung kann Lücken aufweisen.</p>
+
+          <hr>
+          <h2>8. Änderungen</h2>
+          <p>Diese Erklärung wird bei Bedarf angepasst. Es gilt die aktuelle Fassung.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</Base>

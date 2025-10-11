@@ -1,3 +1,7 @@
+// Copied from js/common.js to be served by Astro only on the Generator page
+// For full source, see original js/common.js in repo.
+// (Kept identical to avoid regressions.)
+
 // ===================================
 // Schuldschein-Generator - Common.js
 // ===================================
@@ -6,279 +10,107 @@
 // Sprache wird ausschließlich über window.translation (TranslationController) verwaltet
 // Theme wird über DaisyUI data-theme verwaltet
 
-// Übersetzungen anwenden
-// Thin Wrapper um TranslationController.apply() mit ID-spezifischen Fallbacks
 function applyTranslations() {
-    // Hole Übersetzungen für aktuelles Locale
     const locale = window.translation.getLocale();
     const trans = window.TRANSLATIONS[locale];
-
-    // Robuster Fallback bei fehlenden Übersetzungen
-    if (!trans) {
-        console.warn('Translations not found for locale:', locale);
-        return;
-    }
-
-    // Controller apply() aufrufen (data-i18n, data-i18n-attr)
+    if (!trans) { console.warn('Translations not found for locale:', locale); return; }
     window.translation.apply(document);
-
-    // ID-spezifische Updates (Legacy-Support für Elemente ohne data-i18n)
     const updateElement = (id, key, isHTML = false) => {
         const el = document.getElementById(id);
         if (el && trans[key] !== undefined) {
-            if (isHTML) {
-                el.innerHTML = trans[key];
-            } else {
-                el.textContent = trans[key];
-            }
+            if (isHTML) el.innerHTML = trans[key]; else el.textContent = trans[key];
         }
     };
-
-    // Header und Footer
     updateElement('header-title', 'header-title');
     updateElement('header-subtitle', 'header-subtitle');
     updateElement('privacy-notice', 'privacy-notice', true);
     updateElement('footer-copyright', 'footer-copyright');
     updateElement('footer-disclaimer', 'footer-disclaimer');
-
-    // Labels
-    updateElement('label-lender', 'label-lender');
-    updateElement('label-borrower', 'label-borrower');
-    updateElement('label-loan-details', 'label-loan-details');
-    updateElement('label-witness', 'label-witness');
-
-    // Alle Text-Spans mit IDs (Legacy-Support)
     const textIds = [
-        'text-name-lender', 'text-address-lender', 'text-birthdate-lender', 'text-id-lender', 'text-iban-lender',
-        'text-name-borrower', 'text-address-borrower', 'text-birthdate-borrower', 'text-id-borrower',
-        'text-name-witness', 'text-address-witness', 'text-birthdate-witness', 'text-id-witness',
-        'text-loan-amount', 'text-interest-rate', 'text-interest-default',
-        'text-default-interest', 'text-default-interest-note',
-        'text-duration', 'text-contract-date', 'text-due-date',
-        'text-repayment-type', 'text-repayment-rhythm', 'text-payout-type',
-        'text-borrower-iban', 'text-purpose', 'text-jurisdiction',
-        'text-reset', 'text-download-pdf'
+        'text-name-lender','text-address-lender','text-birthdate-lender','text-id-lender','text-iban-lender',
+        'text-name-borrower','text-address-borrower','text-birthdate-borrower','text-id-borrower',
+        'text-name-witness','text-address-witness','text-birthdate-witness','text-id-witness',
+        'text-loan-amount','text-interest-rate','text-interest-default','text-default-interest','text-default-interest-note',
+        'text-duration','text-contract-date','text-due-date','text-repayment-type','text-repayment-rhythm','text-payout-type',
+        'text-borrower-iban','text-purpose','text-jurisdiction','text-reset','text-download-pdf'
     ];
-
     textIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             const baseKey = id.replace(/-lender|-borrower|-witness/g, '');
             const translationKey = trans[baseKey] || trans[id];
-            if (translationKey !== undefined) {
-                el.textContent = translationKey;
-            }
+            if (translationKey !== undefined) el.textContent = translationKey;
         }
     });
-
-    // Options
-    updateElement('opt-lumpsum', 'opt-lumpsum');
-    updateElement('opt-installments', 'opt-installments');
-    updateElement('opt-monthly', 'opt-monthly');
-    updateElement('opt-quarterly', 'opt-quarterly');
-    updateElement('opt-cash', 'opt-cash');
-    updateElement('opt-transfer', 'opt-transfer');
-    updateElement('opt-paypal', 'opt-paypal');
-    updateElement('opt-other', 'opt-other');
-
-    // Placeholder
+    ['opt-lumpsum','opt-installments','opt-monthly','opt-quarterly','opt-cash','opt-transfer','opt-paypal','opt-other']
+      .forEach(id => updateElement(id, id));
     const zweckInput = document.getElementById('zweck');
-    if (zweckInput && trans['placeholder-purpose'] !== undefined) {
-        zweckInput.placeholder = trans['placeholder-purpose'];
-    }
+    if (zweckInput && trans['placeholder-purpose'] !== undefined) zweckInput.placeholder = trans['placeholder-purpose'];
 }
 
-// =============================
-// Form Autosave (localStorage)
-// =============================
-function collectFormData() {
-    const data = {};
-    document.querySelectorAll('input, select, textarea').forEach(el => {
-        if (el.id) {
-            data[el.id] = el.value;
-        }
-    });
-    return data;
-}
-
-function saveFormData() {
-    try {
-        const data = collectFormData();
-        localStorage.setItem('formData', JSON.stringify(data));
-    } catch (e) {
-        console.warn('Could not save form data:', e);
-    }
-}
-
-function loadFormData() {
-    try {
-        const raw = localStorage.getItem('formData');
-        if (!raw) return false;
-        const data = JSON.parse(raw);
-        Object.keys(data).forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.value = data[id];
-        });
-        // dynamische Container synchronisieren
-        const rz = document.getElementById('rueckzahlungsart');
-        if (rz) {
-            document.getElementById('rhythmus_container').style.display =
-                rz.value === 'raten' ? 'block' : 'none';
-        }
-        const az = document.getElementById('auszahlungsart');
-        if (az) {
-            document.getElementById('nehmer_iban_container').style.display =
-                az.value === 'ueberweisung' ? 'block' : 'none';
-        }
-        updatePreview();
-        return true;
-    } catch (e) {
-        console.warn('Could not load form data:', e);
-        return false;
-    }
-}
-
-// Betragsformatierung
 function formatCurrencyInput(input) {
     let value = input.value.replace(/[^\d]/g, '');
-    if (value === '') {
-        input.value = '';
-        return;
-    }
-
+    if (value === '') { input.value = ''; return; }
     let num = parseInt(value);
-    let formatted = (num / 100).toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-
+    let formatted = (num / 100).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     input.value = formatted;
 }
 
-// IBAN Validierung
 function validateIBAN(input) {
     const iban = input.value.replace(/\s/g, '');
-
-    if (iban.length === 0) {
-        return;
-    }
-
-    // Einfache IBAN-Validierung (Format-Check)
+    if (iban.length === 0) return;
     const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]+$/;
     const isValid = ibanRegex.test(iban) && iban.length >= 15 && iban.length <= 34;
-
-    // Glow-Effekt auf Input-Feld
     input.classList.remove('text-glow-valid', 'text-glow-invalid');
-
-    if (isValid) {
-        input.classList.add('text-glow-valid');
-    } else {
-        input.classList.add('text-glow-invalid');
-    }
-
-    setTimeout(() => {
-        input.classList.remove('text-glow-valid', 'text-glow-invalid');
-    }, 1000);
+    input.classList.add(isValid ? 'text-glow-valid' : 'text-glow-invalid');
+    setTimeout(() => { input.classList.remove('text-glow-valid', 'text-glow-invalid'); }, 1000);
 }
 
-// Glow-Effekt nur für spezifisches Feld
 function addGlowToSpecificField(fieldName) {
     const elements = document.querySelectorAll(`[data-preview="${fieldName}"]`);
     elements.forEach(el => {
-        el.classList.remove('text-glow-change');
-        void el.offsetWidth; // Trigger reflow
-        el.classList.add('text-glow-change');
-
-        setTimeout(() => {
-            el.classList.remove('text-glow-change');
-        }, 1000);
+        el.classList.remove('text-glow-change'); void el.offsetWidth; el.classList.add('text-glow-change');
+        setTimeout(() => { el.classList.remove('text-glow-change'); }, 1000);
     });
 }
 
-// Berechnung des Fälligkeitsdatums
 function berechneFaelligkeitsdatum(startDatum, monate) {
     const datum = new Date(startDatum);
     datum.setMonth(datum.getMonth() + parseInt(monate));
     return datum;
 }
 
-// Formatierung Datum deutsch
 function formatiereDatum(datum) {
     if (!datum) return '';
     const d = typeof datum === 'string' ? new Date(datum) : datum;
     return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// Betrag in Worten
 function betragInWorten(betrag) {
     const einer = ['', 'ein', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun'];
     const zehn = ['zehn', 'elf', 'zwölf', 'dreizehn', 'vierzehn', 'fünfzehn', 'sechzehn', 'siebzehn', 'achtzehn', 'neunzehn'];
     const zehner = ['', '', 'zwanzig', 'dreißig', 'vierzig', 'fünfzig', 'sechzig', 'siebzig', 'achtzig', 'neunzig'];
     const hunderter = ['', 'einhundert', 'zweihundert', 'dreihundert', 'vierhundert', 'fünfhundert', 'sechshundert', 'siebenhundert', 'achthundert', 'neunhundert'];
-
-    // Betrag von deutschem Format parsen
     const cleanBetrag = betrag.replace(/\./g, '').replace(',', '.');
     const num = Math.floor(parseFloat(cleanBetrag));
-
     if (num === 0 || isNaN(num)) return 'null';
-
     let result = '';
-
-    // Millionen
-    if (num >= 1000000) {
-        const mio = Math.floor(num / 1000000);
-        result += convertHundreds(mio) + ' Million' + (mio > 1 ? 'en' : '') + ' ';
-    }
-
-    // Tausender
+    if (num >= 1000000) { const mio = Math.floor(num / 1000000); result += convertHundreds(mio) + ' Million' + (mio > 1 ? 'en' : '') + ' '; }
     const rest = num % 1000000;
-    if (rest >= 1000) {
-        const tsd = Math.floor(rest / 1000);
-        if (tsd === 1) {
-            result += 'eintausend';
-        } else {
-            result += convertHundreds(tsd) + 'tausend';
-        }
-    }
-
-    // Hunderter
-    const h = num % 1000;
-    if (h > 0) {
-        result += convertHundreds(h);
-    }
-
+    if (rest >= 1000) { const tsd = Math.floor(rest / 1000); result += (tsd === 1) ? 'eintausend' : convertHundreds(tsd) + 'tausend'; }
+    const h = num % 1000; if (h > 0) result += convertHundreds(h);
     return result.trim() + ' Euro';
-
     function convertHundreds(n) {
-        let str = '';
-        const h = Math.floor(n / 100);
-        const rest = n % 100;
-
+        let str = ''; const h = Math.floor(n / 100); const rest = n % 100;
         if (h > 0) str += hunderter[h];
-
-        if (rest >= 10 && rest < 20) {
-            str += zehn[rest - 10];
-        } else {
-            const z = Math.floor(rest / 10);
-            const e = rest % 10;
-            if (e > 0) {
-                str += einer[e];
-                if (z > 0) str += 'und';
-            }
-            if (z > 0) str += zehner[z];
-        }
-
+        if (rest >= 10 && rest < 20) { str += zehn[rest - 10]; }
+        else { const z = Math.floor(rest / 10); const e = rest % 10; if (e > 0) { str += einer[e]; if (z > 0) str += 'und'; } if (z > 0) str += zehner[z]; }
         return str;
     }
 }
 
-// IBAN formatieren
-function formatiereIBAN(iban) {
-    if (!iban) return '[IBAN]';
-    return iban.replace(/\s/g, '').match(/.{1,4}/g)?.join(' ') || iban;
-}
+function formatiereIBAN(iban) { if (!iban) return '[IBAN]'; return iban.replace(/\s/g, '').match(/.{1,4}/g)?.join(' ') || iban; }
 
-// Vorschau aktualisieren
 function updatePreview() {
     const data = {
         geber_name: document.getElementById('geber_name').value,
@@ -306,19 +138,15 @@ function updatePreview() {
         zeuge_geburt: document.getElementById('zeuge_geburt').value,
         zeuge_ausweis: document.getElementById('zeuge_ausweis').value
     };
-
-    // Fälligkeitsdatum berechnen
     if (data.vertragsdatum && data.laufzeit) {
         const faellig = berechneFaelligkeitsdatum(data.vertragsdatum, data.laufzeit);
         document.getElementById('faelligkeitsdatum').value = formatiereDatum(faellig);
         data.faelligkeitsdatum = formatiereDatum(faellig);
     }
-
     const preview = document.getElementById('preview');
     preview.innerHTML = generiereVertragstext(data);
 }
 
-// Vertragstext generieren
 function generiereVertragstext(d) {
     const locale = window.translation.getLocale();
     const trans = window.TRANSLATIONS[locale];
@@ -345,7 +173,7 @@ function generiereVertragstext(d) {
                 <p><strong>${trans['contract-lender']}</strong></p>
                 <p data-preview="geber_name">${d.geber_name || '[Name]'}</p>
                 <p data-preview="geber_adresse" style="white-space: pre-line;">${d.geber_adresse || '[' + trans['text-address'] + ']'}</p>
-                <p>${trans['contract-birthdate']} <span data-preview="geber_geburt">${formatiereDatum(d.geber_geburt) || '[Datum]'}</span></p>
+                <p>${trans['contract-birthdate']} <span data-preview="geber_geburt">${formatiereDatum(d.geber_geburt) || '[Datum]'} </span></p>
                 <p>${trans['contract-id']} <span data-preview="geber_ausweis">${d.geber_ausweis || '[Nummer]'}</span></p>
             </div>
 
@@ -436,11 +264,9 @@ function generiereVertragstext(d) {
     `;
 }
 
-// Formular zurücksetzen
 function resetForm() {
     const locale = window.translation.getLocale();
     const trans = window.TRANSLATIONS[locale];
-
     if (confirm(trans['confirm-reset'])) {
         document.querySelectorAll('input, select, textarea').forEach(el => {
             if (el.type === 'date' && el.id === 'vertragsdatum') {
@@ -468,22 +294,13 @@ function resetForm() {
     }
 }
 
-// Initialisierung
-document.addEventListener('DOMContentLoaded', function() {
-    // ===================================
-    // DaisyUI Theme Toggle (light/dracula)
-    // ===================================
+function __initGeneratorApp() {
     const root = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
-
-    // Restore theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     root.setAttribute('data-theme', savedTheme);
-
     if (themeToggle) {
         themeToggle.checked = (savedTheme === 'dracula');
-
-        // Toggle event
         themeToggle.addEventListener('change', () => {
             const newTheme = themeToggle.checked ? 'dracula' : 'light';
             root.setAttribute('data-theme', newTheme);
@@ -491,151 +308,76 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===================================
-    // Translation Controller initialisieren
-    // ===================================
-    window.translation = new TranslationController();
-    window.translation.init();
+    // Reuse global TranslationController if available to keep route-based locale (/en) intact
+    if (!window.translation) {
+        window.translation = new TranslationController();
+        window.translation.init();
+    }
 
-    // ===================================
-    // DaisyUI Language Toggle Setup
-    // ===================================
     const languageToggle = document.getElementById('languageToggle');
-    const languageCheckbox = languageToggle.querySelector('input[type="checkbox"]');
-    const currentLocale = window.translation.getLocale();
+    if (languageToggle) {
+      const languageCheckbox = languageToggle.querySelector('input[type="checkbox"]');
+      const currentLocale = window.translation.getLocale();
+      languageCheckbox.checked = (currentLocale === 'en-US');
+      languageCheckbox.addEventListener('change', () => {
+          const newLocale = languageCheckbox.checked ? 'en-US' : 'de-DE';
+          window.translation.setLocale(newLocale);
+          updatePreview();
+          setTimeout(() => {
+              document.querySelectorAll('[data-preview]').forEach(el => el.classList.add('text-glow-change'));
+              setTimeout(() => { document.querySelectorAll('[data-preview]').forEach(el => el.classList.remove('text-glow-change')); }, 1000);
+          }, 100);
+      });
+      window.addEventListener('translation:change', () => {
+          const locale = window.translation.getLocale();
+          languageCheckbox.checked = (locale === 'en-US');
+          applyTranslations();
+          updatePreview();
+      });
+    }
 
-    // Initial state
-    languageCheckbox.checked = (currentLocale === 'en-US');
-
-    // Change event
-    languageCheckbox.addEventListener('change', () => {
-        const newLocale = languageCheckbox.checked ? 'en-US' : 'de-DE';
-        window.translation.setLocale(newLocale);
-
-        // Vorschau aktualisieren
-        updatePreview();
-
-        // Glow-Effekt auf allen Feldern
-        setTimeout(() => {
-            document.querySelectorAll('[data-preview]').forEach(el => {
-                el.classList.add('text-glow-change');
-            });
-            setTimeout(() => {
-                document.querySelectorAll('[data-preview]').forEach(el => {
-                    el.classList.remove('text-glow-change');
-                });
-            }, 1000);
-        }, 100);
-    });
-
-    // ===================================
-    // Event-Listener für Sprachwechsel (extern getriggert)
-    // ===================================
-    window.addEventListener('translation:change', () => {
-        const locale = window.translation.getLocale();
-
-        // Checkbox synchronisieren
-        languageCheckbox.checked = (locale === 'en-US');
-
-        // Formular-Übersetzungen anwenden (Labels, Placeholder, etc.)
-        applyTranslations();
-
-        // Vorschau aktualisieren (da sich Übersetzungen geändert haben)
-        updatePreview();
-    });
-
-    // ===================================
-    // Übersetzungen anwenden
-    // ===================================
+    // Apply translations to generator markup just rendered by this component
     applyTranslations();
-
-    // ===================================
-    // Heutiges Datum als Standard
-    // ===================================
     const heute = new Date().toISOString().split('T')[0];
-    document.getElementById('vertragsdatum').value = heute;
+    const vertragsdatum = document.getElementById('vertragsdatum');
+    if (vertragsdatum && !localStorage.getItem('formData')) {
+      vertragsdatum.value = heute;
+    }
 
-    // ===================================
-    // Autosave: Wiederherstellen
-    // ===================================
+    function collectFormData() {
+        const data = {}; document.querySelectorAll('input, select, textarea').forEach(el => { if (el.id) data[el.id] = el.value; }); return data;
+    }
+    function saveFormData() { try { localStorage.setItem('formData', JSON.stringify(collectFormData())); } catch (e) {} }
+    function loadFormData() {
+        try { const raw = localStorage.getItem('formData'); if (!raw) return false; const data = JSON.parse(raw); Object.keys(data).forEach(id => { const el = document.getElementById(id); if (el) el.value = data[id]; });
+          const rz = document.getElementById('rueckzahlungsart'); if (rz) { document.getElementById('rhythmus_container').style.display = rz.value === 'raten' ? 'block' : 'none'; }
+          const az = document.getElementById('auszahlungsart'); if (az) { document.getElementById('nehmer_iban_container').style.display = az.value === 'ueberweisung' ? 'block' : 'none'; }
+          updatePreview(); return true; } catch (e) { return false; }
+    }
     loadFormData();
 
-    // ===================================
-    // Event Listener für Formularfelder
-    // ===================================
     document.querySelectorAll('input, select, textarea').forEach(el => {
         el.addEventListener('input', function() {
             const field = this.getAttribute('data-field');
-
-            if (field === 'summe') {
-                formatCurrencyInput(this);
-            }
-
-            // Abhängige Felder behandeln
+            if (field === 'summe') { formatCurrencyInput(this); }
             if (field === 'laufzeit' || field === 'vertragsdatum') {
-                updatePreview();
-                setTimeout(() => {
-                    if (field === 'laufzeit') {
-                        addGlowToSpecificField('laufzeit');
-                        addGlowToSpecificField('faelligkeitsdatum');
-                    } else if (field === 'vertragsdatum') {
-                        addGlowToSpecificField('vertragsdatum');
-                        addGlowToSpecificField('faelligkeitsdatum');
-                    }
-                }, 50);
-            } else if (field) {
-                updatePreview();
-                setTimeout(() => {
-                    addGlowToSpecificField(field);
-                }, 50);
-            } else {
-                updatePreview();
-            }
-            // Autosave
+                updatePreview(); setTimeout(() => { if (field === 'laufzeit') { addGlowToSpecificField('laufzeit'); addGlowToSpecificField('faelligkeitsdatum'); } else if (field === 'vertragsdatum') { addGlowToSpecificField('vertragsdatum'); addGlowToSpecificField('faelligkeitsdatum'); } }, 50);
+            } else if (field) { updatePreview(); setTimeout(() => { addGlowToSpecificField(field); }, 50); }
+            else { updatePreview(); }
             saveFormData();
         });
     });
 
-    // ===================================
-    // IBAN Validierung
-    // ===================================
-    document.getElementById('geber_iban').addEventListener('input', function() {
-        validateIBAN(this);
-    });
-
-    document.getElementById('nehmer_iban').addEventListener('input', function() {
-        validateIBAN(this);
-    });
-
-    // ===================================
-    // Dynamische Container Ein-/Ausblenden
-    // ===================================
-    document.getElementById('rueckzahlungsart').addEventListener('change', function() {
-        document.getElementById('rhythmus_container').style.display =
-            this.value === 'raten' ? 'block' : 'none';
-    });
-
-    document.getElementById('auszahlungsart').addEventListener('change', function() {
-        document.getElementById('nehmer_iban_container').style.display =
-            this.value === 'ueberweisung' ? 'block' : 'none';
-    });
-
-    // ===================================
-    // Initiale Vorschau
-    // ===================================
+    const gi = document.getElementById('geber_iban'); if (gi) gi.addEventListener('input', function(){ validateIBAN(this); });
+    const ni = document.getElementById('nehmer_iban'); if (ni) ni.addEventListener('input', function(){ validateIBAN(this); });
+    const ra = document.getElementById('rueckzahlungsart'); if (ra) ra.addEventListener('change', function(){ document.getElementById('rhythmus_container').style.display = this.value === 'raten' ? 'block' : 'none'; });
+    const aa = document.getElementById('auszahlungsart'); if (aa) aa.addEventListener('change', function(){ document.getElementById('nehmer_iban_container').style.display = this.value === 'ueberweisung' ? 'block' : 'none'; });
     updatePreview();
+    setTimeout(() => { document.querySelectorAll('[data-preview]').forEach(el => el.classList.add('text-glow-change')); setTimeout(() => { document.querySelectorAll('[data-preview]').forEach(el => el.classList.remove('text-glow-change')); }, 1000); }, 500);
+}
 
-    // ===================================
-    // Alle Felder beim ersten Laden aufleuchten lassen
-    // ===================================
-    setTimeout(() => {
-        document.querySelectorAll('[data-preview]').forEach(el => {
-            el.classList.add('text-glow-change');
-        });
-        setTimeout(() => {
-            document.querySelectorAll('[data-preview]').forEach(el => {
-                el.classList.remove('text-glow-change');
-            });
-        }, 1000);
-    }, 500);
-});
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', __initGeneratorApp);
+} else {
+  __initGeneratorApp();
+}

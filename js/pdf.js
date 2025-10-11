@@ -9,7 +9,8 @@ function generatePDF() {
     const nehmerAusweis = document.getElementById('nehmer_ausweis').value.trim();
     
     if (!geberAusweis || !nehmerAusweis) {
-        const trans = window.TRANSLATIONS[window.i18n.locale || 'de-DE'];
+        const locale = (window.translation && window.translation.getLocale && window.translation.getLocale()) || 'de-DE';
+        const trans = window.TRANSLATIONS[locale] || window.TRANSLATIONS['de-DE'] || {};
         if (!confirm(trans['warning-id'])) {
             return;
         }

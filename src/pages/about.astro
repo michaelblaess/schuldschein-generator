@@ -1,0 +1,51 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Über">
+  <div class="page-wrap p-4 md:p-6">
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <article class="prose prose-sm sm:prose-base max-w-none">
+          <h1>Über dieses Projekt</h1>
+          <p><strong>Ziel:</strong> In <strong>2–3 Minuten</strong> einen <strong>privaten Schuldschein</strong> als PDF erstellen – kostenlos, anonym, ohne Server.
+          Ich habe leider mehrfach erlebt, dass die <strong>Zahlungsmoral im Freundeskreis</strong> ohne schriftliche Vereinbarung leidet. Dieses Tool soll helfen, die Dinge fair und klar zu regeln.</p>
+
+          <h2>Idee &amp; Ansatz</h2>
+          <p>Der Generator ist bewusst <strong>simpel</strong> gehalten – sowohl in der Nutzung als auch im Code. So können auch <strong>Programmieranfänger</strong> alles nachvollziehen.</p>
+          <ul>
+            <li><strong>Stack:</strong> Vanilla <strong>JavaScript</strong>, <strong>Tailwind CSS</strong>, <strong>DaisyUI</strong>, <strong>jsPDF</strong>, <strong>HTML5</strong></li>
+            <li><strong>Client-only:</strong> Keine Speicherung, keine Cookies, <strong>keine Serverkommunikation</strong>. Alles läuft im <strong>Browser</strong>.</li>
+            <li><strong>Open Source:</strong> GitHub-Repo → <a href="https://github.com/michaelblaess/schuldschein-generator" target="_blank" rel="noopener noreferrer">github.com/michaelblaess/schuldschein-generator</a></li>
+          </ul>
+
+          <h2>Was du bekommst</h2>
+          <ul>
+            <li>Formular ausfüllen → <strong>Live-Vorschau</strong> → <strong>PDF herunterladen</strong></li>
+            <li>Optional: <strong>Zeugenfeld</strong>, <strong>anpassbarer Dokumenttitel</strong>, <strong>Wasserzeichen</strong></li>
+            <li>Automatik: <strong>Fälligkeit</strong> (Vertragsdatum + Laufzeit), <strong>IBAN-Plausibilitätscheck</strong>, <strong>Betrag in Worten</strong></li>
+          </ul>
+
+          <h2>Rechtliche Hinweise</h2>
+          <ul>
+            <li>Dieses Tool stellt <strong>keine Rechtsberatung</strong> dar. Nutzung auf eigenes Risiko.</li>
+            <li>„Schuldschein Generator“ ist <strong>kein eingetragenes Warenzeichen</strong>.</li>
+            <li>Keine Verbindung zu <strong>Finanzdienstleistern, Banken oder Rechtsberatern</strong>.</li>
+            <li>Prüfe das Dokument vor Verwendung und <strong>lasse es im Zweifel juristisch prüfen</strong>.</li>
+          </ul>
+
+          <h2>Projektstatus</h2>
+          <ul>
+            <li><strong>Hobby-Projekt</strong> – Beiträge, Ideen und Issues sind willkommen.</li>
+            <li>Ziel: Schlanke, robuste Lösung ohne Abhängigkeiten und ohne Tracking.</li>
+          </ul>
+
+          <h2>Danke</h2>
+          <p><strong>Besonderer Dank an Jette</strong> für die Inspiration und Motivation, das Projekt umzusetzen.</p>
+
+          <h2>Kontakt</h2>
+          <p><a href="mailto:info@schuldschein-generator.de">info@schuldschein-generator.de</a></p>
+        </article>
+      </div>
+    </div>
+  </div>
+</Base>
