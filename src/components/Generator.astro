@@ -2,50 +2,58 @@
 import Base from "../layouts/Base.astro";
 ---
 <main class="page-wrap p-4 md:p-6">
-  <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-start">
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-6 items-start">
     <!-- Formular -->
-    <section id="formSection" class="space-y-4 no-print">
+    <section id="formSection" class="space-y-4 no-print min-w-0">
       <!-- Darlehensgeber -->
       <fieldset class="card bg-base-100 border border-base-300">
         <div class="card-body p-4 sm:p-6">
-          <legend class="card-title text-base mb-3" id="label-lender" data-i18n="label-lender">👤 Darlehensgeber/in</legend>
+          <legend class="card-title text-base mb-3" id="label-lender">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"/><path d="M4 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/></svg>
+              <span data-i18n="label-lender">Darlehensgeber/in</span>
+            </span>
+          </legend>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-name-lender" class="label-text" data-i18n="text-name">Name</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="geber_name" data-field="geber_name" type="text" class="input input-bordered input-sm" required />
+            <input id="geber_name" data-field="geber_name" type="text" class="input input-bordered input-sm validator" required maxlength="80" />
+            <div class="validator-hint" data-i18n="hint-name-required">Bitte Namen eingeben</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-address-lender" class="label-text" data-i18n="text-address">Adresse</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <textarea id="geber_adresse" data-field="geber_adresse" class="textarea textarea-bordered" rows="3" required></textarea>
+            <textarea id="geber_adresse" data-field="geber_adresse" class="textarea textarea-bordered validator" rows="3" required maxlength="200"></textarea>
+            <div class="validator-hint" data-i18n="hint-address-required">Bitte Adresse eingeben</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-birthdate-lender" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="geber_geburt" data-field="geber_geburt" type="date" class="input input-bordered input-sm" required />
+            <input id="geber_geburt" data-field="geber_geburt" type="date" class="input input-bordered input-sm validator" required />
+            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-id-lender" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
             </div>
-            <input id="geber_ausweis" data-field="geber_ausweis" type="text" class="input input-bordered input-sm" />
+            <input id="geber_ausweis" data-field="geber_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-iban-lender" class="label-text" data-i18n="text-iban-return">IBAN für Rückzahlung</span>
             </div>
-            <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm" />
+            <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm w-full" maxlength="34" />
           </label>
         </div>
       </fieldset>
@@ -53,37 +61,45 @@ import Base from "../layouts/Base.astro";
       <!-- Darlehensnehmer -->
       <fieldset class="card bg-base-100 border border-base-300">
         <div class="card-body p-4 sm:p-6">
-          <legend class="card-title text-base mb-3" id="label-borrower" data-i18n="label-borrower">👥 Darlehensnehmer/in</legend>
+          <legend class="card-title text-base mb-3" id="label-borrower">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-3-3.87"/><path d="M7 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M2 21v-2a4 4 0 0 1 3-3.87"/></svg>
+              <span data-i18n="label-borrower">Darlehensnehmer/in</span>
+            </span>
+          </legend>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-name-borrower" class="label-text" data-i18n="text-name">Name</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="nehmer_name" data-field="nehmer_name" type="text" class="input input-bordered input-sm" required />
+            <input id="nehmer_name" data-field="nehmer_name" type="text" class="input input-bordered input-sm validator" required maxlength="80" />
+            <div class="validator-hint" data-i18n="hint-name-required">Bitte Namen eingeben</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-address-borrower" class="label-text" data-i18n="text-address">Adresse</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <textarea id="nehmer_adresse" data-field="nehmer_adresse" class="textarea textarea-bordered" rows="3" required></textarea>
+            <textarea id="nehmer_adresse" data-field="nehmer_adresse" class="textarea textarea-bordered validator" rows="3" required maxlength="200"></textarea>
+            <div class="validator-hint" data-i18n="hint-address-required">Bitte Adresse eingeben</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-birthdate-borrower" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="nehmer_geburt" data-field="nehmer_geburt" type="date" class="input input-bordered input-sm" required />
+            <input id="nehmer_geburt" data-field="nehmer_geburt" type="date" class="input input-bordered input-sm validator" required />
+            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-id-borrower" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
             </div>
-            <input id="nehmer_ausweis" data-field="nehmer_ausweis" type="text" class="input input-bordered input-sm" />
+            <input id="nehmer_ausweis" data-field="nehmer_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
           </label>
         </div>
       </fieldset>
@@ -91,21 +107,27 @@ import Base from "../layouts/Base.astro";
       <!-- Darlehensdetails -->
       <fieldset class="card bg-base-100 border border-base-300">
         <div class="card-body p-4 sm:p-6">
-          <legend class="card-title text-base mb-3" id="label-loan-details" data-i18n="label-loan-details">💰 Darlehensdetails</legend>
+          <legend class="card-title text-base mb-3" id="label-loan-details">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span data-i18n="label-loan-details">Darlehensdetails</span>
+            </span>
+          </legend>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-loan-amount" class="label-text" data-i18n="text-loan-amount">Darlehenssumme (€)</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="summe" data-field="summe" type="text" class="input input-bordered input-sm" value="1.000,00" required />
+            <input id="summe" data-field="summe" type="text" class="input input-bordered input-sm validator" value="1.000,00" required maxlength="15" title="Bitte gültigen Betrag eingeben" />
+            <div class="validator-hint" data-i18n="hint-amount-required">Bitte Betrag eingeben (z. B. 1.000,00)</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-interest-rate" class="label-text" data-i18n="text-interest-rate">Zinssatz (% p.a.)</span>
             </div>
-            <input id="zinssatz" data-field="zinssatz" type="number" min="0" step="0.01" class="input input-bordered input-sm" value="0" />
+            <input id="zinssatz" data-field="zinssatz" type="number" min="0" max="100" step="0.01" class="input input-bordered input-sm validator" value="0" title="0–100 % p.a." />
             <div class="label py-0">
               <span id="text-interest-default" class="label-text-alt" data-i18n="text-interest-default">Standard: 0% (zinslos)</span>
             </div>
@@ -114,9 +136,10 @@ import Base from "../layouts/Base.astro";
           <label class="form-control">
             <div class="label py-1">
               <span id="text-default-interest" class="label-text" data-i18n="text-default-interest">Verzugszins (% p.a.)</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="verzugszins" data-field="verzugszins" type="number" min="0" step="0.01" class="input input-bordered input-sm" value="5" required />
+            <input id="verzugszins" data-field="verzugszins" type="number" min="0" max="100" step="0.01" class="input input-bordered input-sm validator" value="5" required title="0–100 % p.a." />
+            <div class="validator-hint" data-i18n="hint-default-interest-required">Bitte Verzugszins angeben (0–100)</div>
             <div class="label py-0">
               <span id="text-default-interest-note" class="label-text-alt" data-i18n="text-default-interest-note">Standard: 5% über Basiszinssatz</span>
             </div>
@@ -125,17 +148,19 @@ import Base from "../layouts/Base.astro";
           <label class="form-control">
             <div class="label py-1">
               <span id="text-duration" class="label-text" data-i18n="text-duration">Laufzeit (Monate)</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="laufzeit" data-field="laufzeit" type="number" min="1" class="input input-bordered input-sm" value="6" required />
+            <input id="laufzeit" data-field="laufzeit" type="number" min="1" max="600" class="input input-bordered input-sm validator" value="6" required title="Mindestens 1 Monat, maximal 600" />
+            <div class="validator-hint" data-i18n="hint-duration-required">Bitte Laufzeit angeben (in Monaten)</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-contract-date" class="label-text" data-i18n="text-contract-date">Vertragsdatum</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="vertragsdatum" data-field="vertragsdatum" type="date" class="input input-bordered input-sm" required />
+            <input id="vertragsdatum" data-field="vertragsdatum" type="date" class="input input-bordered input-sm validator" required title="Erforderlich" />
+            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
           </label>
 
           <label class="form-control">
@@ -148,7 +173,7 @@ import Base from "../layouts/Base.astro";
           <label class="form-control">
             <div class="label py-1">
               <span id="text-repayment-type" class="label-text" data-i18n="text-repayment-type">Rückzahlungsart</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
             <select id="rueckzahlungsart" data-field="rueckzahlungsart" class="select select-bordered select-sm">
               <option value="einmal" id="opt-lumpsum">Einmalzahlung</option>
@@ -169,7 +194,7 @@ import Base from "../layouts/Base.astro";
           <label class="form-control">
             <div class="label py-1">
               <span id="text-payout-type" class="label-text" data-i18n="text-payout-type">Auszahlungsart</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
             <select id="auszahlungsart" data-field="auszahlungsart" class="select select-bordered select-sm">
               <option value="bar" id="opt-cash">Bar</option>
@@ -183,22 +208,24 @@ import Base from "../layouts/Base.astro";
             <div class="label py-1">
               <span id="text-borrower-iban" class="label-text" data-i18n="text-borrower-iban">IBAN der Darlehensnehmerin</span>
             </div>
-            <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm" />
+            <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm validator w-full" maxlength="34" title="Gültige IBAN erforderlich" />
+            <div class="validator-hint" data-i18n="hint-iban-required">Bitte gültige IBAN eingeben</div>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-purpose" class="label-text" data-i18n="text-purpose">Zweck</span>
             </div>
-            <textarea id="zweck" data-field="zweck" class="textarea textarea-bordered" rows="3" placeholder="z.B. Kauf eines Autos"></textarea>
+            <textarea id="zweck" data-field="zweck" class="textarea textarea-bordered" rows="3" placeholder="z.B. Kauf eines Autos" maxlength="200"></textarea>
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-jurisdiction" class="label-text" data-i18n="text-jurisdiction">Gerichtsstand (Ort)</span>
-              <span class="label-text-alt text-error">*</span>
+              <span class="label-text-alt text-error required-indicator">*</span>
             </div>
-            <input id="gerichtsstand" data-field="gerichtsstand" type="text" class="input input-bordered input-sm" required />
+            <input id="gerichtsstand" data-field="gerichtsstand" type="text" class="input input-bordered input-sm validator" required maxlength="64" />
+            <div class="validator-hint" data-i18n="hint-jurisdiction-required">Bitte Ort angeben</div>
           </label>
         </div>
       </fieldset>
@@ -206,20 +233,25 @@ import Base from "../layouts/Base.astro";
       <!-- Zeuge -->
       <fieldset class="card bg-base-100 border border-base-300">
         <div class="card-body p-4 sm:p-6">
-          <legend class="card-title text-base mb-3" id="label-witness" data-i18n="label-witness">👁 Zeuge/Zeugin (optional)</legend>
+          <legend class="card-title text-base mb-3" id="label-witness">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="label-witness">Zeuge/Zeugin (optional)</span>
+            </span>
+          </legend>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-name-witness" class="label-text" data-i18n="text-name">Name</span>
             </div>
-            <input id="zeuge_name" data-field="zeuge_name" type="text" class="input input-bordered input-sm" />
+            <input id="zeuge_name" data-field="zeuge_name" type="text" class="input input-bordered input-sm" maxlength="80" />
           </label>
 
           <label class="form-control">
             <div class="label py-1">
               <span id="text-address-witness" class="label-text" data-i18n="text-address">Adresse</span>
             </div>
-            <textarea id="zeuge_adresse" data-field="zeuge_adresse" class="textarea textarea-bordered" rows="3"></textarea>
+            <textarea id="zeuge_adresse" data-field="zeuge_adresse" class="textarea textarea-bordered" rows="3" maxlength="200"></textarea>
           </label>
 
           <label class="form-control">
@@ -233,15 +265,12 @@ import Base from "../layouts/Base.astro";
             <div class="label py-1">
               <span id="text-id-witness" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
             </div>
-            <input id="zeuge_ausweis" data-field="zeuge_ausweis" type="text" class="input input-bordered input-sm" />
+            <input id="zeuge_ausweis" data-field="zeuge_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
           </label>
+
+          <button onclick="resetForm()" class="btn btn-warning w-full mt-2" id="btn-reset"><span id="text-reset">Zurücksetzen</span></button>
         </div>
       </fieldset>
-
-      <!-- Buttons -->
-      <div class="flex gap-3">
-        <button onclick="resetForm()" class="btn btn-error flex-1 tooltip" data-tip="Alle Eingaben löschen" id="btn-reset">🔄 <span id="text-reset">Zurücksetzen</span></button>
-      </div>
     </section>
 
     <!-- Divider (Desktop only) -->
@@ -250,12 +279,15 @@ import Base from "../layouts/Base.astro";
     </div>
 
     <!-- Vorschau -->
-    <section id="previewSection" class="card bg-base-100 border border-base-300 lg:sticky lg:top-4 h-fit">
+    <section id="previewSection" class="card bg-base-100 border border-base-300 lg:sticky lg:top-4 h-fit min-w-0">
       <div class="card-body p-4 sm:p-8">
-        <div id="preview" class="prose prose-sm max-w-none"></div>
+        <div id="preview" class="prose prose-sm max-w-none break-words"></div>
       </div>
       <div class="card-body pt-0 p-4">
-        <button onclick="generatePDF()" class="btn btn-primary w-full tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf">📄 <span id="text-download-pdf">PDF herunterladen</span></button>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button onclick="generatePDF()" class="btn btn-primary flex-1 tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf"><span id="text-download-pdf">PDF herunterladen</span></button>
+          <button onclick="copyPreviewText()" class="btn btn-outline flex-1 tooltip" data-tip="Vorschau-Text in die Zwischenablage kopieren" id="btn-copy">Text kopieren</button>
+        </div>
       </div>
     </section>
   </div>
@@ -264,6 +296,7 @@ import Base from "../layouts/Base.astro";
   <script src="/translations/de-de.js" is:inline></script>
   <script src="/translations/en-us.js" is:inline></script>
   <script src="/js/TranslationController.js" is:inline></script>
-  <script src="/js/common.js" is:inline></script>
-  <script src="/js/pdf.js" is:inline></script>
+  <script src="/js/ValidationController.js" is:inline></script>
+  <script src="/js/main.js" is:inline></script>
+  <script src="/js/jsPdfController.js" is:inline></script>
 </main>

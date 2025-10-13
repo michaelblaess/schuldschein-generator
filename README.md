@@ -28,8 +28,9 @@ Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan a
 ├── css/
 │   └── styles.css                # Styles inkl. Dark/Light
 ├── js/
-│   ├── common.js                 # App-Logik & UI
-│   └── pdf.js                    # PDF-Generierung (jsPDF)
+│   ├── main.js                   # App-Logik & UI (Haupteinstieg)
+│   ├── jsPdfController.js        # PDF-Generierung (jsPDF)
+│   └── ValidationController.js   # Validierungen (z. B. IBAN)
 └── translations/
     ├── de-de.js                  # DE-Übersetzungen (JS, empfohlen)
     ├── en-us.js                  # EN-Übersetzungen (JS, empfohlen)
@@ -53,7 +54,7 @@ Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan a
 
 ## UI & Styling
 
-Dieses Projekt nutzt **DaisyUI (Tailwind)** für alle Seiten. Theming via `data-theme`.  
+Dieses Projekt nutzt **Astro**, **Tailwind CSS** und **DaisyUI** für alle Seiten. Theming via `data-theme`.  
 Bitte **kein** eigenes Dark-Mode-CSS hinzufügen.
 
 ---
@@ -71,7 +72,7 @@ Bitte **kein** eigenes Dark-Mode-CSS hinzufügen.
 ## 🔧 Anpassungen
 
 - **Styles:** `css/styles.css` (Farben, Abstände, Dark/Light)
-- **PDF-Engine:** `js/pdf.js` (jsPDF austauschbar gegen pdf-lib)
+- **PDF-Engine:** `js/jsPdfController.js` (jsPDF austauschbar)
 - **Translations:** `translations/de-de.js` / `en-us.js` (Keys erweitern/übersetzen)
 
 Neue Sprache hinzufügen:

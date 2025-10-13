@@ -32,7 +32,7 @@ schuldschein-generator/
 ├── css/
 │   └── styles.css            # Minimal custom styles (glow effects, print)
 ├── js/
-│   ├── common.js             # Main application logic
+│   ├── main.js               # Main application logic
 │   ├── TranslationController.js  # i18n management class
 │   └── lib/                  # External libraries (jsPDF, html2canvas)
 ├── translations/
@@ -78,14 +78,14 @@ window.translation.apply();  // Translates all [data-i18n] and [data-i18n-attr] 
 - Support for `data-i18n` (text content) and `data-i18n-attr` (attributes)
 - Fallback to browser language or default locale
 
-### 2. Main Application (`js/common.js`)
+### 2. Main Application (`js/main.js`)
 
 **Purpose**: Core application logic for form handling, preview, and PDF generation
 
 **Key Functions**:
 - `applyTranslations()`: Updates all translatable elements in the UI
 - `updatePreview()`: Renders markdown preview with field interpolation
-- `generatePDF()`: Creates PDF document from preview
+- `generatePDF()`: Creates PDF document from preview (see `js/jsPdfController.js`)
 - Field validation with glow effects (yellow=change, green=valid, red=invalid)
 - Auto-save to localStorage on field changes
 - Real-time character counting for purpose field

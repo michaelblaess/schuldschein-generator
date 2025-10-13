@@ -3,7 +3,7 @@
     'use strict';
     window.TRANSLATIONS = window.TRANSLATIONS || {};
     window.TRANSLATIONS['de-DE'] = {
-        "header-title": "🧾 Online-Schuldschein-Generator",
+        "header-title": "Schuldschein-Generator",
         "header-subtitle": "Erstellen Sie rechtssichere Darlehensverträge nach §§ 488 ff. BGB – komplett in Ihrem Browser",
         "nav-generator": "Generator",
         "nav-about": "Über",
@@ -13,10 +13,10 @@
         "privacy-notice": "<strong>🔒 Datenschutzhinweis:</strong> Alle Eingaben bleiben ausschließlich in Ihrem Browser. Es werden keine Daten übertragen oder gespeichert.",
         "privacy-label": "Datenschutzhinweis",
         "privacy-notice-text": "Alle Eingaben bleiben ausschließlich in Ihrem Browser. Es werden keine Daten übertragen oder gespeichert.",
-        "label-lender": "👤 Darlehensgeber/in",
-        "label-borrower": "👥 Darlehensnehmer/in",
-        "label-loan-details": "💰 Darlehensdetails",
-        "label-witness": "👁 Zeuge/Zeugin (optional)",
+        "label-lender": "Darlehensgeber/in",
+        "label-borrower": "Darlehensnehmer/in",
+        "label-loan-details": "Darlehensdetails",
+        "label-witness": "Zeuge/Zeugin (optional)",
         "text-name": "Name",
         "text-address": "Adresse",
         "text-birthdate": "Geburtsdatum",
@@ -33,7 +33,7 @@
         "text-repayment-type": "Rückzahlungsart",
         "text-repayment-rhythm": "Rückzahlungsrhythmus",
         "text-payout-type": "Auszahlungsart",
-        "text-borrower-iban": "IBAN der Darlehensnehmerin",
+        "text-borrower-iban": "IBAN der Darlehensnehmer/in",
         "text-purpose": "Zweck",
         "text-jurisdiction": "Gerichtsstand (Ort)",
         "text-reset": "Zurücksetzen",
@@ -96,6 +96,14 @@
         "witness-label": "Zeuge/Zeugin:",
         "legal-notice-title": "Rechtlicher Hinweis / Disclaimer",
         "legal-notice-text": "Dieser Schuldschein wurde mit einem Online-Generator erstellt und stellt eine Mustervorlage ohne Gewähr dar. Er ersetzt keine individuelle Rechtsberatung. Bei komplexen Sachverhalten oder Unsicherheiten wird dringend empfohlen, einen Rechtsanwalt oder Notar zu konsultieren. Der Betreiber übernimmt keine Haftung für die Richtigkeit, Vollständigkeit oder rechtliche Wirksamkeit dieses Dokuments.",
+        "hint-name-required": "Bitte Namen eingeben",
+        "hint-address-required": "Bitte Adresse eingeben",
+        "hint-date-required": "Bitte Datum wählen",
+        "hint-amount-required": "Bitte Betrag eingeben (z. B. 1.000,00)",
+        "hint-default-interest-required": "Bitte Verzugszins angeben (0–100)",
+        "hint-duration-required": "Bitte Laufzeit angeben (in Monaten)",
+        "hint-iban-required": "Bitte gültige IBAN eingeben",
+        "hint-jurisdiction-required": "Bitte Ort angeben",
         "footer-quote": "„Dunkelheit kann Dunkelheit nicht vertreiben; nur Licht kann das. Hass kann Hass nicht vertreiben; nur Liebe kann das.“ — Martin Luther King Jr."
     };
 })();

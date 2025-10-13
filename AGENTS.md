@@ -16,6 +16,8 @@
 - `npm run build` — build static site to `dist/`
 - `npm run preview` — serve built output locally
 - Sync helpers when editing raw sources: `cp js/*.js public/js/ && cp translations/*.js public/translations/`
+ - Entry script: `public/js/main.js` (source in `js/main.js`). PDF controller: `public/js/jsPdfController.js`.
+   Sync: `cp js/*.js public/js/ && cp translations/*.js public/translations/`
 
 ## Coding Style & Naming Conventions
 - Indentation: Astro/HTML/CSS = 2 spaces; JS = 4 spaces (match existing files)
@@ -27,7 +29,7 @@
 - No formal test suite yet. Perform manual checks via `npm run dev`:
   - Generator renders, autosave works, due date auto-calculates
   - Theme toggle persists; DE/EN toggle updates texts and routes
-  - PDF button triggers client action (jsPDF integration lives in `public/js/pdf.js`)
+  - PDF button triggers client action (jsPDF integration in `public/js/jsPdfController.js`)
   - No network requests are made during normal use
 
 ## Commit & Pull Request Guidelines
@@ -39,4 +41,3 @@
 - Keep `astro.config.mjs` `output: 'static'` to ensure a fully static, privacy-preserving build
 - Translations live in JS files (`translations/*.js`); update both root and `public/translations/` copies
 - Do not introduce server-side features or data collection; all logic must remain browser-side
-

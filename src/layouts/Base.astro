@@ -1,5 +1,5 @@
 ---
-const { title = 'Online Schuldschein-Generator' } = Astro.props;
+const { title = 'Schuldschein-Generator' } = Astro.props;
 import "../styles/global.css";
 const pathname = Astro.url.pathname;
 const isEn = pathname.startsWith('/en');
@@ -30,10 +30,10 @@ const langPrefix = isEn ? '/en' : '';
     <header class="border-b bg-base-200 no-print relative z-40 overflow-visible">
       <div class="page-wrap px-4 md:px-6">
         <div class="navbar px-0 overflow-visible">
-        <!-- START: Hamburger -->
-        <div class="navbar-start">
+        <!-- START: Hamburger + Title -->
+        <div class="navbar-start gap-2 items-center">
           <div class="dropdown">
-            <button tabindex="0" class="btn btn-ghost" aria-label="Menü">☰</button>
+            <button tabindex="0" class="btn btn-ghost btn-lg text-xl px-4" aria-label="Menü">☰</button>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-50 p-2 shadow bg-base-100 rounded-box w-64">
               <li><a href={`${langPrefix}/`} data-i18n="nav-generator">Generator</a></li>
               <li><a href={`${langPrefix}/about`} data-i18n="nav-about">Über</a></li>
@@ -42,16 +42,17 @@ const langPrefix = isEn ? '/en' : '';
               <li><a href={`${langPrefix}/nutzungsbedingungen`} data-i18n="nav-terms">Nutzungsbedingungen</a></li>
             </ul>
           </div>
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2">
+              <a href={`${langPrefix}/`} id="header-title" data-i18n="header-title" class="text-base font-semibold">Schuldschein-Generator</a>
+              <span id="app-version" class="badge badge-neutral badge-sm">v0.2.0</span>
+            </div>
+            <div id="header-subtitle" data-i18n="header-subtitle" class="text-xs opacity-70 hidden sm:block">Privater Schuldschein in 2 Minuten als PDF</div>
+          </div>
         </div>
 
-        <!-- CENTER: Titel + Version -->
-        <div class="navbar-center flex-col items-center">
-          <div class="flex items-center gap-2">
-            <a href={`${langPrefix}/`} id="header-title" data-i18n="header-title" class="text-base font-semibold">Schuldschein-Generator</a>
-            <span id="app-version" class="badge badge-neutral badge-sm">v0.2.0</span>
-          </div>
-          <div id="header-subtitle" data-i18n="header-subtitle" class="text-xs opacity-70">Privater Schuldschein in 2 Minuten als PDF</div>
-        </div>
+        <!-- CENTER: empty (keine Titel-Duplikation) -->
+        <div class="navbar-center"></div>
 
         <!-- END: Theme Toggle, Language, GitHub -->
         <div class="navbar-end items-center gap-1 sm:gap-2">
@@ -102,18 +103,6 @@ const langPrefix = isEn ? '/en' : '';
 
     <!-- Footer -->
     <footer class="mt-12 no-print">
-      <!-- Quote stays in a centered container for readability -->
-      <div class="page-wrap px-4">
-        <div class="card bg-base-100 border border-primary/50 shadow-sm mb-4">
-          <div class="card-body p-4 sm:p-6 items-center text-center">
-            <div class="flex items-start sm:items-center gap-3 justify-center">
-              <span class="text-primary text-xl" aria-hidden="true">✝</span>
-              <p id="footer-quote" data-i18n="footer-quote" class="text-sm sm:text-base"></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Full-width footer navigation like navbar -->
       <div class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 justify-center">
         <nav class="mx-4">
@@ -143,6 +132,10 @@ const langPrefix = isEn ? '/en' : '';
             </span>
           </p>
           <p id="footer-copyright" data-i18n="footer-copyright" class="text-xs opacity-80">© 2025 Online-Schuldschein-Generator</p>
+          <p class="text-xs opacity-80 flex items-center gap-2">
+            <span>✝</span>
+            <span data-i18n="footer-quote">„Dunkelheit kann Dunkelheit nicht vertreiben; nur Licht kann das. Hass kann Hass nicht vertreiben; nur Liebe kann das.“ — Martin Luther King Jr.</span>
+          </p>
         </div>
       </div>
     </footer>

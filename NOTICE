@@ -12,7 +12,9 @@ Dieses Tool stellt keine Rechtsberatung dar. Nutzung auf eigenes Risiko.
 
 Third-party components:
 
-- jsPDF (https://github.com/parallax/jsPDF) — MIT License (v2.5.1)
-- Tailwind CSS (https://tailwindcss.com/) — MIT License (v3.x)
-- DaisyUI
-- Astro
+- jsPDF — https://github.com/parallax/jsPDF — MIT (v2.5.1)
+- Tailwind CSS — https://tailwindcss.com/ — MIT (v3.x)
+- DaisyUI — https://daisyui.com/ — MIT (v4.12.x)
+- Astro — https://astro.build/ — MIT (v4.14.x)
+- @astrojs/tailwind — https://github.com/withastro/astro — MIT (integration)
+- @tailwindcss/typography — https://github.com/tailwindlabs/tailwindcss-typography — MIT

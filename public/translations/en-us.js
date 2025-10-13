@@ -3,7 +3,7 @@
     'use strict';
     window.TRANSLATIONS = window.TRANSLATIONS || {};
     window.TRANSLATIONS['en-US'] = {
-        "header-title": "🧾 Online Promissory Note Generator",
+        "header-title": "Promissory Note Generator",
         "header-subtitle": "Create legally compliant loan agreements according to §§ 488 ff. BGB – completely in your browser",
         "nav-generator": "Generator",
         "nav-about": "About",
@@ -13,10 +13,10 @@
         "privacy-notice": "<strong>🔒 Privacy Notice:</strong> All inputs remain exclusively in your browser. No data is transmitted or stored.",
         "privacy-label": "Privacy Notice",
         "privacy-notice-text": "All inputs remain exclusively in your browser. No data is transmitted or stored.",
-        "label-lender": "👤 Lender",
-        "label-borrower": "👥 Borrower",
-        "label-loan-details": "💰 Loan Details",
-        "label-witness": "👁 Witness (optional)",
+        "label-lender": "Lender",
+        "label-borrower": "Borrower",
+        "label-loan-details": "Loan Details",
+        "label-witness": "Witness (optional)",
         "text-name": "Name",
         "text-address": "Address",
         "text-birthdate": "Date of Birth",
@@ -53,6 +53,7 @@
         "footer-title-legal": "Legal",
         "footer-title-contact": "Contact",
         "footer-license-text": "Apache-2.0 • see",
+        "footer-quote": "“Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.” — Martin Luther King Jr.",
         "warning-id": "The ID card number is missing for at least one party. This is recommended for identification. Do you want to continue?",
         "confirm-reset": "Do you really want to reset all entries?",
         "contract-title": "PROMISSORY NOTE",
@@ -96,6 +97,14 @@
         "witness-label": "Witness:",
         "legal-notice-title": "Legal Notice / Disclaimer",
         "legal-notice-text": "This promissory note was created with an online generator and represents a template without warranty. It does not replace individual legal advice. In case of complex circumstances or uncertainties, it is strongly recommended to consult a lawyer or notary. The operator assumes no liability for the correctness, completeness or legal validity of this document.",
+        "hint-name-required": "Please enter a name",
+        "hint-address-required": "Please enter an address",
+        "hint-date-required": "Please choose a date",
+        "hint-amount-required": "Please enter an amount (e.g., 1,000.00)",
+        "hint-default-interest-required": "Please enter default interest (0–100)",
+        "hint-duration-required": "Please enter duration (months)",
+        "hint-iban-required": "Please enter a valid IBAN",
+        "hint-jurisdiction-required": "Please enter a place",
         "footer-quote": "“Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.” — Martin Luther King Jr."
     };
 })();

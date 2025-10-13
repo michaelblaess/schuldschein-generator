@@ -8,7 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Online Schuldschein-Generator</title>
+    <title>Schuldschein-Generator</title>
 
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,12 +24,10 @@
     <!-- Navbar -->
     <header class="border-b bg-base-200 no-print">
       <div class="navbar mx-auto max-w-screen-xl">
-        <!-- START: Hamburger -->
-        <div class="navbar-start">
+        <!-- START: Hamburger + Title -->
+        <div class="navbar-start gap-2 items-center">
           <div class="dropdown">
-            <button tabindex="0" class="btn btn-ghost lg:hidden" aria-label="Menü">
-              ☰
-            </button>
+            <button tabindex="0" class="btn btn-ghost lg:hidden" aria-label="Menü">☰</button>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64">
               <li><a href="#/generator" data-route data-i18n="nav-generator">Generator</a></li>
               <li><a href="#/about" data-route data-i18n="nav-about">Über</a></li>
@@ -38,16 +36,17 @@
               <li><a href="#/nutzungsbedingungen" data-route data-i18n="nav-terms">Nutzungsbedingungen</a></li>
             </ul>
           </div>
+          <div class="flex flex-col">
+            <div class="flex items-center gap-2">
+              <a href="#/generator" data-route id="header-title" class="text-base font-semibold">Schuldschein-Generator</a>
+              <span id="app-version" class="badge badge-neutral badge-sm">v0.1.0</span>
+            </div>
+            <div id="header-subtitle" class="text-xs opacity-70 hidden sm:block">Privater Schuldschein in 2 Minuten als PDF</div>
+          </div>
         </div>
 
-        <!-- CENTER: Titel + Version -->
-        <div class="navbar-center flex-col items-center">
-          <div class="flex items-center gap-2">
-            <a href="#/generator" data-route id="header-title" class="text-base font-semibold">Schuldschein-Generator</a>
-            <span id="app-version" class="badge badge-neutral badge-sm">v0.1.0</span>
-          </div>
-          <div id="header-subtitle" class="text-xs opacity-70">Privater Schuldschein in 2 Minuten als PDF</div>
-        </div>
+        <!-- CENTER: empty -->
+        <div class="navbar-center"></div>
 
         <!-- END: Theme Toggle (light/dracula), Language, GitHub -->
         <div class="navbar-end items-center gap-1 sm:gap-2">
@@ -130,7 +129,12 @@
           <!-- Darlehensgeber -->
           <fieldset class="card bg-base-100 border border-base-300">
             <div class="card-body p-4 sm:p-6">
-              <legend class="card-title text-base mb-3" id="label-lender">👤 Darlehensgeber/in</legend>
+          <legend class="card-title text-base mb-3" id="label-lender">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"/><path d="M4 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Darlehensgeber/in</span>
+            </span>
+          </legend>
 
               <label class="form-control">
                 <div class="label py-1">
@@ -167,7 +171,7 @@
                 <div class="label py-1">
                   <span id="text-iban-lender" class="label-text">IBAN für Rückzahlung</span>
                 </div>
-                <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm" />
+                <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm w-full" />
               </label>
             </div>
           </fieldset>
@@ -175,7 +179,12 @@
           <!-- Darlehensnehmer -->
           <fieldset class="card bg-base-100 border border-base-300">
             <div class="card-body p-4 sm:p-6">
-              <legend class="card-title text-base mb-3" id="label-borrower">👥 Darlehensnehmer/in</legend>
+          <legend class="card-title text-base mb-3" id="label-borrower">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-3-3.87"/><path d="M7 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M2 21v-2a4 4 0 0 1 3-3.87"/></svg>
+              <span>Darlehensnehmer/in</span>
+            </span>
+          </legend>
 
               <label class="form-control">
                 <div class="label py-1">
@@ -213,7 +222,12 @@
           <!-- Darlehensdetails -->
           <fieldset class="card bg-base-100 border border-base-300">
             <div class="card-body p-4 sm:p-6">
-              <legend class="card-title text-base mb-3" id="label-loan-details">💰 Darlehensdetails</legend>
+          <legend class="card-title text-base mb-3" id="label-loan-details">
+            <span class="inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Darlehensdetails</span>
+            </span>
+          </legend>
 
               <label class="form-control">
                 <div class="label py-1">
@@ -303,9 +317,9 @@
 
               <label class="form-control" id="nehmer_iban_container" style="display: none">
                 <div class="label py-1">
-                  <span id="text-borrower-iban" class="label-text">IBAN der Darlehensnehmerin</span>
+              <span id="text-borrower-iban" class="label-text" data-i18n="text-borrower-iban">IBAN der Darlehensnehmer/in</span>
                 </div>
-                <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm" />
+                <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm w-full" />
               </label>
 
               <label class="form-control">
@@ -328,7 +342,12 @@
           <!-- Zeuge -->
           <fieldset class="card bg-base-100 border border-base-300">
             <div class="card-body p-4 sm:p-6">
-              <legend class="card-title text-base mb-3" id="label-witness">👁 Zeuge/Zeugin (optional)</legend>
+              <legend class="card-title text-base mb-3" id="label-witness">
+                <span class="inline-flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Zeuge/Zeugin (optional)</span>
+                </span>
+              </legend>
 
               <label class="form-control">
                 <div class="label py-1">
@@ -357,15 +376,12 @@
                 </div>
                 <input id="zeuge_ausweis" data-field="zeuge_ausweis" type="text" class="input input-bordered input-sm" />
               </label>
+
+              <button onclick="resetForm()" class="btn btn-warning w-full mt-2" id="btn-reset">
+                <span id="text-reset">Zurücksetzen</span>
+              </button>
             </div>
           </fieldset>
-
-          <!-- Buttons -->
-          <div class="flex gap-3">
-            <button onclick="resetForm()" class="btn btn-error flex-1 tooltip" data-tip="Alle Eingaben löschen" id="btn-reset">
-              🔄 <span id="text-reset">Zurücksetzen</span>
-            </button>
-          </div>
         </section>
 
         <!-- Divider (Desktop only) -->
@@ -379,9 +395,14 @@
             <div id="preview" class="prose prose-sm max-w-none"></div>
           </div>
           <div class="card-body pt-0 p-4">
-            <button onclick="generatePDF()" class="btn btn-primary w-full tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf">
-              📄 <span id="text-download-pdf">PDF herunterladen</span>
-            </button>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <button onclick="generatePDF()" class="btn btn-primary flex-1 tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf">
+                <span id="text-download-pdf">PDF herunterladen</span>
+              </button>
+              <button onclick="copyPreviewText()" class="btn btn-outline flex-1 tooltip" data-tip="Vorschau-Text in die Zwischenablage kopieren" id="btn-copy">
+                Text kopieren
+              </button>
+            </div>
           </div>
         </section>
       </div>
@@ -397,8 +418,13 @@
       <div class="max-w-screen-xl mx-auto px-4">
         <div class="card bg-base-100 border border-base-300">
           <div class="card-body p-4 text-center text-xs sm:text-sm opacity-80">
-            <p id="footer-copyright">© 2025 Online-Schuldschein-Generator</p>
             <p id="footer-disclaimer" class="text-xs opacity-70">Keine Rechtsberatung • Keine Datenspeicherung • Mustervorlage ohne Gewähr</p>
+            <p id="footer-license" class="text-xs opacity-70">Apache-2.0 • siehe LICENSE / NOTICE</p>
+            <p id="footer-copyright">© 2025 Online-Schuldschein-Generator</p>
+            <p class="text-xs opacity-80 flex items-center justify-center gap-2">
+              <span>✝</span>
+              <span data-i18n="footer-quote">„Dunkelheit kann Dunkelheit nicht vertreiben; nur Licht kann das. Hass kann Hass nicht vertreiben; nur Liebe kann das.“ — Martin Luther King Jr.</span>
+            </p>
           </div>
         </div>
       </div>
@@ -409,10 +435,11 @@
     <script src="./translations/en-us.js"></script>
 
     <!-- Custom Scripts -->
+    <script src="./js/ValidationController.js"></script>
     <script src="./js/pages.js"></script>
     <script src="./js/TranslationController.js"></script>
     <script src="./js/ViewController.js"></script>
-    <script src="./js/common.js"></script>
-    <script src="./js/pdf.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/jsPdfController.js"></script>
   </body>
 </html>

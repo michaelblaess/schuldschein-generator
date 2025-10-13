@@ -94,3 +94,8 @@
 #preview .ssg-signatures { display: flex; gap: 2rem; margin-top: 3rem; }
 #preview .ssg-signature { width: 50%; }
 #preview .ssg-signature-line { display: block; width: 100%; border-top: 1px solid #9ca3af; margin-bottom: 3rem; }
+
+/* DaisyUI validator: show hints only when invalid and not focused */
+.validator + .validator-hint { display: none; }
+.validator:invalid:focus + .validator-hint { display: block; }
+.validator:user-invalid + .validator-hint { display: block; }

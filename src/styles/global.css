@@ -12,3 +12,15 @@
     margin-right: 10vw;
   }
 }
+
+/* Required indicator styling for better visibility */
+.required-indicator {
+  color: #dc2626; /* Tailwind red-600 */
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+
+/* DaisyUI validator: show hints only when invalid and not focused */
+.validator + .validator-hint { display: none; }
+.validator:invalid:focus + .validator-hint { display: block; }
+.validator:user-invalid + .validator-hint { display: block; }
