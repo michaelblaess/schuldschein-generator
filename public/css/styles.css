@@ -86,3 +86,11 @@
 #preview .ssg-doc .border-gray-300 { border-color: #d1d5db; }
 #preview .ssg-doc .bg-yellow-50 { background-color: #fffbeb; }
 #preview .ssg-doc .border-yellow-400 { border-color: #f59e0b; }
+
+/* ===================================
+   Contract Signature Block
+   (Stable CSS classes for dynamic HTML)
+   =================================== */
+#preview .ssg-signatures { display: flex; gap: 2rem; margin-top: 3rem; }
+#preview .ssg-signature { width: 50%; }
+#preview .ssg-signature-line { display: block; width: 100%; border-top: 1px solid #9ca3af; margin-bottom: 3rem; }

@@ -37,7 +37,8 @@ function applyTranslations() {
     // Header und Footer
     updateElement('header-title', 'header-title');
     updateElement('header-subtitle', 'header-subtitle');
-    updateElement('privacy-notice', 'privacy-notice', true);
+    // Use text-only key to avoid duplicating the label rendered in markup
+    updateElement('privacy-notice', 'privacy-notice-text');
     updateElement('footer-copyright', 'footer-copyright');
     updateElement('footer-disclaimer', 'footer-disclaimer');
 
@@ -395,14 +396,14 @@ function generiereVertragstext(d) {
                 <p><strong><span data-preview="gerichtsstand">${d.gerichtsstand || '[Ort]'}</span>, <span data-preview="vertragsdatum">${formatiereDatum(d.vertragsdatum) || '[Datum]'}</span></strong></p>
             </div>
 
-            <div class="grid grid-cols-2 gap-8 mt-12">
-                <div>
-                    <p class="mb-12">_______________________________</p>
+            <div class="ssg-signatures">
+                <div class="ssg-signature">
+                    <p><span class="ssg-signature-line"></span></p>
                     <p class="text-sm" data-preview="geber_name">${d.geber_name || '[' + trans['contract-lender'].replace(':', '') + ']'}</p>
                     <p class="text-xs text-gray-600">(${trans['contract-lender'].replace(':', '')})</p>
                 </div>
-                <div>
-                    <p class="mb-12">_______________________________</p>
+                <div class="ssg-signature">
+                    <p><span class="ssg-signature-line"></span></p>
                     <p class="text-sm" data-preview="nehmer_name">${d.nehmer_name || '[' + trans['contract-borrower'].replace(':', '') + ']'}</p>
                     <p class="text-xs text-gray-600">(${trans['contract-borrower'].replace(':', '')})</p>
                 </div>

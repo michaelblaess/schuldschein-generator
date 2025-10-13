@@ -58,3 +58,11 @@
         max-width: 100% !important;
     }
 }
+
+/* ===================================
+   Contract Signature Block
+   (Stable CSS classes for dynamic HTML)
+   =================================== */
+#preview .ssg-signatures { display: flex; gap: 2rem; margin-top: 3rem; }
+#preview .ssg-signature { width: 50%; }
+#preview .ssg-signature-line { display: block; width: 100%; border-top: 1px solid #9ca3af; margin-bottom: 3rem; }

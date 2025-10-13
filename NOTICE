@@ -11,5 +11,8 @@ This site is not affiliated with financial service providers, banks, or legal ad
 Dieses Tool stellt keine Rechtsberatung dar. Nutzung auf eigenes Risiko.
 
 Third-party components:
+
 - jsPDF (https://github.com/parallax/jsPDF) — MIT License (v2.5.1)
 - Tailwind CSS (https://tailwindcss.com/) — MIT License (v3.x)
+- DaisyUI
+- Astro
