@@ -24,3 +24,15 @@
 .validator + .validator-hint { display: none; }
 .validator:invalid:focus + .validator-hint { display: block; }
 .validator:user-invalid + .validator-hint { display: block; }
+
+/* Hover effects for cards */
+.card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Button hover */
+.btn:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}

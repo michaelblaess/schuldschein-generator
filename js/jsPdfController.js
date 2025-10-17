@@ -49,9 +49,9 @@
 
     // Titel
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
+    doc.setFontSize(20);
     doc.text('SCHULDSCHEIN', pageWidth / 2, cursorY, { align: 'center' });
-    cursorY += 28;
+    cursorY += 32;
 
     // Vorschau-Text holen (Plaintext)
     const preview = document.getElementById('preview');
@@ -59,9 +59,9 @@
     const lines = doc.splitTextToSize(rawText || 'Vorschau leer.', contentWidth);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
+    doc.setFontSize(12);
 
-    const lineHeight = 16;
+    const lineHeight = 18;
     lines.forEach(line => {
       if (cursorY + lineHeight > pageHeight - margin) {
         doc.addPage();
