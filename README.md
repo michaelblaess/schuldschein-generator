@@ -1,13 +1,13 @@
 # 🧾 Schuldschein-Generator
 
-[![Stars](https://img.shields.io/github/stars/michaelblaess/schuldschein-generator?logo=github&color=fbbf24)](https://github.com/michaelblaess/schuldschein-generator/stargazers)
-[![Forks](https://img.shields.io/github/forks/michaelblaess/schuldschein-generator?logo=github&color=34d399)](https://github.com/michaelblaess/schuldschein-generator/network/members)
-[![Issues](https://img.shields.io/github/issues/michaelblaess/schuldschein-generator?logo=github&color=f87171)](https://github.com/michaelblaess/schuldschein-generator/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/schuldschein-generator?logo=github&color=a78bfa)](https://github.com/michaelblaess/schuldschein-generator/pulls)
+[![Stars](https://img.shields.io/github/stars/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=fbbf24)](https://github.com/michaelblaess/schuldschein-generator/stargazers)
+[![Forks](https://img.shields.io/github/forks/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=34d399)](https://github.com/michaelblaess/schuldschein-generator/network/members)
+[![Issues](https://img.shields.io/github/issues/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=f87171)](https://github.com/michaelblaess/schuldschein-generator/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=a78bfa)](https://github.com/michaelblaess/schuldschein-generator/pulls)
 
-[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
+[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
 [![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
-[![Astro](https://img.shields.io/badge/astro-4.x-3b82f6?logo=astro)](https://astro.build/)
+[![Astro](https://img.shields.io/badge/astro-4.x-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
 
 Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan agreement generator under German law.
 
