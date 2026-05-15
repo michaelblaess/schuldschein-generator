@@ -1,5 +1,12 @@
 # 🧾 Schuldschein-Generator
 
+<p align="center">
+  <img src="docs/flags/gb.svg" height="13" alt=""> <b>English</b> ·
+  <img src="docs/flags/de.svg" height="13" alt=""> <a href="README.de.md">Deutsch</a>
+</p>
+
+---
+
 [![Stars](https://img.shields.io/github/stars/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=fbbf24)](https://github.com/michaelblaess/schuldschein-generator/stargazers)
 [![Forks](https://img.shields.io/github/forks/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=34d399)](https://github.com/michaelblaess/schuldschein-generator/network/members)
 [![Issues](https://img.shields.io/github/issues/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=f87171)](https://github.com/michaelblaess/schuldschein-generator/issues)
@@ -9,133 +16,129 @@
 [![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
 [![Astro](https://img.shields.io/badge/astro-4.x-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
 
-Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan agreement generator under German law.
+Private promissory note in **2 minutes** as PDF – **Free & Open Source** loan agreement generator under German law.
 
 > **DE:** Erstelle einen privaten Schuldschein als PDF – kostenlos, anonym, ohne Server.  
 > **EN:** Create a private promissory note as PDF – free, anonymous, no server.
 
 ---
 
-## 🚀 Funktionen
+## 🚀 Features
 
-- Formular → **Live-Vorschau** → **PDF-Download** (100 % client-seitig)
-- **Keine Speicherung**, keine Cookies, kein Tracking
-- **Dark/Light Mode** mit Toggle (lokal gemerkt)
-- **Deutsch/Englisch** umschaltbar
-- Automatische **Fälligkeit** (Vertragsdatum + Laufzeit)
-- **IBAN-Plausibilitätscheck**, Betrag-Formatierung, Betrag in Worten
-- Optional: **Zeuge/Zeugin**, **anpassbarer Dokumenttitel**, **Wasserzeichen** im PDF
-- PDF-Engine: **jsPDF** (austauschbar)
+- Form → **live preview** → **PDF download** (100 % client-side)
+- **No storage**, no cookies, no tracking
+- **Dark/Light mode** with toggle (remembered locally)
+- **German/English** switchable
+- Automatic **due date** (contract date + term)
+- **IBAN plausibility check**, amount formatting, amount in words
+- Optional: **witness**, **customizable document title**, **watermark** in the PDF
+- PDF engine: **jsPDF** (swappable)
 
 ---
 
-## 📁 Projektstruktur (aktuell)
+## 📁 Project structure (current)
 
 ```
 .
 ├── index.html
 ├── css/
-│   └── styles.css                # Styles inkl. Dark/Light
+│   └── styles.css                # Styles incl. dark/light
 ├── js/
-│   ├── main.js                   # App-Logik & UI (Haupteinstieg)
-│   ├── jsPdfController.js        # PDF-Generierung (jsPDF)
-│   └── ValidationController.js   # Validierungen (z. B. IBAN)
+│   ├── main.js                   # App logic & UI (main entry point)
+│   ├── jsPdfController.js        # PDF generation (jsPDF)
+│   └── ValidationController.js   # Validations (e.g. IBAN)
 └── translations/
-    ├── de-de.js                  # DE-Übersetzungen (JS, empfohlen)
-    ├── en-us.js                  # EN-Übersetzungen (JS, empfohlen)
-    ├── i18n.js                   # kleiner i18n-Loader
-    ├── de.json (optional Backup) # JSON nur als Referenz/Backup
-    └── en.json (optional Backup)
+    ├── de-de.js                  # DE translations (JS, recommended)
+    ├── en-us.js                  # EN translations (JS, recommended)
+    ├── i18n.js                   # small i18n loader
+    ├── de.json (optional backup) # JSON only as reference/backup
+    └── en.json (optional backup)
 ```
 
-> **Hinweis zu Übersetzungen:**  
-> Lokale `file://`-Aufrufe blockieren `fetch()` auf JSON. Deshalb werden Übersetzungen **als JS-Dateien** geladen (`de-de.js`, `en-us.js`). JSON-Dateien sind optional als **Backup**/Referenz vorhanden.
+> **Note on translations:**  
+> Local `file://` calls block `fetch()` on JSON. Therefore translations are loaded **as JS files** (`de-de.js`, `en-us.js`). JSON files are optionally available as **backup**/reference.
 
 ---
 
-## 🌍 Internationalisierung (i18n)
+## 🌍 Internationalization (i18n)
 
-- `translations/de-de.js`, `translations/en-us.js` registrieren Dictionaries unter `window.TRANSLATIONS[locale]`.
-- `translations/i18n.js` stellt `i18n.t('key')` und `i18n.setLocale('de-DE'|'en-US')` bereit.
-- Sprache wird in `localStorage` gemerkt; Fallback anhand `navigator.language`.
+- `translations/de-de.js`, `translations/en-us.js` register dictionaries under `window.TRANSLATIONS[locale]`.
+- `translations/i18n.js` provides `i18n.t('key')` and `i18n.setLocale('de-DE'|'en-US')`.
+- The language is remembered in `localStorage`; fallback based on `navigator.language`.
 
 ---
 
 ## UI & Styling
 
-Dieses Projekt nutzt **Astro**, **Tailwind CSS** und **DaisyUI** für alle Seiten. Theming via `data-theme`.  
-Bitte **kein** eigenes Dark-Mode-CSS hinzufügen.
+This project uses **Astro**, **Tailwind CSS** and **DaisyUI** for all pages. Theming via `data-theme`.  
+Please do **not** add your own dark-mode CSS.
 
 ---
 
-## 🧪 Verwendung
+## 🧪 Usage
 
-1. **Lokal öffnen:** `index.html` im Browser (kein Server nötig)  
-   _(Für CORS-freies Testen ist der lokale Aufruf ausreichend, da Übersetzungen per JS eingebunden sind.)_
-2. **Formular ausfüllen:** Pflichtfelder beachten
-3. **Vorschau prüfen:** Rechte Spalte aktualisiert sich live
-4. **PDF generieren:** Button „PDF herunterladen“
+1. **Open locally:** `index.html` in the browser (no server needed)  
+   _(For CORS-free testing the local call is sufficient, since translations are included via JS.)_
+2. **Fill out the form:** mind the required fields
+3. **Check the preview:** the right column updates live
+4. **Generate PDF:** button "Download PDF"
 
 ---
 
-## 🔧 Anpassungen
+## 🔧 Customizations
 
-- **Styles:** `css/styles.css` (Farben, Abstände, Dark/Light)
-- **PDF-Engine:** `js/jsPdfController.js` (jsPDF austauschbar)
-- **Translations:** `translations/de-de.js` / `en-us.js` (Keys erweitern/übersetzen)
+- **Styles:** `css/styles.css` (colors, spacing, dark/light)
+- **PDF engine:** `js/jsPdfController.js` (jsPDF swappable)
+- **Translations:** `translations/de-de.js` / `en-us.js` (extend/translate keys)
 
-Neue Sprache hinzufügen:
+Add a new language:
 
 ```js
 // translations/fr-fr.js
 window.TRANSLATIONS = window.TRANSLATIONS || {};
 window.TRANSLATIONS["fr-FR"] = {
-  /* ... keys wie de-DE/en-US ... */
+  /* ... keys like de-DE/en-US ... */
 };
 ```
 
-Dann in `index.html` einbinden und im Language-Toggle anbieten.
+Then include it in `index.html` and offer it in the language toggle.
 
 ---
 
-## 🐛 Bekannte Einschränkungen
+## 🐛 Known limitations
 
-- PDF-Layout ist „vertraglich“ optimiert, aber kein Satzsystem (jsPDF)
-- Keine Server-Validierung (alles client-seitig)
-- Moderne Browser empfohlen (2020+)
+- PDF layout is optimized for "contract" use, but it is not a typesetting system (jsPDF)
+- No server-side validation (everything client-side)
+- Modern browsers recommended (2020+)
 
-Siehe ggf. `offene_punkte.md` für To-dos/Ideen.
-
----
-
-## 🔒 Datenschutz
-
-- **Keine Server-Verbindung**
-- **Keine Speicherung**, **keine Cookies**
-- Alle Eingaben bleiben im **Browser** (Client-side only)
+See `offene_punkte.md` for to-dos/ideas if available.
 
 ---
 
-## ⚖️ Rechtlicher Hinweis / Legal Notice
+## 🔒 Privacy
 
-„Schuldschein Generator“ ist **kein eingetragenes Warenzeichen**.  
-Diese Website steht in **keinem Zusammenhang** mit Finanzdienstleistern, Banken oder Rechtsberatern.  
-**Disclaimer:** Keine Rechtsberatung. Nutzung auf eigenes Risiko.
+- **No server connection**
+- **No storage**, **no cookies**
+- All input stays in the **browser** (client-side only)
 
-“Schuldschein Generator” is **not a registered trademark**.  
+---
+
+## ⚖️ Legal Notice
+
+"Schuldschein Generator" is **not a registered trademark**.  
 This site is **not affiliated** with financial service providers, banks, or legal advisors.  
 **Disclaimer:** No legal advice. Use at your own risk.
 
 ---
 
-## 🪪 Lizenz / License
+## 🪪 License
 
 Apache-2.0 © 2025 Michael Blaess  
-Siehe `LICENSE` (unverändert) und `NOTICE` (Attribution & Hinweise).
+See `LICENSE` (unchanged) and `NOTICE` (attribution & notices).
 
 ---
 
-## 📫 Kontakt
+## 📫 Contact
 
 **info@schuldschein-generator.de**
 
