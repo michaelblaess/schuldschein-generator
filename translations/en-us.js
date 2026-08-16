@@ -94,7 +94,7 @@
         "witness-label": "Witness:",
         "legal-notice-title": "Legal Notice / Disclaimer",
         "legal-notice-text": "This promissory note was created with an online generator and represents a template without warranty. It does not replace individual legal advice. In case of complex circumstances or uncertainties, it is strongly recommended to consult a lawyer or notary. The operator assumes no liability for the correctness, completeness or legal validity of this document.",
-        "footer-quote": "“Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.” — Martin Luther King Jr.",
+        "footer-quote": "\"You can always give without loving, but you can never love without giving.\" - Amy Carmichael",
         "hint-name-required": "Please enter a name",
         "hint-address-required": "Please enter an address",
         "hint-date-required": "Please choose a date",

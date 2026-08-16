@@ -53,7 +53,7 @@
         "footer-title-legal": "Legal",
         "footer-title-contact": "Contact",
         "footer-license-text": "Apache-2.0 • see",
-        "footer-quote": "“Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.” — Martin Luther King Jr.",
+        "footer-quote": "\"You can always give without loving, but you can never love without giving.\" - Amy Carmichael",
         "warning-id": "The ID card number is missing for at least one party. This is recommended for identification. Do you want to continue?",
         "confirm-reset": "Do you really want to reset all entries?",
         "contract-title": "PROMISSORY NOTE",
@@ -105,6 +105,6 @@
         "hint-duration-required": "Please enter duration (months)",
         "hint-iban-required": "Please enter a valid IBAN",
         "hint-jurisdiction-required": "Please enter a place",
-        "footer-quote": "“Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.” — Martin Luther King Jr."
+        "footer-quote": "\"You can always give without loving, but you can never love without giving.\" - Amy Carmichael"
     };
 })();

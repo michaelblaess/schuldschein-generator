@@ -104,6 +104,6 @@
         "hint-duration-required": "Bitte Laufzeit angeben (in Monaten)",
         "hint-iban-required": "Bitte gültige IBAN eingeben",
         "hint-jurisdiction-required": "Bitte Ort angeben",
-        "footer-quote": "„Dunkelheit kann Dunkelheit nicht vertreiben; nur Licht kann das. Hass kann Hass nicht vertreiben; nur Liebe kann das.“ — Martin Luther King Jr."
+        "footer-quote": "\"Du kannst immer geben, ohne zu lieben. Aber du kannst niemals lieben, ohne zu geben.\" - Amy Carmichael"
     };
 })();
