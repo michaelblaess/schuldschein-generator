@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       clean-slate:
-        description: 'Zielordner vor dem Upload komplett leeren (nur beim ersten Deploy, entfernt die Fassung von 2025)'
+        description: 'Zielordner vor dem Upload komplett leeren (entfernt die Fassung von 2025, nur beim ersten Deploy)'
         type: boolean
         default: false
 
@@ -50,5 +50,6 @@ jobs:
           # Ohne diese Zeile faellt die Action auf unverschluesseltes FTP zurueck
           protocol: ftps
           local-dir: ./dist/
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # Ordner der Domain im Webspace, kein Geheimnis
+          server-dir: /schuldschein-generator.de/
           dangerous-clean-slate: ${{ inputs.clean-slate == true }}
