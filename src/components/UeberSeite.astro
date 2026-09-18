@@ -1,0 +1,60 @@
+---
+import { PFADE, type Sprache } from '../lib/i18n';
+
+interface Props {
+  sprache: Sprache;
+}
+const { sprache } = Astro.props;
+const repo = 'https://github.com/michaelblaess/schuldschein-generator';
+const de = sprache === 'de';
+---
+<h1 class="seite-titel">{de ? 'Über dieses Projekt' : 'About this project'}</h1>
+<div class="rechtstext">
+  {de ? (
+    <>
+      <h2>Warum es diese Seite gibt</h2>
+      <p>Ich habe leider mehrfach erlebt, dass die Zahlungsmoral im Freundeskreis ohne schriftliche Vereinbarung leidet. Ein Schuldschein schafft Klarheit, bevor es Streit gibt. Diese Seite soll das in wenigen Minuten möglich machen: kostenlos, ohne Anmeldung und ohne dass persönliche Daten irgendwo gespeichert werden.</p>
+
+      <h2>Was Du hier bekommst</h2>
+      <ul>
+        <li>Einen <a href={PFADE.start.de}>Generator</a>, der aus Deinen Angaben einen Schuldschein erstellt, kompakt oder ausführlich, als PDF oder zum Drucken.</li>
+        <li><a href={PFADE.vorlagen.de}>Leere Vorlagen</a> als PDF und Word für den Schuldschein, die Ratenzahlung und die Quittung über die Rückzahlung.</li>
+        <li>Die <a href={PFADE.rechtslage.de}>Rechtslage</a> mit Gesetzen und geprüften Urteilen zum Nachlesen und Antworten auf <a href={PFADE.fragen.de}>häufige Fragen</a>.</li>
+      </ul>
+
+      <h2>Wie die Seite gebaut ist</h2>
+      <p>Alles, was Du einträgst, wird in Deinem Browser verarbeitet. Die Vorschau, das PDF und der Ausdruck entstehen dort, auf dem Server kommt davon nichts an. Die Seite selbst ist statisch, gebaut mit Astro und TypeScript, das PDF erzeugt pdf-lib.</p>
+      <p>Die Rechenschritte, auf die es ankommt, sind mit Tests abgesichert: der Betrag in Worten, Fristen nach § 188 BGB, die Prüfsumme der IBAN und der Ratenplan. Jede rechtliche Aussage auf der Seite hat eine Quelle.</p>
+      <p>Der Quellcode ist offen und steht unter der Apache-2.0-Lizenz: <a href={repo}>github.com/michaelblaess/schuldschein-generator</a>.</p>
+
+      <h2>Wer dahinter steht</h2>
+      <p>Michael Blaess, IT-Berater aus Rehfelde. Die Seite ist ein privates Projekt ohne Werbung und ohne kostenpflichtige Angebote. Mehr über mich auf <a href="https://michaelblaess.de">michaelblaess.de</a>.</p>
+
+      <h2>Keine Rechtsberatung</h2>
+      <p>Generator, Vorlagen und Texte ersetzen keine anwaltliche Beratung. Einzelheiten stehen im <a href={PFADE.impressum.de}>Impressum</a>.</p>
+    </>
+  ) : (
+    <>
+      <h2>Why this site exists</h2>
+      <p>I have unfortunately seen several times that people among friends become less reliable about paying back money when nothing was put in writing. A promissory note creates clarity before a dispute arises. This site is meant to make that possible in a few minutes: free, without sign-up and without personal data being stored anywhere.</p>
+
+      <h2>What you get here</h2>
+      <ul>
+        <li>A <a href={PFADE.start.en}>generator</a> that turns your details into a promissory note, short or detailed, as a PDF or for printing.</li>
+        <li><a href={PFADE.vorlagen.en}>Blank templates</a> as PDF and Word for the promissory note, an instalment plan and a repayment receipt.</li>
+        <li>An overview of <a href={PFADE.rechtslage.en}>German law</a> with statutes and checked court decisions, and answers to <a href={PFADE.fragen.en}>frequent questions</a>.</li>
+      </ul>
+
+      <h2>How the site is built</h2>
+      <p>Everything you enter is processed in your browser. The preview, the PDF and the printout are created there, nothing of it reaches the server. The site itself is static, built with Astro and TypeScript, and the PDF is generated with pdf-lib.</p>
+      <p>The calculations that matter are covered by tests: the amount in words, periods under § 188 of the German Civil Code, the IBAN checksum and the repayment schedule. Every legal statement on the site has a source.</p>
+      <p>The source code is open and licensed under Apache 2.0: <a href={repo}>github.com/michaelblaess/schuldschein-generator</a>.</p>
+
+      <h2>Who is behind it</h2>
+      <p>Michael Blaess, an IT consultant from Rehfelde, Germany. The site is a private project without advertising and without paid services. More about me at <a href="https://michaelblaess.de">michaelblaess.de</a>.</p>
+
+      <h2>Not legal advice</h2>
+      <p>The generator, templates and texts do not replace advice from a lawyer. Details are in the <a href={PFADE.impressum.en}>legal notice</a>.</p>
+    </>
+  )}
+</div>

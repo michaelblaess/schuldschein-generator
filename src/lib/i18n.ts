@@ -2,7 +2,7 @@ export type Sprache = 'de' | 'en';
 
 export const SPRACHEN: Sprache[] = ['de', 'en'];
 
-export type SeitenSchluessel = 'start' | 'vorlagen' | 'rechtslage' | 'fragen' | 'impressum' | 'datenschutz' | 'nutzung';
+export type SeitenSchluessel = 'start' | 'vorlagen' | 'rechtslage' | 'fragen' | 'ueber' | 'impressum' | 'datenschutz' | 'nutzung';
 
 /** Adresse jeder Seite je Sprache. Die Sprache haengt an der Adresse, nicht an einem Speicher. */
 export const PFADE: Record<SeitenSchluessel, Record<Sprache, string>> = {
@@ -10,6 +10,7 @@ export const PFADE: Record<SeitenSchluessel, Record<Sprache, string>> = {
   vorlagen: { de: '/vorlagen/', en: '/en/templates/' },
   rechtslage: { de: '/rechtslage/', en: '/en/law/' },
   fragen: { de: '/fragen/', en: '/en/faq/' },
+  ueber: { de: '/ueber/', en: '/en/about/' },
   impressum: { de: '/impressum/', en: '/en/legal-notice/' },
   datenschutz: { de: '/datenschutz/', en: '/en/privacy/' },
   nutzung: { de: '/nutzungsbedingungen/', en: '/en/terms/' },
@@ -20,7 +21,8 @@ export const DOMAIN = 'https://schuldschein-generator.de';
 const TEXTE = {
   de: {
     marke: 'Schuldschein-Generator',
-    'nav.start': 'Ausfüllen',
+    'nav.start': 'Generator',
+    'nav.github': 'Quellcode auf GitHub',
     'nav.vorlagen': 'Vorlagen',
     'nav.rechtslage': 'Rechtslage',
     'nav.fragen': 'Fragen',
@@ -33,6 +35,8 @@ const TEXTE = {
     'fuss.impressum': 'Impressum',
     'fuss.datenschutz': 'Datenschutz',
     'fuss.nutzung': 'Nutzungsbedingungen',
+    'fuss.quellcode': 'Quellcode auf GitHub',
+    'fuss.ueber': 'Über das Projekt',
     'consent.widerrufen': 'Cookie-Einstellungen',
     'haftung.kurz': 'Keine Rechtsberatung. Keine Haftung.',
     'haftung.lang': 'Der Vertrag passt für einfache Fälle unter Privatleuten. Bei hohen Beträgen, Sicherheiten oder Streit: lass ihn von einer Anwältin oder einem Anwalt prüfen.',
@@ -55,7 +59,8 @@ const TEXTE = {
   },
   en: {
     marke: 'Schuldschein-Generator',
-    'nav.start': 'Fill in',
+    'nav.start': 'Generator',
+    'nav.github': 'Source code on GitHub',
     'nav.vorlagen': 'Templates',
     'nav.rechtslage': 'The law',
     'nav.fragen': 'FAQ',
@@ -68,6 +73,8 @@ const TEXTE = {
     'fuss.impressum': 'Legal notice',
     'fuss.datenschutz': 'Privacy',
     'fuss.nutzung': 'Terms of use',
+    'fuss.quellcode': 'Source code on GitHub',
+    'fuss.ueber': 'About',
     'consent.widerrufen': 'Cookie settings',
     'haftung.kurz': 'Not legal advice. No liability.',
     'haftung.lang': 'The agreement suits simple cases between private individuals. For large amounts, collateral or an existing dispute, have it checked by a lawyer.',

@@ -100,7 +100,7 @@ pruefe((await seite.locator('#dokument .blatt').innerText()).includes('in words:
 
 // Jede Seite laedt, der Weg ins Impressum ist ein Klick
 for (const p of ['/vorlagen/', '/rechtslage/', '/fragen/', '/impressum/', '/datenschutz/', '/nutzungsbedingungen/',
-  '/en/templates/', '/en/law/', '/en/faq/', '/en/legal-notice/', '/en/privacy/', '/en/terms/']) {
+  '/ueber/', '/en/templates/', '/en/law/', '/en/faq/', '/en/about/', '/en/legal-notice/', '/en/privacy/', '/en/terms/']) {
   const antwort = await seite.goto(`${basis}${p}`, { waitUntil: 'networkidle' });
   pruefe(antwort?.status() === 200, `${p} liefert 200`);
 }

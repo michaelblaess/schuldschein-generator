@@ -103,6 +103,7 @@
   .hauptnav a[aria-current] { background: var(--rot); color: var(--auf-rot); }
   .thema { width: 44px; height: 44px; flex: none; display: grid; place-items: center; background: none; border: 2px solid var(--schwarz); color: var(--schwarz); cursor: pointer; padding: 0; }
   .thema svg { width: 20px; height: 20px; }
+  .kopf-icon { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border: 2px solid var(--schwarz); color: var(--schwarz); }
   .thema .sonne { display: none; }
   .thema[aria-pressed="true"] .sonne { display: block; }
   .thema[aria-pressed="true"] .mond { display: none; }
@@ -122,6 +123,7 @@
   .seitenfuss img { height: 18px; width: auto; opacity: .6; filter: var(--logo-filter); }
   .seitenfuss nav { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
   .seitenfuss a, .seitenfuss button { color: var(--grau); }
+  .seitenfuss .github { display: inline-flex; align-items: center; gap: 6px; }
   .seitenfuss button { background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 
   /* Beleg und Felder */
@@ -300,7 +302,11 @@
   .rahmen-breite { padding-left: 16px; padding-right: 16px; }
   .kopf .innen { flex-wrap: wrap; row-gap: 6px; }
   .kopf .rechts { display: contents; }
-  .kopf .thema { order: 2; }
+  .kopf .innen { column-gap: 6px; }
+  .kopf .marke { margin-right: auto; gap: 8px; }
+  .kopf .marke b { font-size: 19px; }
+  .kopf .logo { width: 36px; height: 36px; }
+  .kopf .thema, .kopf .kopf-icon { order: 2; width: 40px; height: 40px; }
   .hauptnav { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid var(--linie); padding-top: 4px; }
   .hauptnav a { display: block; padding: 10px 4px; font-size: 16px; }
   .dkopf { flex-wrap: wrap; }

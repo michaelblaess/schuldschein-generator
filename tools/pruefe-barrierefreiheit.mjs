@@ -11,7 +11,7 @@ const shell = fs.readdirSync(cache).filter((d) => d.startsWith('chromium_headles
 const exe = path.join(cache, shell, 'chrome-headless-shell-win64/chrome-headless-shell.exe');
 const axe = fs.readFileSync(new URL('../node_modules/axe-core/axe.min.js', import.meta.url), 'utf8');
 const seiten = ['/', '/vorlagen/', '/rechtslage/', '/fragen/', '/impressum/', '/datenschutz/', '/nutzungsbedingungen/', '/404.html',
-  '/en/', '/en/templates/', '/en/law/', '/en/faq/', '/en/legal-notice/', '/en/privacy/', '/en/terms/'];
+  '/ueber/', '/en/', '/en/templates/', '/en/law/', '/en/faq/', '/en/about/', '/en/legal-notice/', '/en/privacy/', '/en/terms/'];
 
 let fehler = 0;
 const browser = await chromium.launch({ executablePath: exe });

@@ -9,8 +9,7 @@ RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://schuldschein-generator.de/$1 [R=301,L]
 
 # Alte Adressen der Fassung von 2025
-RewriteRule ^about/?$ / [R=301,L]
-RewriteRule ^en/about/?$ /en/ [R=301,L]
+RewriteRule ^about/?$ /ueber/ [R=301,L]
 RewriteRule ^en/impressum/?$ /en/legal-notice/ [R=301,L]
 RewriteRule ^en/datenschutz/?$ /en/privacy/ [R=301,L]
 RewriteRule ^en/nutzungsbedingungen/?$ /en/terms/ [R=301,L]

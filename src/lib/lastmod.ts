@@ -9,6 +9,7 @@ const QUELLEN: Record<SeitenSchluessel, string[]> = {
   vorlagen: ['src/pages/vorlagen', 'src/pages/en/templates', 'src/components/VorlagenSeite.astro', 'src/lib/vorlagen.ts', 'src/lib/vertrag.ts'],
   rechtslage: ['src/pages/rechtslage', 'src/pages/en/law', 'src/components/RechtslageSeite.astro', 'src/lib/rechtslage.ts', 'src/lib/basiszins.ts'],
   fragen: ['src/pages/fragen', 'src/pages/en/faq', 'src/components/FragenSeite.astro', 'src/lib/fragen.ts'],
+  ueber: ['src/pages/ueber', 'src/pages/en/about', 'src/components/UeberSeite.astro'],
   impressum: ['src/pages/impressum', 'src/pages/en/legal-notice', 'src/lib/recht.ts'],
   datenschutz: ['src/pages/datenschutz', 'src/pages/en/privacy', 'src/lib/recht.ts'],
   nutzung: ['src/pages/nutzungsbedingungen', 'src/pages/en/terms', 'src/lib/recht.ts'],
