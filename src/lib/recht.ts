@@ -1,3 +1,4 @@
+import { zaehlungAktiv } from './analytics';
 import type { Sprache } from './i18n';
 
 /*
@@ -144,7 +145,9 @@ export const DATENSCHUTZ: Zweisprachig = {
         titel: 'Hosting und Server-Logdateien',
         absaetze: [
           `Diese Seite liegt bei ${hoster}. Beim Aufruf speichert der Server automatisch, was Dein Browser übermittelt: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, vorher besuchte Seite, Browser und Betriebssystem. Diese Daten braucht der Betrieb für Technik, Sicherheit und Fehlersuche. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.`,
-          'Schriften und Bilder liegen auf demselben Server. Externe Schriftarten oder Skripte werden nicht nachgeladen.',
+          zaehlungAktiv
+            ? 'Schriften und Bilder liegen auf demselben Server, externe Schriftarten werden nicht nachgeladen. Ein externes Skript lädt die Seite nur nach Deiner Einwilligung, nämlich das von Google Analytics (siehe unten).'
+            : 'Schriften und Bilder liegen auf demselben Server. Externe Schriftarten oder Skripte werden nicht nachgeladen.',
         ],
       },
       {
@@ -233,7 +236,9 @@ export const DATENSCHUTZ: Zweisprachig = {
         titel: 'Hosting and server log files',
         absaetze: [
           `This site is hosted by ${hoster}, Germany. When a page is requested, the server automatically stores what your browser transmits: IP address, date and time, requested address, referring page, browser and operating system. This is needed for technical operation, security and troubleshooting. The legal basis is Art. 6(1)(f) GDPR.`,
-          'Fonts and images are served from the same server. No external fonts or scripts are loaded.',
+          zaehlungAktiv
+            ? 'Fonts and images are served from the same server, no external fonts are loaded. The only external script is loaded after your consent, namely Google Analytics (see below).'
+            : 'Fonts and images are served from the same server. No external fonts or scripts are loaded.',
         ],
       },
       {
