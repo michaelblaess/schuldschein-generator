@@ -68,7 +68,7 @@ npm run pruefen      # tests, build, launch gate, browser smoke test, accessibil
 
 ## Deployment
 
-GitHub Actions builds the site and uploads `dist/` via FTPS to the web space. The workflow is started by hand for now (`workflow_dispatch`) and needs the repository secrets `FTP_HOST`, `FTP_USER` and `FTP_PASSWORD`. Redirects and caching live in `public/.htaccess`.
+GitHub Actions builds the site and uploads `dist/` via FTPS to the web space. Every push to `main` deploys, a manual run (`workflow_dispatch`) can additionally empty the target folder first. The workflow needs the repository secrets `FTP_HOST`, `FTP_USER` and `FTP_PASSWORD`. Redirects and caching live in `public/.htaccess`.
 
 ## License
 

@@ -1,12 +1,13 @@
 name: Build & Deploy
 
-# Vorerst nur von Hand: erst einrichten, dann scharf schalten.
-# Sobald der erste Deploy geprueft ist, "push: branches: [main]" ergaenzen.
+# Jeder Push auf main deployt, von Hand geht es zusaetzlich (clean-slate nur dort)
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       clean-slate:
-        description: 'Zielordner vor dem Upload komplett leeren (entfernt die Fassung von 2025, nur beim ersten Deploy)'
+        description: 'Zielordner vor dem Upload komplett leeren (nur bei Bedarf)'
         type: boolean
         default: false
 
