@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf I - Fragen</title>
+<link rel="icon" href="bilder/logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="thema.css">
+<script src="thema.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; --rot: #C8102E; --rosa: #FCEEF0; --weiss: #FFFFFF; --schwarz: #111418; --grau: #585D66; --tisch: #F1F1EE; --linie: #DADAD4; --kaestchen: #EFB7C0; --fokus: #1F5FD6; --auf-rot: #FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--schwarz); font: 17px/1.55 "Barlow Semi Condensed", sans-serif; }
+  :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  a { color: var(--rot); }
+
+  header { background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  header .innen, main, .seitenfuss .innen { max-width: 1320px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header .innen { padding-top: 12px; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .marke { display: flex; align-items: center; gap: 10px; color: var(--schwarz); text-decoration: none; }
+  .marke b { font-size: 21px; font-weight: 700; }
+  .marke i { font-style: normal; color: var(--rot); }
+  header nav { display: flex; gap: 2px; font-weight: 500; }
+  header nav a { color: var(--schwarz); text-decoration: none; padding: 6px 10px; }
+  header nav a[aria-current] { background: var(--rot); color: var(--auf-rot); }
+
+  main { padding-top: 28px; padding-bottom: 48px; }
+  h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.02; margin: 0 0 10px; letter-spacing: -.01em; }
+  .lead { margin: 0 0 18px; max-width: 64ch; }
+  .haftung { background: var(--schwarz); color: #fff; padding: 12px 16px 12px 20px; border-left: 8px solid var(--rot); margin-bottom: 28px; }
+  .haftung b { font-size: 19px; }
+  .haftung span { color: #d8d9dc; }
+
+  .gruppen { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 40px; align-items: start; }
+  .gruppe h2 { font-size: 24px; margin: 0 0 4px; }
+  .streifen { margin-top: 8px; background: var(--weiss); border: 1px solid var(--linie); border-left: 6px solid var(--rot); }
+  .streifen summary { list-style: none; display: grid; grid-template-columns: 1fr 20px; align-items: center; gap: 10px; padding: 11px 14px; cursor: pointer; min-height: 50px; font-weight: 600; font-size: 18px; line-height: 1.3; }
+  .streifen summary::-webkit-details-marker { display: none; }
+  .streifen summary::after { content: "+"; font: 700 22px/1 "IBM Plex Mono"; color: var(--rot); text-align: center; }
+  .streifen[open] summary::after { content: "\2212"; }
+  .streifen[open] summary { border-bottom: 1px dashed var(--kaestchen); }
+  .streifen .antwort { padding: 10px 16px 14px; }
+  .streifen .antwort p { margin: 0 0 8px; max-width: 64ch; }
+  .streifen .antwort p:last-child { margin-bottom: 0; }
+  .beleg { font-size: 15px; color: var(--grau); }
+
+  .weiter { margin-top: 36px; background: var(--weiss); border: 2px solid var(--rot); padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .weiter p { margin: 0; }
+  .weiter b { display: block; font-size: 19px; }
+  .knopf { display: grid; place-items: center; height: 46px; padding: 0 22px; background: var(--rot); color: var(--auf-rot); font: 700 17px "Barlow Semi Condensed"; text-decoration: none; }
+
+  .seitenfuss { border-top: 1px solid var(--linie); }
+  .seitenfuss .innen { padding-top: 20px; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 15px; color: var(--grau); }
+  .seitenfuss .copy { display: flex; align-items: center; gap: 10px; }
+  .seitenfuss img { height: 18px; width: auto; opacity: .6; }
+  .seitenfuss nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  .seitenfuss a { color: var(--grau); }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --kaestchen: #5C2A33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+    :root:not([data-theme="light"]) .haftung { background: #2A1519; }
+    :root:not([data-theme="light"]) .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  }
+  :root[data-theme="dark"] { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --kaestchen: #5C2A33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+  :root[data-theme="dark"] .haftung { background: #2A1519; }
+  :root[data-theme="dark"] .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  @media (max-width: 960px) {
+    .gruppen { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    header .innen, main, .seitenfuss .innen { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+<header><div class="innen">
+  <a class="marke" href="f-beleg-einseitig.html"><svg class="logo" viewBox="-3 -10 62 62" width="44" height="44" aria-hidden="true" focusable="false"><path class="lr" d="M0 0H48.7V4.2H4.2V36.8H39V41H0Z"/><path class="lr" d="M8.2 10.2h6.6v6.6H8.2Zm1.6 1.6v3.4h3.4v-3.4ZM16.4 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM24.6 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM32.8 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM41 10.2h6.6v6.6H41Zm1.6 1.6v3.4h3.4v-3.4Z"/><path class="lt" d="M50.7 0H54.9V29.3L42.2 41H40.4V29.3H50.7Z"/><path class="lz" d="M25 26.2H29.2C31 26.2 31.6 21.4 33.6 21.4C35.4 21.4 34.6 26.2 36.6 26.2C37.8 26.2 38 24.4 39.2 24.4C40.2 24.4 40.4 26.2 41.6 26.2H45.4"/></svg><b>Schuldschein<i>-Generator</i></b></a>
+  <div class="rechts"><nav><a href="f-beleg-einseitig.html">Ausfüllen</a><a href="g-vorlagen.html">Vorlagen</a><a href="h-rechtslage.html">Rechtslage</a><a href="i-fragen.html" aria-current="page">Fragen</a><a class="sprache" href="#">EN</a></nav><button class="thema" type="button" aria-pressed="false" aria-label="Dunkles Design"><svg class="mond" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.6A8.6 8.6 0 0 1 9.4 3.3a8.6 8.6 0 1 0 11.3 11.3Z"/></svg><svg class="sonne" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button></div>
+</div></header>
+
+<main>
+  <h1>Häufige Fragen</h1>
+  <p class="lead">Kurze Antworten. Wo es um das Gesetz geht, steht darunter, worauf die Antwort beruht.</p>
+  <div class="haftung" role="note"><b>Keine Rechtsberatung.</b> <span>Im Zweifel frag eine Anwältin oder einen Anwalt, bei Steuern eine Steuerberatung.</span></div>
+
+  <div class="gruppen">
+    <section class="gruppe" aria-labelledby="g1">
+      <h2 id="g1">Vor dem Unterschreiben</h2>
+      <details class="streifen"><summary>Muss der Schuldschein zum Notar?</summary><div class="antwort">
+        <p>Nein. Für ein Darlehen unter Privatleuten schreibt das Gesetz keine Form vor.</p>
+        <p class="beleg">Grundlage: <a href="h-rechtslage.html#form">Form und Unterschrift</a></p></div></details>
+      <details class="streifen"><summary>Reicht es, das PDF per Mail zu schicken?</summary><div class="antwort">
+        <p>Nein. Druckt ihn aus und unterschreibt ihn beide von Hand. Nur eine unterschriebene Urkunde beweist vor Gericht voll. Für ein Schuldanerkenntnis ist die elektronische Form sogar ausdrücklich ausgeschlossen.</p>
+        <p class="beleg">Grundlage: § 416 ZPO, § 781 BGB</p></div></details>
+      <details class="streifen"><summary>Wer muss unterschreiben?</summary><div class="antwort">
+        <p>Mindestens die Person, die sich das Geld leiht. Besser unterschreibt Ihr beide, und zwar auf zwei Exemplaren, eines für jede Seite.</p></div></details>
+      <details class="streifen"><summary>Bar oder per Überweisung?</summary><div class="antwort">
+        <p>Überweisung ist leichter nachzuweisen. In einem Fall vor dem OLG Köln genügte eine Überweisung kurz nach dem Vertrag als Beweis, obwohl im Verwendungszweck nicht "Darlehen" stand.</p>
+        <p class="beleg">Grundlage: OLG Köln, 16 U 106/16</p></div></details>
+      <details class="streifen"><summary>Brauchen wir eine Zeugin oder einen Zeugen?</summary><div class="antwort">
+        <p>Vorgeschrieben ist das nicht. Bei Bargeld kann eine Zeugin später bestätigen, dass das Geld übergeben wurde.</p></div></details>
+      <details class="streifen"><summary>Können wir einen Gerichtsstand festlegen?</summary><div class="antwort">
+        <p>In aller Regel nicht. Privatleute dürfen das nur in Ausnahmen, etwa wenn der Streit schon da ist. Deshalb fehlt die Klausel im Generator.</p>
+        <p class="beleg">Grundlage: § 38 ZPO</p></div></details>
+    </section>
+
+    <section class="gruppe" aria-labelledby="g2">
+      <h2 id="g2">Zinsen und Steuern</h2>
+      <details class="streifen"><summary>Muss ich Zinsen verlangen?</summary><div class="antwort">
+        <p>Nein. Zinsen gibt es nur, wenn Ihr sie vereinbart. Schreib "zinslos" ausdrücklich hinein, dann ist es klar.</p>
+        <p class="beleg">Grundlage: § 488 BGB</p></div></details>
+      <details class="streifen"><summary>Wie hoch dürfen die Zinsen sein?</summary><div class="antwort">
+        <p>Eine feste Grenze gibt es nicht. Sittenwidrig hohe Zinsen machen den Vertrag aber nichtig, das wird im Einzelfall geprüft.</p>
+        <p class="beleg">Grundlage: § 138 BGB</p></div></details>
+      <details class="streifen"><summary>Muss ich die Zinsen versteuern?</summary><div class="antwort">
+        <p>Grundsätzlich ja. Zinsen aus einem privaten Darlehen sind Einkünfte aus Kapitalvermögen.</p>
+        <p class="beleg">Grundlage: § 20 Abs. 1 Nr. 7 EStG</p></div></details>
+      <details class="streifen"><summary>Ist ein zinsloses Darlehen in der Familie eine Schenkung?</summary><div class="antwort">
+        <p>Der Zinsvorteil kann als Schenkung zählen. Es gelten Freibeträge, für Kinder zum Beispiel 400.000 Euro innerhalb von zehn Jahren. Bei großen Summen lohnt eine Steuerberatung.</p>
+        <p class="beleg">Grundlage: BFH, II R 20/22, § 16 ErbStG</p></div></details>
+    </section>
+
+    <section class="gruppe" aria-labelledby="g3">
+      <h2 id="g3">Rückzahlung und Streit</h2>
+      <details class="streifen"><summary>Was, wenn wir keinen Rückzahlungstermin haben?</summary><div class="antwort">
+        <p>Dann wird das Geld erst fällig, wenn eine Seite kündigt. Die Frist beträgt drei Monate.</p>
+        <p class="beleg">Grundlage: § 488 Abs. 3 BGB</p></div></details>
+      <details class="streifen"><summary>Wann verjährt die Forderung?</summary><div class="antwort">
+        <p>Nach drei Jahren, gerechnet ab Ende des Jahres, in dem sie fällig wurde. Ohne festen Termin beginnt das erst nach der Kündigung. Jede Ratenzahlung setzt die Frist neu in Gang.</p>
+        <p class="beleg">Grundlage: BGH, IX ZR 129/17, § 212 BGB</p></div></details>
+      <details class="streifen"><summary>Was passiert, wenn zu spät gezahlt wird?</summary><div class="antwort">
+        <p>Wer den vereinbarten Termin verpasst, gerät in Verzug, ohne dass Du mahnen musst. Dann fallen Verzugszinsen an, derzeit 6,52 % pro Jahr.</p>
+        <p class="beleg">Grundlage: §§ 286, 288 BGB, Basiszins der Bundesbank</p></div></details>
+      <details class="streifen"><summary>Was tun nach der Rückzahlung?</summary><div class="antwort">
+        <p>Wer zurückgezahlt hat, bekommt eine Quittung und den Schuldschein zurück. Eine <a href="g-vorlagen.html">Vorlage für die Quittung</a> gibt es hier.</p>
+        <p class="beleg">Grundlage: §§ 368, 371 BGB</p></div></details>
+      <details class="streifen"><summary>Die andere Seite sagt, es war ein Geschenk. Was jetzt?</summary><div class="antwort">
+        <p>Genau dafür ist der Schuldschein da. Ohne ihn muss derjenige, der das Geld zurückwill, beweisen, dass es kein Geschenk war, und das gelingt oft nicht.</p>
+        <p class="beleg">Grundlage: BGH, X ZR 150/11</p></div></details>
+    </section>
+
+    <section class="gruppe" aria-labelledby="g4">
+      <h2 id="g4">Zu dieser Seite</h2>
+      <details class="streifen"><summary>Werden meine Eingaben gespeichert?</summary><div class="antwort">
+        <p>Nur in Deinem Browser, damit nichts verloren geht, wenn Du die Seite neu lädst. Sie werden nie an uns oder Dritte geschickt. Mit "Formular leeren" löschst Du sie.</p></div></details>
+      <details class="streifen"><summary>Was erfährt Google Analytics?</summary><div class="antwort">
+        <p>Nur wenn Du Statistik erlaubst: welche Seiten besucht wurden. Was Du einträgst, erfährt Google nie. Du kannst die Erlaubnis jederzeit unten unter "Cookie-Einstellungen" zurücknehmen.</p></div></details>
+      <details class="streifen"><summary>Ist der Vertrag rechtssicher?</summary><div class="antwort">
+        <p>Das kann kein Generator versprechen. Der Vertrag deckt einfache Fälle ab. Bei hohen Beträgen, Sicherheiten oder Streit lass ihn prüfen.</p></div></details>
+    </section>
+  </div>
+
+  <div class="weiter">
+    <p><b>Frage nicht dabei?</b>Die ganze Rechtslage mit Gesetz und Urteilen steht auf einer Seite.</p>
+    <a class="knopf" href="h-rechtslage.html">Zur Rechtslage</a>
+  </div>
+</main>
+
+<footer class="seitenfuss"><div class="innen">
+  <div class="copy"><img src="bilder/logo-micha5.png" alt="" width="104" height="18"><span>&copy; 2026 Michael Blaess</span></div>
+  <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Nutzungsbedingungen</a><a href="#">Cookie-Einstellungen</a></nav>
+</div></footer>
+</body>
+</html>

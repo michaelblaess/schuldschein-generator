@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf E - Durchschlag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --blau: #2B3A8C; --gelb: #FFF4C2; --original: #FFFFFF; --tisch: #E7E9EF; --stift: #12163A; --grau: #5B6178; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--stift); font: 16px/1.55 "Public Sans", sans-serif; }
+  header { max-width: 1240px; margin: 0 auto; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; }
+  header b { font-size: 19px; font-weight: 700; }
+  header nav { display: flex; gap: 24px; font-weight: 500; }
+  header a { color: var(--stift); text-decoration: none; }
+
+  .buehne { max-width: 1240px; margin: 0 auto; padding: 12px 28px 72px; display: grid; grid-template-columns: 360px 1fr; gap: 48px; align-items: start; }
+  .links h1 { font: 700 44px/1.08 "Spectral", serif; margin: 8px 0 14px; }
+  .links p { margin: 0 0 22px; color: var(--grau); max-width: 36ch; }
+  .formular { display: grid; gap: 12px; }
+  .formular label { font-size: 13px; font-weight: 600; color: var(--grau); }
+  .formular input { width: 100%; font: 16px "Public Sans"; padding: 10px 12px; border: 1px solid #C4C8D6; border-radius: 6px; background: #fff; color: var(--stift); margin-top: 3px; }
+  .formular input:focus-visible { outline: 3px solid var(--blau); outline-offset: 1px; border-color: var(--blau); }
+  .knopf { margin-top: 8px; background: var(--blau); color: #fff; border: 0; border-radius: 6px; padding: 13px; font: 700 17px "Public Sans"; text-align: center; text-decoration: none; display: block; }
+
+  .stapel { position: relative; padding: 0 0 60px 40px; }
+  .blatt { font-family: "Spectral", serif; padding: 44px 52px; min-height: 520px; box-shadow: 0 2px 0 rgba(18,22,58,.08), 0 24px 50px -30px rgba(18,22,58,.45); }
+  .original { background: var(--original); position: relative; z-index: 2; }
+  .kopie { background: var(--gelb); color: var(--blau); position: absolute; left: 0; right: 40px; top: 40px; z-index: 1; transform: rotate(-1.6deg); }
+  .kopie .aufschrift { position: absolute; right: 28px; bottom: 18px; font: 600 13px "Public Sans"; color: var(--blau); }
+  .blatt h2 { font-size: 34px; margin: 0 0 4px; letter-spacing: .01em; }
+  .blatt .unter { font-style: italic; color: var(--grau); margin: 0 0 24px; }
+  .blatt p { font-size: 18px; line-height: 1.7; margin: 0 0 14px; max-width: 58ch; }
+  .blatt .w { font-weight: 600; border-bottom: 1px solid #C4C8D6; }
+
+  .stempel { position: absolute; right: 54px; top: 34px; z-index: 3; transform: rotate(6deg); border: 3px solid #B3261E; color: #B3261E; padding: 8px 14px; font: 700 15px/1.25 "Public Sans"; text-align: center; max-width: 230px; background: rgba(255,255,255,.85); }
+  .stempel span { display: block; font-weight: 500; font-size: 13px; }
+
+  .unterschriften { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 44px; }
+  .unterschriften div { border-top: 1px solid var(--stift); padding-top: 4px; font: 13px "Public Sans"; color: var(--grau); }
+
+  .leiste { max-width: 1240px; margin: 0 auto; padding: 0 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .leiste a { background: #fff; padding: 16px 18px; text-decoration: none; color: var(--stift); border-top: 4px solid var(--blau); }
+  .leiste a b { display: block; font-size: 17px; }
+  .leiste a small { color: var(--grau); }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --tisch: #0F1124; --original: #F4F4F0; --stift: #E6E8F5; --grau: #A6ABC4; --gelb: #3A3620; }
+    .original { color: #12163A; }
+    .original .unter, .original .unterschriften div { color: #5B6178; }
+    .original .unterschriften div { border-color: #12163A; }
+    .kopie, .kopie .aufschrift { color: #C9D2FF; }
+    .formular input { background: #1A1D38; border-color: #33385E; }
+    .leiste a { background: #1A1D38; }
+    .knopf { background: #5A6BD8; }
+  }
+  @media (max-width: 960px) {
+    .buehne { grid-template-columns: 1fr; }
+    .stapel { padding-left: 0; }
+    .kopie { display: none; }
+    .blatt { padding: 28px 22px; }
+    .stempel { position: static; transform: none; margin-bottom: 16px; }
+    .leiste { grid-template-columns: 1fr 1fr; }
+    header nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<header><b>Schuldschein-Generator</b>
+  <nav><a href="#">Vorlagen</a><a href="#">Rechtslage</a><a href="#">Fragen</a><a href="#">EN</a></nav></header>
+
+<main class="buehne">
+  <section class="links">
+    <h1>Ein Vertrag, zwei Ausfertigungen</h1>
+    <p>Jede Seite bekommt ein unterschriebenes Exemplar. Sie tippen links, das Dokument entsteht rechts.</p>
+    <form class="formular">
+      <div><label for="g">Wer gibt das Geld?</label><input id="g" value="Anna Berger"></div>
+      <div><label for="n">Wer bekommt es?</label><input id="n" value="Jonas Keller"></div>
+      <div><label for="b">Wie viel?</label><input id="b" value="2.500,00 EUR"></div>
+      <div><label for="r">Zurück bis</label><input id="r" placeholder="TT.MM.JJJJ"></div>
+      <a class="knopf" href="#">Beide Ausfertigungen als PDF</a>
+    </form>
+  </section>
+
+  <div class="stapel">
+    <div class="blatt kopie" aria-hidden="true"><div class="aufschrift">Ausfertigung für den Darlehensnehmer</div></div>
+    <article class="blatt original">
+      <div class="stempel" role="note">KEINE RECHTSBERATUNG<span>Vorlage für einfache Fälle, ohne Gewähr. Im Zweifel anwaltlich prüfen lassen.</span></div>
+      <h2>Schuldschein</h2>
+      <p class="unter">Ausfertigung für die Darlehensgeberin</p>
+      <p>Ich, <span class="w">Jonas Keller</span>, bestätige, von <span class="w">Anna Berger</span> ein Darlehen über <span class="w">2.500,00 EUR</span> (zweitausendfünfhundert Euro) erhalten zu haben.</p>
+      <p>Ich verpflichte mich, den Betrag bis zum <span class="w">________</span> zurückzuzahlen.</p>
+      <p>Nach vollständiger Rückzahlung wird mir dieser Schuldschein zurückgegeben.</p>
+      <div class="unterschriften"><div>Ort, Datum, Unterschrift Darlehensnehmer</div><div>Ort, Datum, Unterschrift Darlehensgeberin</div></div>
+    </article>
+  </div>
+</main>
+
+<nav class="leiste" aria-label="Weiteres">
+  <a href="#"><b>Vorlagen</b><small>Kompakt, ausführlich, Raten, Quittung</small></a>
+  <a href="#"><b>Rechtslage</b><small>Gesetz und Urteile zum Nachlesen</small></a>
+  <a href="#"><b>Häufige Fragen</b><small>Zinsen, Verjährung, Zeugen</small></a>
+  <a href="#"><b>Nach der Rückzahlung</b><small>Quittung und Rückgabe</small></a>
+</nav>
+</body>
+</html>

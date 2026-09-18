@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf D - Überweisungsträger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --rot: #C8102E; --rosa: #FCEEF0; --weiss: #FFFFFF; --schwarz: #111418; --grau: #8A8F98; --tisch: #F1F1EE; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--schwarz); font: 17px/1.5 "Barlow Semi Condensed", sans-serif; }
+  header { background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  header .innen { max-width: 1160px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+  header b { font-size: 22px; font-weight: 700; }
+  header b i { font-style: normal; color: var(--rot); }
+  header nav { display: flex; gap: 4px; }
+  header nav a { color: var(--schwarz); text-decoration: none; padding: 6px 14px; font-weight: 500; }
+  header nav a[aria-current] { background: var(--rot); color: #fff; }
+
+  main { max-width: 1160px; margin: 0 auto; padding: 32px 24px 64px; }
+  .einleitung { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: 22px; }
+  .einleitung h1 { font-size: 52px; line-height: 1; margin: 0; font-weight: 700; letter-spacing: -.01em; }
+  .einleitung p { margin: 0; color: #3b3f46; max-width: 48ch; }
+
+  .beleg { background: var(--rosa); border: 2px solid var(--rot); padding: 18px 22px 22px; position: relative; }
+  .beleg .kopfzeile { display: flex; justify-content: space-between; color: var(--rot); font-weight: 700; font-size: 15px; border-bottom: 1px solid var(--rot); padding-bottom: 6px; margin-bottom: 12px; }
+  .reihe { display: grid; gap: 12px; margin-bottom: 12px; }
+  .r2 { grid-template-columns: 1fr 1fr; }
+  .r3 { grid-template-columns: 2fr 1fr 1fr; }
+  .feld label { display: block; color: var(--rot); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .kaestchen { display: flex; background: var(--weiss); border: 1px solid var(--rot); height: 38px; }
+  .kaestchen span { flex: 1 1 0; min-width: 0; border-right: 1px solid #EFB7C0; display: grid; place-items: center; font: 500 18px "IBM Plex Mono", monospace; }
+  .kaestchen span:last-child { border-right: 0; }
+  .zeile { background: var(--weiss); border: 1px solid var(--rot); height: 38px; padding: 0 10px; display: flex; align-items: center; font: 500 17px "IBM Plex Mono", monospace; }
+  .zeile.leer { color: var(--grau); font-family: "Barlow Semi Condensed"; font-style: italic; }
+  .betrag .kaestchen span:nth-last-child(3) { border-right: 2px solid var(--rot); }
+
+  .unten { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin-top: 24px; }
+  .haftung { background: var(--schwarz); color: #fff; padding: 22px 24px; display: grid; grid-template-columns: 8px 1fr; gap: 18px; }
+  .haftung::before { content: ""; background: var(--rot); }
+  .haftung h2 { margin: 0 0 6px; font-size: 24px; }
+  .haftung p { margin: 0; color: #d8d9dc; }
+  .aktion { background: var(--weiss); border: 1px solid #ddd; padding: 20px 22px; }
+  .aktion a { display: block; background: var(--rot); color: #fff; text-align: center; padding: 13px; font-weight: 700; font-size: 19px; text-decoration: none; margin-bottom: 10px; }
+  .aktion a.zwei { background: none; color: var(--schwarz); border: 2px solid var(--schwarz); }
+  .aktion small { color: #555; }
+  :focus-visible { outline: 3px solid #1F5FD6; outline-offset: 2px; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #8A8F98; --rot: #FF5A6E; }
+    .kaestchen span { border-right-color: #5C2A33; }
+    .haftung { background: #2A1519; }
+    .einleitung p { color: #b9bcc2; }
+    .aktion { border-color: #333; }
+  }
+  @media (max-width: 860px) {
+    .einleitung, .unten, .r2, .r3 { grid-template-columns: 1fr; }
+    header nav { display: none; }
+    .einleitung h1 { font-size: 38px; }
+    .kaestchen span { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<header><div class="innen"><b>Schuldschein<i>-Generator</i></b>
+  <nav><a href="#" aria-current="page">Ausfüllen</a><a href="#">Vorlagen</a><a href="#">Rechtslage</a><a href="#">Fragen</a><a href="#">EN</a></nav></div></header>
+
+<main>
+  <div class="einleitung">
+    <h1>Geld verleihen, schriftlich festhalten</h1>
+    <p>Füllen Sie den Beleg aus wie eine Überweisung. Daraus entsteht ein Schuldschein zum Unterschreiben. Die Daten bleiben in Ihrem Browser.</p>
+  </div>
+
+  <form class="beleg" aria-label="Angaben zum Darlehen">
+    <div class="kopfzeile"><span>Darlehen unter Privatpersonen</span><span>Beleg für 2 Ausfertigungen</span></div>
+    <div class="reihe r2">
+      <div class="feld"><label>Darlehensgeber, Name</label><div class="zeile">ANNA BERGER</div></div>
+      <div class="feld"><label>Darlehensnehmer, Name</label><div class="zeile">JONAS KELLER</div></div>
+    </div>
+    <div class="reihe r2">
+      <div class="feld"><label>Anschrift</label><div class="zeile">LINDENWEG 12, 04109 LEIPZIG</div></div>
+      <div class="feld"><label>Anschrift</label><div class="zeile leer">Straße, PLZ, Ort</div></div>
+    </div>
+    <div class="reihe r3">
+      <div class="feld"><label>IBAN für die Rückzahlung</label><div class="kaestchen"><span>D</span><span>E</span><span>8</span><span>9</span><span>3</span><span>7</span><span>0</span><span>4</span><span>0</span><span>0</span><span>4</span><span>4</span><span>0</span><span>5</span><span>3</span><span>2</span><span>0</span><span>1</span><span>3</span><span>0</span><span>0</span><span>0</span></div></div>
+      <div class="feld betrag"><label>Betrag, Euro, Cent</label><div class="kaestchen"><span></span><span>2</span><span>5</span><span>0</span><span>0</span><span>0</span><span>0</span></div></div>
+      <div class="feld"><label>Zurück bis</label><div class="kaestchen"><span>3</span><span>1</span><span>1</span><span>2</span><span>2</span><span>7</span></div></div>
+    </div>
+    <div class="feld"><label>Verwendungszweck (erscheint im Vertrag)</label><div class="zeile">UMZUG UND KAUTION</div></div>
+  </form>
+
+  <div class="unten">
+    <section class="haftung" role="note"><div>
+      <h2>Keine Rechtsberatung. Keine Haftung.</h2>
+      <p>Der Generator hilft, eine Vereinbarung festzuhalten. Ob sie in Ihrem Fall trägt, kann nur eine Anwältin oder ein Anwalt beurteilen. Nutzung auf eigene Verantwortung.</p>
+    </div></section>
+    <div class="aktion">
+      <a href="#">Schuldschein erzeugen</a>
+      <a class="zwei" href="#">Leere Vorlage herunterladen</a>
+      <small>Kompakt, ausführlich, mit Ratenplan, Quittung</small>
+    </div>
+  </div>
+</main>
+</body>
+</html>

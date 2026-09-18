@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf F - Beleg auf einer Seite</title>
+<link rel="icon" href="bilder/logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="thema.css">
+<script src="thema.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; --rot: #C8102E; --rosa: #FCEEF0; --weiss: #FFFFFF; --schwarz: #111418; --grau: #585D66; --tisch: #F1F1EE; --kaestchen: #EFB7C0; --linie: #DADAD4; --fokus: #1F5FD6; --auf-rot: #FFFFFF; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--tisch); color: var(--schwarz); font: 17px/1.5 "Barlow Semi Condensed", sans-serif; padding-bottom: 96px; }
+  :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+
+  header { background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  header .innen { max-width: 760px; margin: 0 auto; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  header b { font-size: 21px; font-weight: 700; }
+  .marke { display: flex; align-items: center; gap: 10px; color: var(--schwarz); text-decoration: none; }
+  .marke img { display: block; }
+  header b i { font-style: normal; color: var(--rot); }
+  header nav { display: flex; gap: 2px; font-weight: 500; }
+  header nav a { color: var(--schwarz); text-decoration: none; padding: 6px 10px; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 0; }
+  h1 { font-size: clamp(34px, 7vw, 48px); line-height: 1.02; margin: 0 0 10px; font-weight: 700; letter-spacing: -.01em; }
+  .lead { margin: 0 0 18px; color: #3b3f46; max-width: 52ch; }
+
+  .haftung { background: var(--schwarz); color: #fff; padding: 14px 16px 14px 20px; border-left: 8px solid var(--rot); margin-bottom: 22px; }
+  .haftung b { display: block; font-size: 21px; line-height: 1.2; }
+  .haftung span { color: #d8d9dc; font-size: 16px; }
+
+  /* Der Beleg: nur die Pflichtangaben */
+  .beleg { background: var(--rosa); border: 2px solid var(--rot); padding: 14px 16px 16px; }
+  .kopfzeile { display: flex; justify-content: space-between; gap: 12px; color: var(--rot); font-weight: 700; font-size: 14px; border-bottom: 1px solid var(--rot); padding-bottom: 6px; margin-bottom: 12px; }
+  .reihe { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .feld label, .feld .label { display: block; color: var(--rot); font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .feld input, .feld select, .feld textarea { width: 100%; height: 44px; background: var(--weiss); border: 1px solid var(--rot); border-radius: 0; padding: 0 10px; font: 500 17px "IBM Plex Mono", monospace; color: var(--schwarz); }
+  .feld textarea { height: 64px; padding: 8px 10px; resize: vertical; }
+  .feld input::placeholder, .feld textarea::placeholder { color: #737780; font: italic 400 17px "Barlow Semi Condensed"; }
+
+  /* Betrag in Kaestchen: echtes Eingabefeld, das Raster liegt im Hintergrund */
+  .betrag { display: flex; align-items: stretch; }
+  .betrag input { --zelle: 30px; height: 50px; width: calc(var(--zelle) * 9 + 2px); flex: none; font-size: 24px; padding: 0 0 0 7px; letter-spacing: calc(var(--zelle) - .6em);
+    background: var(--weiss) repeating-linear-gradient(90deg, transparent 0 calc(var(--zelle) - 1px), var(--kaestchen) calc(var(--zelle) - 1px) var(--zelle)); }
+  .betrag span { display: grid; place-items: center; padding: 0 12px; border: 1px solid var(--rot); border-left: 0; background: var(--weiss); font-weight: 700; color: var(--rot); }
+  .worte { font-size: 15px; color: var(--grau); margin-top: 4px; }
+
+  .wahl { display: flex; border: 1px solid var(--rot); background: var(--weiss); }
+  .wahl label { flex: 1; margin: 0; position: relative; }
+  .wahl input { position: absolute; opacity: 0; pointer-events: none; }
+  .wahl span { display: grid; place-items: center; height: 44px; font-weight: 600; color: var(--schwarz); cursor: pointer; border-right: 1px solid var(--kaestchen); font-size: 16px; }
+  .wahl label:last-child span { border-right: 0; }
+  .wahl input:checked + span { background: var(--rot); color: var(--auf-rot); }
+  .wahl input:focus-visible + span { outline: 3px solid var(--fokus); outline-offset: -3px; }
+
+  /* Zusatzstreifen: aufklappbar, im selben Belegstil */
+  .streifen { margin-top: 10px; background: var(--weiss); border: 1px solid var(--rot); border-left-width: 6px; }
+  .streifen summary { list-style: none; display: grid; grid-template-columns: 1fr auto 20px; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; min-height: 52px; }
+  .streifen summary::-webkit-details-marker { display: none; }
+  .streifen summary b { font-size: 18px; font-weight: 600; }
+  .streifen summary em { font-style: normal; font-family: "IBM Plex Mono", monospace; font-size: 14px; color: var(--grau); text-align: right; }
+  .streifen summary::after { content: "+"; font: 700 22px/1 "IBM Plex Mono"; color: var(--rot); text-align: center; }
+  .streifen[open] summary::after { content: "\2212"; }
+  .streifen[open] summary { border-bottom: 1px dashed var(--kaestchen); }
+  .streifen .inhalt { padding: 12px 14px 14px; background: var(--rosa); }
+  .streifen .inhalt .reihe:last-child { margin-bottom: 0; }
+  .warum { font-size: 15px; color: var(--grau); margin: 8px 0 0; }
+  .warum a { color: var(--rot); font-weight: 600; }
+
+  .leeren { margin-top: 14px; background: none; border: 0; padding: 8px 0; font: 600 16px "Barlow Semi Condensed"; color: var(--grau); text-decoration: underline; cursor: pointer; }
+  .zwischen { font-size: 15px; color: var(--grau); margin: 22px 0 6px; font-weight: 600; }
+
+  /* Vorschau */
+  .vorschau { margin-top: 28px; }
+  .vorschau h2 { font-size: 24px; margin: 0 0 10px; }
+  .blatt { background: #FFFFFF; color: #111418; padding: 28px 26px; box-shadow: 0 1px 0 #ddd, 0 18px 40px -28px rgba(0,0,0,.4); font-size: 17px; line-height: 1.65; }
+  .blatt h3 { font-size: 26px; margin: 0 0 14px; letter-spacing: .02em; }
+  .blatt p { margin: 0 0 12px; }
+  .blatt .v { background: #FCEEF0; box-shadow: 0 0 0 2px #FCEEF0; font-weight: 600; }
+  .blatt .v.leer { background: none; border-bottom: 1px dashed var(--rot); color: #656A73; font-weight: 400; }
+  .blatt .fuss { font-size: 13px; color: #6B707A; border-top: 1px solid #ddd; padding-top: 8px; margin-top: 22px; }
+  .unterschriften { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 34px; }
+  .unterschriften div { border-top: 1px solid #111418; padding-top: 4px; font-size: 13px; color: #6B707A; }
+
+  .vorlagen { margin: 28px 0 0; }
+  .vorlagen h2 { font-size: 24px; margin: 0 0 6px; }
+  .vorlagen ul { list-style: none; padding: 0; margin: 0; background: var(--weiss); border: 1px solid #ddd; }
+  .vorlagen li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid #eee; }
+  .vorlagen li:first-child { border-top: 0; }
+  .vorlagen li small { display: block; color: var(--grau); font-size: 15px; }
+  .vorlagen a { color: var(--rot); font-weight: 700; white-space: nowrap; }
+
+  /* Aktionsleiste immer erreichbar, auch mit dem Daumen */
+  .leiste { position: fixed; left: 0; right: 0; bottom: 0; background: var(--weiss); border-top: 3px solid var(--rot); box-shadow: 0 -8px 24px -16px rgba(0,0,0,.35); }
+  .leiste .innen { max-width: 760px; margin: 0 auto; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; }
+  .leiste .stand { font-size: 15px; color: var(--grau); line-height: 1.25; }
+  .leiste .stand b { display: block; color: var(--schwarz); font-size: 16px; }
+  .knopf { background: var(--rot); color: var(--auf-rot); border: 0; font: 700 18px "Barlow Semi Condensed"; padding: 0 22px; height: 48px; cursor: pointer; }
+  .knopf.zwei { background: none; color: var(--schwarz); border: 2px solid var(--schwarz); padding: 0 16px; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --kaestchen: #5C2A33; --linie: #2a2d33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+    :root:not([data-theme="light"]) .haftung { background: #2A1519; }
+    :root:not([data-theme="light"]) .lead { color: #b9bcc2; }
+    :root:not([data-theme="light"]) .vorlagen ul { border-color: #333; }
+    :root:not([data-theme="light"]) .vorlagen li { border-color: #2a2d33; }
+  }
+  :root[data-theme="dark"] { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --kaestchen: #5C2A33; --linie: #2a2d33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+  :root[data-theme="dark"] .haftung { background: #2A1519; }
+  :root[data-theme="dark"] .lead { color: #b9bcc2; }
+  :root[data-theme="dark"] .vorlagen ul { border-color: #333; }
+  :root[data-theme="dark"] .vorlagen li { border-color: #2a2d33; }
+  @media (max-width: 560px) {
+    .reihe { grid-template-columns: 1fr; }
+    .leiste .stand { display: none; }
+    .leiste .innen { grid-template-columns: 1fr auto; }
+    .betrag input { --zelle: 27px; font-size: 22px; }
+    .blatt { padding: 22px 18px; }
+    .unterschriften { grid-template-columns: 1fr; gap: 30px; }
+  }
+
+  .person { margin: 4px 0 6px; font-weight: 700; color: var(--rot); font-size: 15px; }
+  .person ~ .person { margin-top: 12px; }
+  .datenschutz { margin-top: 28px; font-size: 15px; color: var(--grau); }
+  .datenschutz b { color: var(--schwarz); }
+  .datenschutz p { margin: 4px 0 0; max-width: 64ch; }
+  .datenschutz a { color: var(--rot); font-weight: 600; }
+
+  /* Fassung waehlen: dasselbe Dokument, kompakt oder ausfuehrlich */
+  .vorschau-kopf { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .vorschau-kopf h2 { margin: 0; }
+  .fassung { width: 260px; max-width: 100%; }
+  .blatt .ausf { display: none; }
+  .blatt.ausfuehrlich .ausf { display: block; }
+  .blatt h4 { font-size: 17px; margin: 18px 0 4px; }
+
+  /* Druck: nur das Dokument, schwarz auf weiss */
+  /* Breite Bildschirme: links eingeben, rechts das Dokument, das stehen bleibt */
+  @media (min-width: 1100px) {
+    header .innen, main, .leiste .innen { max-width: 1320px; padding-left: 32px; padding-right: 32px; }
+    .arbeit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+    .ausgabe { position: sticky; top: 16px; max-height: calc(100vh - 110px); overflow: auto; }
+    .ausgabe .vorschau { margin-top: 0; }
+    .haftung { max-width: none; }
+    .vorlagen ul { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .vorlagen li { border-top: 0; border-left: 1px solid #eee; }
+    .vorlagen li:first-child { border-left: 0; }
+  }
+
+  .seitenfuss { border-top: 1px solid #d9d9d4; margin-top: 40px; }
+  .seitenfuss .innen { max-width: 760px; margin: 0 auto; padding: 20px 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 15px; color: var(--grau); }
+  .seitenfuss .copy { display: flex; align-items: center; gap: 10px; }
+  .seitenfuss img { height: 18px; width: auto; opacity: .6; }
+  .seitenfuss nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  .seitenfuss a { color: var(--grau); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+    :root:not([data-theme="light"]) .seitenfuss { border-color: #2a2d33; }
+  }
+  :root[data-theme="dark"] .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  :root[data-theme="dark"] .seitenfuss { border-color: #2a2d33; }
+  @media (min-width: 1100px) { .seitenfuss .innen { max-width: 1320px; padding: 20px 32px; } }
+
+  @media print {
+    @page { size: A4; margin: 20mm 18mm; }
+    body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+    header, .seitenfuss, .lead, h1, .haftung, .beleg, .zwischen, .streifen, .vorschau-kopf, .vorlagen, .datenschutz, .leiste { display: none !important; }
+    main { max-width: none; padding: 0; }
+    .vorschau { margin: 0; }
+    .blatt { box-shadow: none; padding: 0; font-size: 11pt; }
+    .blatt .v { background: none; box-shadow: none; }
+    .blatt .v.leer { display: inline-block; min-width: 14em; color: transparent; border-bottom: 1px solid #000; }
+    .unterschriften { break-inside: avoid; margin-top: 18mm; }
+  }
+</style>
+</head>
+<body>
+<header><div class="innen"><a class="marke" href="#"><svg class="logo" viewBox="-3 -10 62 62" width="44" height="44" aria-hidden="true" focusable="false"><path class="lr" d="M0 0H48.7V4.2H4.2V36.8H39V41H0Z"/><path class="lr" d="M8.2 10.2h6.6v6.6H8.2Zm1.6 1.6v3.4h3.4v-3.4ZM16.4 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM24.6 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM32.8 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM41 10.2h6.6v6.6H41Zm1.6 1.6v3.4h3.4v-3.4Z"/><path class="lt" d="M50.7 0H54.9V29.3L42.2 41H40.4V29.3H50.7Z"/><path class="lz" d="M25 26.2H29.2C31 26.2 31.6 21.4 33.6 21.4C35.4 21.4 34.6 26.2 36.6 26.2C37.8 26.2 38 24.4 39.2 24.4C40.2 24.4 40.4 26.2 41.6 26.2H45.4"/></svg><b>Schuldschein<i>-Generator</i></b></a>
+  <div class="rechts"><nav><a href="g-vorlagen.html">Vorlagen</a><a href="h-rechtslage.html">Rechtslage</a><a href="i-fragen.html">Fragen</a><a class="sprache" href="#">EN</a></nav><button class="thema" type="button" aria-pressed="false" aria-label="Dunkles Design"><svg class="mond" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.6A8.6 8.6 0 0 1 9.4 3.3a8.6 8.6 0 1 0 11.3 11.3Z"/></svg><svg class="sonne" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button></div></div></header>
+
+<main>
+  <h1>Geld verleihen, schriftlich festhalten</h1>
+  <p class="lead">Füll den Beleg aus, daraus entsteht Dein Schuldschein. Was Du einträgst, verlässt Deinen Browser nicht.</p>
+
+  <div class="haftung" role="note">
+    <b>Keine Rechtsberatung. Keine Haftung.</b>
+    <span>Der Vertrag passt für einfache Fälle unter Privatleuten. Bei hohen Beträgen, Sicherheiten oder Streit: lass ihn von einer Anwältin oder einem Anwalt prüfen.</span>
+  </div>
+
+  <div class="arbeit">
+  <div class="eingabe">
+  <form class="beleg" aria-label="Angaben zum Darlehen" onsubmit="return false">
+    <div class="kopfzeile"><span>Darlehen unter Privatleuten</span><span>Pflichtangaben</span></div>
+    <div class="reihe">
+      <div class="feld"><label for="geber_name">Wer verleiht das Geld?</label><input id="geber_name" data-pflicht required placeholder="Vor- und Nachname"></div>
+      <div class="feld"><label for="nehmer_name">Wer leiht es sich?</label><input id="nehmer_name" data-pflicht required placeholder="Vor- und Nachname"></div>
+    </div>
+    <div class="reihe">
+      <div class="feld"><label for="geber_adresse">Anschrift</label><input id="geber_adresse" data-pflicht required placeholder="Straße, PLZ, Ort"></div>
+      <div class="feld"><label for="nehmer_adresse">Anschrift</label><input id="nehmer_adresse" data-pflicht required placeholder="Straße, PLZ, Ort"></div>
+    </div>
+    <div class="reihe">
+      <div class="feld"><label for="summe">Betrag</label>
+        <div class="betrag"><input id="summe" data-pflicht required inputmode="decimal" maxlength="9"><span>EUR</span></div>
+        <div class="worte" id="worte" aria-live="polite">&nbsp;</div>
+      </div>
+      <div class="feld"><label for="zurueck">Zurück bis</label><input id="zurueck" data-pflicht required type="date"></div>
+    </div>
+    <div class="feld"><span class="label" id="l-aus">Wie wird das Geld übergeben?</span>
+      <div class="wahl" role="radiogroup" aria-labelledby="l-aus">
+        <label><input type="radio" name="aus" value="in bar" checked><span>bar</span></label>
+        <label><input type="radio" name="aus" value="per Überweisung"><span>Überweisung</span></label>
+        <label><input type="radio" name="aus" value=""><span>anders</span></label>
+      </div>
+    </div>
+  </form>
+
+  <p class="zwischen">Nur wenn Du es brauchst</p>
+
+  <details class="streifen">
+    <summary><b>Zinsen</b><em id="s-zins">zinslos</em></summary>
+    <div class="inhalt">
+      <div class="reihe">
+        <div class="feld"><label for="zinssatz">Zinssatz pro Jahr in %</label><input id="zinssatz" inputmode="decimal" placeholder="leer = zinslos"></div>
+        <div class="feld"><label for="verzug">Bei verspäteter Zahlung</label>
+          <select id="verzug"><option>gesetzlicher Verzugszins</option><option>kein Verzugszins</option></select></div>
+      </div>
+      <p class="warum">Gesetzlicher Verzugszins heißt derzeit 6,52 % pro Jahr. <a href="h-rechtslage.html#zinsen">Warum?</a></p>
+    </div>
+  </details>
+
+  <details class="streifen">
+    <summary><b>Rückzahlung in Raten</b><em id="s-raten">in einer Summe</em></summary>
+    <div class="inhalt">
+      <div class="reihe">
+        <div class="feld"><label for="rhythmus">Rhythmus</label><select id="rhythmus"><option>in einer Summe</option><option>monatlich</option><option>vierteljährlich</option></select></div>
+        <div class="feld"><label for="erste">Erste Rate am</label><input id="erste" type="date"></div>
+      </div>
+      <p class="warum">Die Ratenhöhe rechnen wir aus Betrag, Beginn und Enddatum aus.</p>
+    </div>
+  </details>
+
+  <details class="streifen">
+    <summary><b>Geburtsdaten und Ausweis</b><em>nicht angegeben</em></summary>
+    <div class="inhalt">
+      <p class="person" data-rolle="geber">Wer verleiht</p>
+      <div class="reihe">
+        <div class="feld"><label for="geber_geburt">Geburtsdatum</label><input id="geber_geburt" type="date"></div>
+        <div class="feld"><label for="geber_ausweis">Ausweisnummer</label><input id="geber_ausweis" maxlength="12"></div>
+      </div>
+      <p class="person" data-rolle="nehmer">Wer sich leiht</p>
+      <div class="reihe">
+        <div class="feld"><label for="nehmer_geburt">Geburtsdatum</label><input id="nehmer_geburt" type="date"></div>
+        <div class="feld"><label for="nehmer_ausweis">Ausweisnummer</label><input id="nehmer_ausweis" maxlength="12"></div>
+      </div>
+      <p class="warum">Hilft, falls es später Streit gibt, wer genau gemeint war. Freiwillig.</p>
+    </div>
+  </details>
+
+  <details class="streifen">
+    <summary><b>Bankverbindungen</b><em>nicht angegeben</em></summary>
+    <div class="inhalt">
+      <div class="reihe">
+        <div class="feld"><label for="geber_iban">Konto für die Rückzahlung</label><input id="geber_iban" autocapitalize="characters" placeholder="IBAN, beginnt mit DE"></div>
+        <div class="feld"><label for="nehmer_iban">Konto für die Auszahlung</label><input id="nehmer_iban" autocapitalize="characters" placeholder="IBAN, beginnt mit DE"></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="streifen">
+    <summary><b>Wofür ist das Geld?</b><em>nicht angegeben</em></summary>
+    <div class="inhalt"><div class="feld"><label for="zweck">Zweck</label><textarea id="zweck" maxlength="500" placeholder="zum Beispiel Umzug und Kaution"></textarea></div></div>
+  </details>
+
+  <details class="streifen">
+    <summary><b>Zeugin oder Zeuge</b><em>keine</em></summary>
+    <div class="inhalt">
+      <div class="reihe">
+        <div class="feld"><label for="zeuge_name">Name</label><input id="zeuge_name" placeholder="Vor- und Nachname"></div>
+        <div class="feld"><label for="zeuge_adresse">Anschrift</label><input id="zeuge_adresse" placeholder="Straße, PLZ, Ort"></div>
+      </div>
+      <p class="warum">Nicht nötig, macht es aber leichter zu beweisen, dass das Geld geflossen ist.</p>
+    </div>
+  </details>
+
+  <button class="leeren" type="button" onclick="document.querySelectorAll('input:not([type=radio]), textarea').forEach((e) => { e.value = ''; }); document.dispatchEvent(new Event('input'));">Formular leeren</button>
+  </div>
+  <div class="ausgabe">
+  <section class="vorschau" aria-labelledby="h-vorschau">
+    <div class="vorschau-kopf">
+      <h2 id="h-vorschau">So sieht Dein Schuldschein aus</h2>
+      <div class="wahl fassung" role="radiogroup" aria-label="Fassung">
+        <label><input type="radio" name="fassung" value="kompakt" checked><span>Kompakt</span></label>
+        <label><input type="radio" name="fassung" value="ausfuehrlich"><span>Ausführlich</span></label>
+      </div>
+    </div>
+    <article class="blatt">
+      <h3>Schuldschein</h3>
+      <p><span class="v leer" data-p="nehmer_name">Name</span>, <span class="v leer" data-p="nehmer_adresse">Anschrift</span>, bestätigt, von <span class="v leer" data-p="geber_name">Name</span>, <span class="v leer" data-p="geber_adresse">Anschrift</span>, ein Darlehen über <span class="v leer" data-p="summe">Betrag</span><span data-p="worte"></span> <span data-p="aus">in bar</span> erhalten zu haben.</p>
+      <p>Das Darlehen ist zinslos und bis zum <span class="v leer" data-p="zurueck">Datum</span> in einer Summe zurückzuzahlen. Eine frühere Rückzahlung ist jederzeit möglich. Bei Verzug gilt der gesetzliche Verzugszins.</p>
+      <p>Nach vollständiger Rückzahlung wird dieser Schuldschein zurückgegeben.</p>
+      <div class="ausf">
+        <h4>Kündigung</h4>
+        <p>Ist kein Rückzahlungstermin vereinbart, können beide Seiten mit einer Frist von drei Monaten kündigen.</p>
+        <h4>Verzug</h4>
+        <p>Zahlt der Darlehensnehmer nicht rechtzeitig, schuldet er Verzugszinsen in gesetzlicher Höhe.</p>
+        <h4>Schriftform</h4>
+        <p>Änderungen dieses Vertrags gelten nur, wenn beide Seiten sie schriftlich festhalten.</p>
+      </div>
+      <div class="unterschriften"><div>Ort, Datum, Unterschrift Darlehensnehmer/in</div><div>Ort, Datum, Unterschrift Darlehensgeber/in</div></div>
+      <p class="fuss">Erstellt mit schuldschein-generator.de. Keine Rechtsberatung. Bitte zweimal ausdrucken und beide Exemplare unterschreiben.</p>
+    </article>
+  </section>
+
+  </div>
+  </div>
+
+
+  <section class="datenschutz" aria-label="Deine Daten">
+    <b>Deine Daten</b>
+    <p>Was Du in das Formular einträgst, wird nur in Deinem Browser verarbeitet und nie an uns oder Dritte geschickt, auch nicht an Google. Wenn Du Statistik erlaubst, erfährt Google Analytics, welche Seiten besucht wurden, nicht aber, was Du eingetragen hast. <a href="#">Einstellungen ändern</a></p>
+  </section>
+</main>
+
+<footer class="seitenfuss">
+  <div class="innen">
+    <div class="copy"><img src="bilder/logo-micha5.png" alt="" width="104" height="18"><span>&copy; 2026 Michael Blaess</span></div>
+    <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Nutzungsbedingungen</a><a href="#">Cookie-Einstellungen</a></nav>
+  </div>
+</footer>
+
+<div class="leiste"><div class="innen">
+  <div class="stand" aria-live="polite"><b id="stand-titel">Noch 6 Pflichtangaben</b><span id="stand-text">Namen, Anschriften, Betrag, Rückzahlung</span></div>
+  <button class="knopf zwei" type="button" onclick="window.print()">Drucken</button>
+  <button class="knopf" type="button">PDF speichern</button>
+</div></div>
+
+<script>
+  // Nur fuer den Entwurf: Vorschau, Rollennamen und Zaehler folgen den Eingaben
+  const wert = (id) => document.getElementById(id).value.trim();
+  const fmtDatum = (iso) => { if (!iso) return ''; const [j, m, t] = iso.split('-'); return `${t}.${m}.${j}`; };
+  const setze = (key, text, leer) => document.querySelectorAll(`[data-p="${key}"]`).forEach((el) => {
+    el.textContent = text || leer; el.classList.toggle('leer', !text);
+  });
+  const rolle = { geber: 'Wer verleiht', nehmer: 'Wer sich leiht' };
+  const aktualisiere = () => {
+    setze('geber_name', wert('geber_name'), 'Name');
+    setze('nehmer_name', wert('nehmer_name'), 'Name');
+    setze('geber_adresse', wert('geber_adresse'), 'Anschrift');
+    setze('nehmer_adresse', wert('nehmer_adresse'), 'Anschrift');
+    setze('summe', wert('summe') ? `${wert('summe')} EUR` : '', 'Betrag');
+    setze('zurueck', fmtDatum(wert('zurueck')), 'Datum');
+    document.querySelector('[data-p="aus"]').textContent = document.querySelector('input[name="aus"]:checked').value;
+    for (const r of ['geber', 'nehmer']) {
+      const name = wert(`${r}_name`);
+      document.querySelector(`[data-rolle="${r}"]`).textContent = name ? `${rolle[r]}: ${name}` : rolle[r];
+    }
+    const z = wert('zinssatz');
+    document.getElementById('s-zins').textContent = z ? `${z} % pro Jahr` : 'zinslos';
+    document.getElementById('s-raten').textContent = document.getElementById('rhythmus').value;
+    document.querySelector('.blatt').classList.toggle('ausfuehrlich', document.querySelector('input[name="fassung"]:checked').value === 'ausfuehrlich');
+    const offen = [...document.querySelectorAll('[data-pflicht]')].filter((el) => !el.value.trim()).length;
+    document.getElementById('stand-titel').textContent = offen ? `Noch ${offen} Pflichtangabe${offen === 1 ? '' : 'n'}` : 'Alles Nötige ist da';
+    document.getElementById('stand-text').textContent = offen ? 'Namen, Anschriften, Betrag, Rückzahlung' : 'Jetzt speichern oder drucken';
+  };
+  document.addEventListener('input', aktualisiere);
+  document.addEventListener('change', aktualisiere);
+</script>
+
+</body>
+</html>

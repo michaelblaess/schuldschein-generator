@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf B - Gesetzbuch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,800;1,7..72,400;1,7..72,600&display=swap" rel="stylesheet">
+<style>
+  :root { --rot: #9E1B32; --papier: #FFFFFF; --satz: #1A1A1A; --rand: #6B6B6B; --mark: #FFF3B0; --linie: #E4E0DA; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--papier); color: var(--satz); font: 18px/1.65 "Literata", Georgia, serif; }
+  .band { background: var(--rot); color: #fff; }
+  .band .innen { max-width: 1120px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .band b { font-weight: 800; font-size: 20px; }
+  .band nav { display: flex; gap: 22px; font-size: 16px; }
+  .band a { color: #fff; text-decoration: none; opacity: .85; }
+  .band a[aria-current] { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
+
+  .seite { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; display: grid; grid-template-columns: 220px minmax(0, 1fr) 300px; column-gap: 40px; }
+  .titel { grid-column: 2 / 4; margin-bottom: 8px; }
+  .titel h1 { font-size: 64px; line-height: 1.02; margin: 0; font-weight: 800; letter-spacing: -.01em; }
+  .titel p { margin: 14px 0 0; max-width: 46ch; font-size: 20px; color: #333; }
+
+  .hinweis { grid-column: 2 / 4; margin: 32px 0 40px; border-left: 6px solid var(--rot); padding: 4px 0 4px 20px; }
+  .hinweis p { margin: 0; font-size: 21px; font-weight: 600; line-height: 1.45; max-width: 52ch; }
+  .hinweis span { display: block; font-size: 16px; font-weight: 400; color: var(--rand); margin-top: 6px; }
+
+  .rand { grid-column: 1; font-style: italic; font-size: 14px; line-height: 1.5; color: var(--rand); text-align: right; padding-top: 6px; }
+  .rand a { color: var(--rot); font-style: normal; font-weight: 600; text-decoration: none; display: block; font-size: 15px; }
+  .rand a:hover { text-decoration: underline; }
+  .klausel { grid-column: 2; margin-bottom: 30px; }
+  .klausel h2 { font-size: 22px; margin: 0 0 6px; font-weight: 600; }
+  .klausel h2 .par { color: var(--rot); margin-right: 8px; }
+  .klausel p { margin: 0; max-width: 60ch; }
+  .luecke { background: var(--mark); padding: 1px 0; box-shadow: 0 0 0 2px var(--mark); border-radius: 2px; }
+  .luecke.leer { background: none; border-bottom: 2px dotted var(--rot); color: var(--rand); }
+
+  .spalte { grid-column: 3; grid-row: 3 / span 4; align-self: start; position: sticky; top: 24px; }
+  .formular { border: 1px solid var(--linie); padding: 20px; }
+  .formular h3 { margin: 0 0 12px; font-size: 17px; }
+  .formular label { display: block; font-size: 14px; color: var(--rand); margin-top: 12px; }
+  .formular input, .formular select { width: 100%; font: 16px "Literata", serif; padding: 8px 10px; border: 1px solid #CFC9C0; background: #fff; color: var(--satz); }
+  .formular input:focus-visible { outline: 3px solid var(--rot); outline-offset: 1px; }
+  .schritt { display: flex; justify-content: space-between; margin-top: 18px; font-size: 14px; color: var(--rand); }
+  .knopf { display: block; margin-top: 16px; background: var(--satz); color: #fff; text-align: center; padding: 12px; text-decoration: none; font-weight: 600; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --papier: #16110F; --satz: #EDE6DF; --rand: #A89E95; --mark: #4A3A12; --linie: #3A302B; --rot: #E0566C; }
+    .band { background: #5E0F1D; }
+    .formular input, .formular select { background: #201915; border-color: #4a3d36; }
+    .knopf { background: var(--rot); color: #16110F; }
+    .titel p { color: #cfc6bd; }
+  }
+  @media (max-width: 1000px) {
+    .seite { grid-template-columns: 1fr; }
+    .titel, .hinweis, .klausel, .spalte, .rand { grid-column: 1; }
+    .spalte { grid-row: auto; position: static; margin-bottom: 32px; }
+    .rand { text-align: left; }
+    .titel h1 { font-size: 42px; }
+    .band nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="band"><div class="innen"><b>Schuldschein-Generator</b>
+  <nav><a href="#" aria-current="page">Vertrag</a><a href="#">Vorlagen</a><a href="#">Rechtslage und Urteile</a><a href="#">Fragen</a><a href="#">EN</a></nav></div></div>
+
+<main class="seite">
+  <header class="titel">
+    <h1>Schuldschein</h1>
+    <p>Ein Darlehen unter Privatleuten, schriftlich festgehalten. Jede Klausel mit dem Gesetz, auf dem sie beruht.</p>
+  </header>
+
+  <div class="hinweis" role="note">
+    <p>Dieser Generator ersetzt keine Rechtsberatung.</p>
+    <span>Er erzeugt einen Vertrag für einfache Fälle. Wir haften nicht dafür, dass er in Ihrer Lage wirksam oder vollständig ist.</span>
+  </div>
+
+  <div class="rand">Vertragsparteien<a href="#">§ 488 Abs. 1 BGB</a></div>
+  <section class="klausel">
+    <h2><span class="par">§ 1</span>Darlehen</h2>
+    <p><span class="luecke">Anna Berger</span>, Lindenweg 12, 04109 Leipzig, gewährt <span class="luecke">Jonas Keller</span>, <span class="luecke leer">Anschrift</span>, ein Darlehen über <span class="luecke">2.500,00 EUR</span>.</p>
+  </section>
+
+  <div class="rand">Fälligkeit ohne Vereinbarung: Kündigung mit drei Monaten Frist<a href="#">§ 488 Abs. 3 BGB</a></div>
+  <section class="klausel">
+    <h2><span class="par">§ 2</span>Rückzahlung</h2>
+    <p>Das Darlehen ist bis zum <span class="luecke">31.12.2027</span> in einer Summe zurückzuzahlen. Eine frühere Rückzahlung ist jederzeit möglich.</p>
+  </section>
+
+  <div class="rand">Ohne Abrede zinslos<a href="#">§ 488 Abs. 1 S. 2 BGB</a></div>
+  <section class="klausel">
+    <h2><span class="par">§ 3</span>Zinsen</h2>
+    <p>Das Darlehen ist <span class="luecke">zinslos</span>. Bei Verzug gilt der gesetzliche Verzugszins.</p>
+  </section>
+
+  <div class="rand">Beweis der Tilgung durch Rückgabe<a href="#">§ 371 BGB</a></div>
+  <section class="klausel">
+    <h2><span class="par">§ 4</span>Rückgabe des Schuldscheins</h2>
+    <p>Nach vollständiger Rückzahlung erhält der Darlehensnehmer diesen Schuldschein zurück.</p>
+  </section>
+
+  <aside class="spalte">
+    <form class="formular">
+      <h3>Angaben</h3>
+      <label for="b">Darlehensbetrag in Euro</label><input id="b" value="2.500,00">
+      <label for="r">Rückzahlung</label>
+      <select id="r"><option>in einer Summe bis Datum</option><option>in Raten</option><option>unbefristet, mit Kündigung</option></select>
+      <label for="d">Datum</label><input id="d" value="31.12.2027">
+      <div class="schritt"><span>Schritt 3 von 5</span><span>Zinsen</span></div>
+      <a class="knopf" href="#">Weiter zu den Zinsen</a>
+    </form>
+  </aside>
+</main>
+</body>
+</html>

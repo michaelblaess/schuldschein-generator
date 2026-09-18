@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf H - Rechtslage</title>
+<link rel="icon" href="bilder/logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="thema.css">
+<script src="thema.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; --rot: #C8102E; --rosa: #FCEEF0; --weiss: #FFFFFF; --schwarz: #111418; --grau: #585D66; --tisch: #F1F1EE; --linie: #DADAD4; --kaestchen: #EFB7C0; --fokus: #1F5FD6; --auf-rot: #FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--schwarz); font: 17px/1.55 "Barlow Semi Condensed", sans-serif; }
+  :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  a { color: var(--rot); }
+
+  header { background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  header .innen, main, .seitenfuss .innen { max-width: 1320px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header .innen { padding-top: 12px; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .marke { display: flex; align-items: center; gap: 10px; color: var(--schwarz); text-decoration: none; }
+  .marke b { font-size: 21px; font-weight: 700; }
+  .marke i { font-style: normal; color: var(--rot); }
+  header nav { display: flex; gap: 2px; font-weight: 500; }
+  header nav a { color: var(--schwarz); text-decoration: none; padding: 6px 10px; }
+  header nav a[aria-current] { background: var(--rot); color: var(--auf-rot); }
+
+  main { padding-top: 28px; padding-bottom: 48px; }
+  h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.02; margin: 0 0 8px; letter-spacing: -.01em; }
+  .stand { font: 500 15px "IBM Plex Mono", monospace; color: var(--grau); margin: 0 0 18px; }
+  .haftung { background: var(--schwarz); color: #fff; padding: 12px 16px 12px 20px; border-left: 8px solid var(--rot); margin-bottom: 24px; }
+  .haftung b { font-size: 19px; }
+  .haftung span { color: #d8d9dc; }
+
+  /* Das Wichtigste: im Belegstil, weil es die Kurzfassung fuer alle ist */
+  .kurz { background: var(--rosa); border: 2px solid var(--rot); padding: 14px 18px 16px; margin-bottom: 32px; }
+  .kurz h2 { margin: 0 0 8px; font-size: 22px; color: var(--rot); }
+  .kurz ul { margin: 0; padding-left: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; }
+  .kurz li { padding-left: 2px; }
+
+  .spalten { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+  .spalten > section > h2 { font-size: 28px; margin: 0 0 4px; }
+  .spalten > section > p { margin: 0 0 14px; color: var(--grau); }
+
+  .streifen { margin-top: 10px; background: var(--weiss); border: 1px solid var(--rot); border-left-width: 6px; }
+  .streifen summary { list-style: none; display: grid; grid-template-columns: 1fr auto 20px; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; min-height: 52px; }
+  .streifen summary::-webkit-details-marker { display: none; }
+  .streifen summary b { font-size: 19px; font-weight: 600; }
+  .streifen summary em { font: normal 500 14px "IBM Plex Mono", monospace; color: var(--grau); text-align: right; }
+  .streifen summary::after { content: "+"; font: 700 22px/1 "IBM Plex Mono"; color: var(--rot); text-align: center; }
+  .streifen[open] summary::after { content: "\2212"; }
+  .streifen[open] summary { border-bottom: 1px dashed var(--kaestchen); }
+  .streifen .inhalt { padding: 12px 16px 16px; }
+  .streifen .inhalt p { margin: 0 0 10px; max-width: 70ch; }
+  .streifen .inhalt p:last-child { margin-bottom: 0; }
+  .norm { font: 500 14px "IBM Plex Mono", monospace; white-space: nowrap; }
+  table { border-collapse: collapse; margin: 6px 0 10px; font-size: 16px; }
+  th, td { border: 1px solid var(--linie); padding: 4px 12px; text-align: left; }
+  th { background: var(--rosa); }
+  td:last-child { font-family: "IBM Plex Mono", monospace; text-align: right; }
+
+  .urteile { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .urteil { background: var(--weiss); border: 1px solid var(--linie); padding: 12px 16px 14px; }
+  .urteil .kopf { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 500 14px "IBM Plex Mono", monospace; color: var(--grau); }
+  .urteil .kopf b { color: var(--rot); font-weight: 500; }
+  .urteil h3 { margin: 4px 0 4px; font-size: 19px; line-height: 1.3; }
+  .urteil p { margin: 0 0 6px; }
+  .urteil a { font-weight: 600; }
+  .quelle { font-size: 15px; color: var(--grau); margin-top: 24px; }
+
+  .seitenfuss { border-top: 1px solid var(--linie); }
+  .seitenfuss .innen { padding-top: 20px; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 15px; color: var(--grau); }
+  .seitenfuss .copy { display: flex; align-items: center; gap: 10px; }
+  .seitenfuss img { height: 18px; width: auto; opacity: .6; }
+  .seitenfuss nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  .seitenfuss a { color: var(--grau); }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --kaestchen: #5C2A33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+    :root:not([data-theme="light"]) .haftung { background: #2A1519; }
+    :root:not([data-theme="light"]) .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  }
+  :root[data-theme="dark"] { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --kaestchen: #5C2A33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+  :root[data-theme="dark"] .haftung { background: #2A1519; }
+  :root[data-theme="dark"] .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  @media (max-width: 960px) {
+    .spalten { grid-template-columns: 1fr; }
+    .kurz ul { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    header .innen, main, .seitenfuss .innen { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+<header><div class="innen">
+  <a class="marke" href="f-beleg-einseitig.html"><svg class="logo" viewBox="-3 -10 62 62" width="44" height="44" aria-hidden="true" focusable="false"><path class="lr" d="M0 0H48.7V4.2H4.2V36.8H39V41H0Z"/><path class="lr" d="M8.2 10.2h6.6v6.6H8.2Zm1.6 1.6v3.4h3.4v-3.4ZM16.4 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM24.6 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM32.8 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM41 10.2h6.6v6.6H41Zm1.6 1.6v3.4h3.4v-3.4Z"/><path class="lt" d="M50.7 0H54.9V29.3L42.2 41H40.4V29.3H50.7Z"/><path class="lz" d="M25 26.2H29.2C31 26.2 31.6 21.4 33.6 21.4C35.4 21.4 34.6 26.2 36.6 26.2C37.8 26.2 38 24.4 39.2 24.4C40.2 24.4 40.4 26.2 41.6 26.2H45.4"/></svg><b>Schuldschein<i>-Generator</i></b></a>
+  <div class="rechts"><nav><a href="f-beleg-einseitig.html">Ausfüllen</a><a href="g-vorlagen.html">Vorlagen</a><a href="h-rechtslage.html" aria-current="page">Rechtslage</a><a href="i-fragen.html">Fragen</a><a class="sprache" href="#">EN</a></nav><button class="thema" type="button" aria-pressed="false" aria-label="Dunkles Design"><svg class="mond" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.6A8.6 8.6 0 0 1 9.4 3.3a8.6 8.6 0 1 0 11.3 11.3Z"/></svg><svg class="sonne" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button></div>
+</div></header>
+
+<main>
+  <h1>Was das Gesetz sagt</h1>
+  <p class="stand">Stand: 18.09.2026, alle Quellen an diesem Tag geprüft</p>
+  <div class="haftung" role="note"><b>Keine Rechtsberatung.</b> <span>Das hier ist eine Zusammenfassung zum Nachlesen. Urteile betreffen immer einen Einzelfall.</span></div>
+
+  <section class="kurz" aria-labelledby="h-kurz">
+    <h2 id="h-kurz">Das Wichtigste in Kürze</h2>
+    <ul>
+      <li>Ein Notar ist nicht nötig. Für ein Darlehen unter Privatleuten schreibt das Gesetz keine Form vor.</li>
+      <li>Ausdrucken und eigenhändig unterschreiben. Nur dann beweist der Schuldschein vor Gericht voll.</li>
+      <li>Ohne Rückzahlungstermin gilt eine Kündigungsfrist von drei Monaten.</li>
+      <li>Die Forderung verjährt nach drei Jahren, gerechnet ab Ende des Jahres, in dem sie fällig wurde.</li>
+      <li>Wer Geld zurückfordert, muss beweisen, dass es kein Geschenk war. Dafür ist der Schuldschein da.</li>
+      <li>Nach der Rückzahlung gibt es eine Quittung und den Schuldschein zurück.</li>
+    </ul>
+  </section>
+
+  <div class="spalten">
+    <section aria-labelledby="h-gesetz">
+      <h2 id="h-gesetz">Gesetz nach Themen</h2>
+      <p>Jeder Absatz verweist auf den Gesetzestext bei gesetze-im-internet.de.</p>
+
+      <details class="streifen" id="form">
+        <summary><b>Form und Unterschrift</b><em>§ 126, 781 BGB</em></summary>
+        <div class="inhalt">
+          <p>Für den Darlehensvertrag unter Privatleuten gibt es keine Formvorschrift. Die Schriftform verlangt das Gesetz nur beim Verbraucherdarlehen, also wenn ein Unternehmer Geld verleiht. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__492.html">§ 492 BGB</a></p>
+          <p>Ein Schuldanerkenntnis dagegen muss schriftlich sein, die elektronische Form ist ausgeschlossen. Ein PDF per E-Mail oder eine eingescannte Unterschrift reicht dafür nicht. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__781.html">§ 781 BGB</a> <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__126.html">§ 126 BGB</a></p>
+          <p>Eine unterschriebene Privaturkunde beweist voll, dass die Erklärung vom Unterzeichner stammt. <a class="norm" href="https://www.gesetze-im-internet.de/zpo/__416.html">§ 416 ZPO</a></p>
+        </div>
+      </details>
+
+      <details class="streifen" id="rueckzahlung">
+        <summary><b>Rückzahlung und Kündigung</b><em>§ 488 BGB</em></summary>
+        <div class="inhalt">
+          <p>Ist kein Rückzahlungstermin bestimmt, wird das Darlehen erst durch Kündigung fällig. Die Frist beträgt drei Monate. Ist das Darlehen zinslos, darf auch ohne Kündigung zurückgezahlt werden. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__488.html">§ 488 Abs. 3 BGB</a></p>
+          <p>Nach der Rückzahlung kann der Schuldner eine Quittung und die Rückgabe des Schuldscheins verlangen. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__368.html">§ 368 BGB</a> <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__371.html">§ 371 BGB</a></p>
+        </div>
+      </details>
+
+      <details class="streifen" id="verjaehrung">
+        <summary><b>Verjährung</b><em>3 Jahre</em></summary>
+        <div class="inhalt">
+          <p>Die regelmäßige Frist beträgt drei Jahre. Sie beginnt am Ende des Jahres, in dem der Anspruch entstanden ist, spätestens gilt eine Grenze von zehn Jahren. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__195.html">§ 195 BGB</a> <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__199.html">§ 199 BGB</a></p>
+          <p>Beim Darlehen entsteht der Anspruch erst mit der Fälligkeit, ohne festen Termin also erst nach der Kündigung (BGH, IX ZR 129/17).</p>
+          <p>Jede Ratenzahlung oder Zinszahlung lässt die Verjährung neu beginnen. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__212.html">§ 212 BGB</a></p>
+        </div>
+      </details>
+
+      <details class="streifen" id="zinsen">
+        <summary><b>Zinsen und Verzug</b><em>derzeit 6,52 %</em></summary>
+        <div class="inhalt">
+          <p>Zinsen gibt es nur, wenn sie vereinbart sind. Eine feste Obergrenze kennt das Gesetz nicht, sittenwidrig hohe Zinsen machen den Vertrag aber nichtig. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__488.html">§ 488 BGB</a> <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__138.html">§ 138 BGB</a></p>
+          <p>Wer nicht rechtzeitig zahlt, gerät in Verzug. Steht der Termin im Kalender, braucht es keine Mahnung. Der Verzugszins liegt fünf Prozentpunkte über dem Basiszinssatz. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__286.html">§ 286 BGB</a> <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__288.html">§ 288 BGB</a></p>
+          <table><caption class="stand" style="text-align:left">Basiszinssatz laut <a href="https://www.bundesbank.de/de/bundesbank/organisation/agb-und-regelungen/basiszinssatz-607820">Bundesbank</a></caption>
+            <thead><tr><th>Gültig ab</th><th>Basiszins</th></tr></thead>
+            <tbody><tr><td>01.07.2026</td><td>1,52 %</td></tr><tr><td>01.01.2026</td><td>1,27 %</td></tr><tr><td>01.07.2025</td><td>1,27 %</td></tr><tr><td>01.01.2025</td><td>2,27 %</td></tr></tbody></table>
+          <p>Verzugszins unter Privatleuten damit derzeit 6,52 % pro Jahr.</p>
+        </div>
+      </details>
+
+      <details class="streifen" id="schenkung">
+        <summary><b>Darlehen oder Geschenk?</b><em>§ 518 BGB</em></summary>
+        <div class="inhalt">
+          <p>Ein Schenkungsversprechen bräuchte zwar einen Notar, der Mangel heilt aber, sobald das Geld geflossen ist. <a class="norm" href="https://www.gesetze-im-internet.de/bgb/__518.html">§ 518 BGB</a></p>
+          <p>Im Streit muss deshalb derjenige, der das Geld zurückwill, beweisen, dass es kein Geschenk war (BGH, X ZR 150/11). Ein unterschriebener Schuldschein ist dieser Beweis.</p>
+        </div>
+      </details>
+
+      <details class="streifen" id="steuern">
+        <summary><b>Steuern</b><em>Zinsen, Schenkung</em></summary>
+        <div class="inhalt">
+          <p>Zinsen aus einem privaten Darlehen sind Einkünfte aus Kapitalvermögen und grundsätzlich zu versteuern. <a class="norm" href="https://www.gesetze-im-internet.de/estg/__20.html">§ 20 EStG</a></p>
+          <p>Ein zinsloses oder sehr günstiges Darlehen kann als Schenkung des Zinsvorteils gelten. Bewertet wird mit dem marktüblichen Zins, wenn der feststeht, sonst mit 5,5 % (BFH, II R 20/22). <a class="norm" href="https://www.gesetze-im-internet.de/bewg/__15.html">§ 15 BewG</a></p>
+          <p>Freibeträge innerhalb von zehn Jahren, unter anderem: Ehe- oder Lebenspartner 500.000 Euro, Kinder 400.000 Euro, Enkel 200.000 Euro. <a class="norm" href="https://www.gesetze-im-internet.de/erbstg_1974/__16.html">§ 16 ErbStG</a></p>
+        </div>
+      </details>
+
+      <details class="streifen" id="gericht">
+        <summary><b>Gerichtsstand</b><em>§ 38 ZPO</em></summary>
+        <div class="inhalt">
+          <p>Privatleute können einen Gerichtsstand nur in Ausnahmen vereinbaren, etwa nachdem der Streit schon entstanden ist. Eine pauschale Klausel im Schuldschein wirkt deshalb in aller Regel nicht. Unser Generator lässt sie weg. <a class="norm" href="https://www.gesetze-im-internet.de/zpo/__38.html">§ 38 ZPO</a></p>
+        </div>
+      </details>
+
+      <details class="streifen" id="neu">
+        <summary><b>Neu ab 20.11.2026</b><em>§ 491 BGB</em></summary>
+        <div class="inhalt">
+          <p>Das neue Verbraucherkreditrecht erfasst künftig auch zinslose Kredite von Unternehmern. Für Darlehen zwischen zwei Privatleuten ändert sich nichts, weil weiterhin ein Unternehmer als Darlehensgeber vorausgesetzt ist. <a href="https://www.recht.bund.de/bgbl/1/2026/139/regelungstext.pdf?__blob=publicationFile&amp;v=1">BGBl. 2026 I Nr. 139</a></p>
+        </div>
+      </details>
+    </section>
+
+    <section aria-labelledby="h-urteile">
+      <h2 id="h-urteile">Urteile zum Nachlesen</h2>
+      <p>Jede Entscheidung im Volltext geöffnet und geprüft. Neueste zuerst.</p>
+      <ul class="urteile">
+        <li class="urteil"><div class="kopf"><b>BFH</b><span>31.07.2024</span><span>II R 20/22</span></div>
+          <h3>Zinsgünstiges Darlehen in der Familie: marktüblicher Zins statt pauschal 5,5 %</h3>
+          <p>Der Zinsvorteil unterliegt der Schenkungsteuer, wird aber mit dem marktüblichen Zins bemessen, wenn der feststeht.</p>
+          <a href="https://www.bundesfinanzhof.de/en/entscheidungen/entscheidungen-online/decision-detail/STRE202410203/">Volltext beim BFH</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>18.06.2019</span><span>X ZR 107/16</span></div>
+          <h3>Immobilie an Kind und Partner verschenkt, Beziehung hält nicht</h3>
+          <p>Dauerte die gemeinsame Nutzung nur kurz, kann der Schenker in der Regel zurücktreten.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE305082019.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>21.06.2018</span><span>IX ZR 129/17</span></div>
+          <h3>Verjährung beginnt beim Darlehen ohne Laufzeit erst mit der Kündigung</h3>
+          <p>Der Rückzahlungsanspruch entsteht mit der Fälligkeit, und die hängt ohne festen Termin von der Kündigung ab.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE301262018.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>OLG Köln</b><span>29.06.2017</span><span>16 U 106/16</span></div>
+          <h3>Überweisung ohne Verwendungszweck "Darlehen" genügt als Nachweis</h3>
+          <p>Die Überweisung kam unmittelbar nach dem schriftlichen Vertrag, danach wurden Raten gezahlt. Das reichte als Beweis der Auszahlung.</p>
+          <a href="https://nrwe.justiz.nrw.de/olgs/koeln/j2017/16_U_106_16_Beschluss_20170629.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>11.05.2017</span><span>I ZB 63/16</span></div>
+          <h3>Was im unterschriebenen Text steht, gilt als vollständig und richtig</h3>
+          <p>Wer sich auf Absprachen außerhalb der Urkunde beruft, muss sie beweisen. Unklares begründet keine Vermutung.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE622122017.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>OLG Hamm</b><span>14.03.2017</span><span>10 U 62/16</span></div>
+          <h3>Schuldanerkenntnis über ein Elterndarlehen</h3>
+          <p>Wer ein Darlehen schriftlich anerkannt hat, kann später keine Einwände mehr erheben, die er damals schon kannte.</p>
+          <a href="https://nrwe.justiz.nrw.de/olgs/hamm/j2017/10_U_62_16_Urteil_20170314.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>06.05.2014</span><span>X ZR 135/11</span></div>
+          <h3>Absicherung der Lebensgefährtin, Rückforderung nach der Trennung</h3>
+          <p>Eine solche Zuwendung ist meist keine Schenkung und kann zurückzugeben sein, wenn die Beziehung danach scheitert.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE311132014.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>11.03.2014</span><span>X ZR 150/11</span></div>
+          <h3>Mutter fordert Geld von der Tochter zurück</h3>
+          <p>Eine Darlehensabrede konnte die Mutter nicht belegen. Dass es kein Geschenk war, muss beweisen, wer das Geld zurückwill.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE310902014.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BFH</b><span>22.10.2013</span><span>X R 26/11</span></div>
+          <h3>Darlehen unter Angehörigen im Steuerrecht</h3>
+          <p>Wie streng das Finanzamt den Vertrag mit einem Fremdvergleich prüft, hängt vom Anlass ab. Wichtig ist, dass er tatsächlich so gelebt wird.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/STRE201310314.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>08.05.2013</span><span>XII ZR 132/12</span></div>
+          <h3>Trennung: gezahlte Raten für das Haus des Partners</h3>
+          <p>Ohne ausdrückliche Darlehensabrede gibt es meist keinen Ausgleich, solange die Zahlungen nicht deutlich über einer Miete lagen.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE303422013.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>BGH</b><span>03.02.2010</span><span>XII ZR 189/06</span></div>
+          <h3>Zuwendungen der Schwiegereltern nach dem Scheitern der Ehe</h3>
+          <p>Sie gelten als Schenkung, können aber nach dem Scheitern der Ehe zurückgefordert werden.</p>
+          <a href="https://testphase.rechtsinformationen.bund.de/v1/case-law/KORE303332010.html">Volltext</a></li>
+        <li class="urteil"><div class="kopf"><b>OLG Oldenburg</b><span>23.12.2002</span><span>15 U 72/02</span></div>
+          <h3>Ein echter Schuldschein trägt die Klage</h3>
+          <p>Ist die Unterschrift bewiesen, muss der Gläubiger die näheren Umstände nicht darlegen. Der Schuldschein wirkt zugleich als Quittung.</p>
+          <a href="https://lorenz.userweb.mwn.de/urteile/oldenburg.htm">Volltext (Urteilssammlung LMU)</a></li>
+      </ul>
+      <p class="quelle">Bundesgerichte über das amtliche Portal rechtsinformationen.bund.de (Testphase), Oberlandesgerichte NRW über nrwe.justiz.nrw.de.</p>
+    </section>
+  </div>
+</main>
+
+<footer class="seitenfuss"><div class="innen">
+  <div class="copy"><img src="bilder/logo-micha5.png" alt="" width="104" height="18"><span>&copy; 2026 Michael Blaess</span></div>
+  <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Nutzungsbedingungen</a><a href="#">Cookie-Einstellungen</a></nav>
+</div></footer>
+</body>
+</html>

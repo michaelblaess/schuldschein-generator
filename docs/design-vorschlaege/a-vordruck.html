@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf A - Vordruck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gruen: #2F5D46; --linie: #A9C4B1; --papier: #FBFCF8; --tinte: #1B2430; --blau: #2346A0;
+    --tisch: #DDE3DA; --warn: #8B1E1E;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--tinte); font: 16px/1.5 "Archivo Narrow", sans-serif; }
+  a { color: inherit; }
+  header { display: flex; align-items: center; justify-content: space-between; max-width: 1180px; margin: 0 auto; padding: 18px 24px; }
+  .marke { display: flex; align-items: baseline; gap: 12px; }
+  .marke b { font-size: 22px; letter-spacing: .01em; color: var(--gruen); }
+  .marke span { font-size: 14px; color: #4A5A50; }
+  nav { display: flex; gap: 22px; font-size: 16px; font-weight: 500; }
+  nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  nav a[aria-current] { border-color: var(--gruen); color: var(--gruen); }
+  .werkzeug { display: flex; gap: 8px; font-size: 14px; }
+  .werkzeug button { font: inherit; background: none; border: 1px solid var(--linie); padding: 4px 10px; color: var(--tinte); }
+
+  .buehne { max-width: 1180px; margin: 0 auto; padding: 8px 24px 64px; display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+  .block { background: var(--papier); box-shadow: 0 1px 0 #c6cfc5, 0 18px 40px -24px rgba(27,36,48,.35); position: relative; padding: 0 0 28px; }
+  .block::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 14px;
+    background: repeating-linear-gradient(90deg, var(--gruen) 0 10px, transparent 10px 16px); opacity: .9; }
+  .kopf { display: grid; grid-template-columns: 1fr auto; border-bottom: 2px solid var(--gruen); margin: 34px 36px 0; padding-bottom: 10px; }
+  .kopf h1 { margin: 0; font-size: 44px; line-height: 1; letter-spacing: .02em; color: var(--gruen); font-weight: 700; }
+  .kopf small { display: block; font-size: 14px; color: #4A5A50; margin-top: 6px; }
+  .formnr { text-align: right; font-size: 12px; color: #4A5A50; line-height: 1.4; }
+  .formnr b { display: block; font-size: 15px; color: var(--gruen); }
+
+  .vermerk { margin: 16px 36px 0; border: 2px solid var(--warn); color: var(--warn); padding: 10px 14px; font-weight: 600; font-size: 15px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+  .vermerk strong { font-size: 18px; line-height: 1.1; }
+
+  .zeilen { margin: 22px 36px 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--linie); border-left: 1px solid var(--linie); }
+  .feld { border-right: 1px solid var(--linie); border-bottom: 1px solid var(--linie); padding: 4px 10px 6px; min-height: 58px; }
+  .feld.breit { grid-column: 1 / -1; }
+  .feld label { display: block; font-size: 12px; color: var(--gruen); font-weight: 600; }
+  .feld input { width: 100%; border: 0; background: transparent; font: 18px/1.3 "Courier Prime", monospace; color: var(--blau); padding: 4px 0 0; }
+  .feld input:focus { outline: none; }
+  .feld:focus-within { background: #EEF4EC; box-shadow: inset 0 -2px 0 var(--blau); }
+  .abschnitt { grid-column: 1 / -1; background: var(--gruen); color: #fff; font-weight: 600; font-size: 14px; padding: 4px 10px; letter-spacing: .02em; }
+
+  .text { margin: 22px 36px 0; font-size: 17px; line-height: 1.7; max-width: 64ch; }
+  .text .e { font-family: "Courier Prime", monospace; color: var(--blau); border-bottom: 1px dashed var(--linie); padding: 0 2px; }
+  .unterschrift { margin: 36px 36px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .unterschrift div { border-top: 1px solid var(--tinte); padding-top: 4px; font-size: 13px; color: #4A5A50; }
+
+  aside { position: sticky; top: 16px; display: grid; gap: 16px; }
+  .kasten { background: var(--papier); border: 1px solid var(--linie); padding: 16px 18px; }
+  .kasten h2 { margin: 0 0 8px; font-size: 18px; color: var(--gruen); }
+  .kasten p { margin: 0 0 10px; font-size: 15px; }
+  .knopf { display: block; width: 100%; text-align: center; background: var(--gruen); color: #fff; font: 600 17px "Archivo Narrow"; padding: 12px; border: 0; margin-bottom: 8px; text-decoration: none; }
+  .knopf.zwei { background: transparent; color: var(--gruen); border: 2px solid var(--gruen); }
+  .vorlagen { list-style: none; margin: 0; padding: 0; }
+  .vorlagen li { display: flex; justify-content: space-between; border-top: 1px dotted var(--linie); padding: 7px 0; font-size: 15px; }
+  .vorlagen li span { color: #4A5A50; font-size: 13px; }
+  :focus-visible { outline: 3px solid var(--blau); outline-offset: 2px; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --papier: #1E2622; --tisch: #121714; --tinte: #E5EBE4; --linie: #3D5646; --gruen: #7FB894; --blau: #9DB6FF; --warn: #FF8C8C; }
+    .feld:focus-within { background: #243029; }
+  }
+  @media (max-width: 900px) {
+    .buehne { grid-template-columns: 1fr; }
+    nav { display: none; }
+    .zeilen { grid-template-columns: 1fr; }
+    .kopf, .vermerk, .zeilen, .text, .unterschrift { margin-left: 16px; margin-right: 16px; }
+    .kopf h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="marke"><b>Schuldschein-Generator</b><span>Vordruck zum Ausfüllen am Bildschirm</span></div>
+  <nav><a href="#" aria-current="page">Ausfüllen</a><a href="#">Vorlagen</a><a href="#">Rechtslage</a><a href="#">Fragen</a></nav>
+  <div class="werkzeug"><button>DE | EN</button><button>Dunkel</button></div>
+</header>
+
+<main class="buehne">
+  <article class="block">
+    <div class="kopf">
+      <div><h1>Schuldschein</h1><small>Darlehensvertrag unter Privatpersonen nach §§ 488 ff. BGB</small></div>
+      <div class="formnr"><b>Ausfertigung 1 von 2</b>Nur im Browser gespeichert</div>
+    </div>
+
+    <div class="vermerk" role="note">
+      <strong>!</strong>
+      <div>Kein Ersatz für Rechtsberatung. Diese Vorlage passt nicht zu jedem Fall. Bei hohen Beträgen, Sicherheiten oder Streit lassen Sie den Vertrag von einer Anwältin oder einem Anwalt prüfen.</div>
+    </div>
+
+    <div class="zeilen">
+      <div class="abschnitt">Darlehensgeberin / Darlehensgeber</div>
+      <div class="feld"><label for="gn">Name</label><input id="gn" value="Anna Berger"></div>
+      <div class="feld"><label for="gg">Geburtsdatum</label><input id="gg" value="14.03.1979"></div>
+      <div class="feld breit"><label for="ga">Anschrift</label><input id="ga" value="Lindenweg 12, 04109 Leipzig"></div>
+      <div class="abschnitt">Darlehensnehmerin / Darlehensnehmer</div>
+      <div class="feld"><label for="nn">Name</label><input id="nn" value="Jonas Keller"></div>
+      <div class="feld"><label for="ng">Geburtsdatum</label><input id="ng" value="02.11.1986"></div>
+      <div class="feld breit"><label for="na">Anschrift</label><input id="na" value=""></div>
+      <div class="abschnitt">Darlehen</div>
+      <div class="feld"><label for="b">Betrag in Euro</label><input id="b" value="2.500,00"></div>
+      <div class="feld"><label for="r">Rückzahlung bis</label><input id="r" value="31.12.2027"></div>
+    </div>
+
+    <p class="text">Frau <span class="e">Anna Berger</span> gewährt Herrn <span class="e">Jonas Keller</span> ein Darlehen über <span class="e">2.500,00 EUR</span> (in Worten: <span class="e">zweitausendfünfhundert Euro</span>). Der Betrag ist bis zum <span class="e">31.12.2027</span> zurückzuzahlen.</p>
+
+    <div class="unterschrift"><div>Ort, Datum, Unterschrift Darlehensgeberin</div><div>Ort, Datum, Unterschrift Darlehensnehmer</div></div>
+  </article>
+
+  <aside>
+    <div class="kasten">
+      <h2>Fertig ausgefüllt?</h2>
+      <p>7 von 10 Pflichtfeldern ausgefüllt.</p>
+      <a class="knopf" href="#">PDF herunterladen</a>
+      <a class="knopf zwei" href="#">Drucken</a>
+    </div>
+    <div class="kasten">
+      <h2>Leere Vorlagen</h2>
+      <ul class="vorlagen">
+        <li>Kompakt <span>1 Seite, PDF</span></li>
+        <li>Ausführlich <span>3 Seiten, PDF</span></li>
+        <li>Mit Ratenplan <span>2 Seiten, PDF</span></li>
+        <li>Quittung Rückzahlung <span>1 Seite, PDF</span></li>
+      </ul>
+    </div>
+  </aside>
+</main>
+</body>
+</html>

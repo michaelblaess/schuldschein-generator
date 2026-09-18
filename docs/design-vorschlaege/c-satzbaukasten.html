@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf C - Satzbaukasten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root { --nacht: #16243F; --himmel: #DCEBFA; --sonne: #F2B705; --weiss: #FFFFFF; --graublau: #56657F; --flaeche: #F4F8FD; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--flaeche); color: var(--nacht); font: 18px/1.55 "Bricolage Grotesque", sans-serif; }
+  header { max-width: 1200px; margin: 0 auto; padding: 22px 28px; display: flex; justify-content: space-between; align-items: center; }
+  header b { font-size: 20px; font-weight: 800; }
+  header nav { display: flex; gap: 26px; font-size: 16px; font-weight: 500; }
+  header a { color: var(--nacht); text-decoration: none; }
+
+  .held { max-width: 1200px; margin: 0 auto; padding: 40px 28px 24px; }
+  .frage { font-size: 18px; color: var(--graublau); margin: 0 0 18px; font-weight: 500; }
+  .satz { font-size: clamp(34px, 5.2vw, 72px); line-height: 1.22; font-weight: 700; letter-spacing: -.02em; margin: 0; max-width: 20ch; }
+  .satz .l { display: inline-block; border-bottom: 5px solid var(--sonne); padding: 0 .08em; min-width: 2.2ch; field-sizing: content; color: var(--nacht); background: none; border-top: 0; border-left: 0; border-right: 0; font: inherit; outline: none; }
+  .satz .l:focus { background: var(--himmel); }
+  .satz .l.offen { color: #9AA7BD; border-bottom-style: dashed; }
+
+  .hinweis { max-width: 1200px; margin: 36px auto 0; padding: 0 28px; }
+  .hinweis div { background: var(--nacht); color: #fff; padding: 20px 26px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; border-radius: 14px; }
+  .hinweis .zeichen { width: 44px; height: 44px; border-radius: 50%; background: var(--sonne); color: var(--nacht); display: grid; place-items: center; font-weight: 800; font-size: 24px; }
+  .hinweis p { margin: 0; font-size: 17px; }
+  .hinweis p b { display: block; font-size: 20px; }
+  .hinweis a { color: var(--sonne); font-weight: 700; white-space: nowrap; }
+
+  .weiter { max-width: 1200px; margin: 40px auto 0; padding: 0 28px 72px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; }
+  .details { background: var(--weiss); border-radius: 14px; padding: 26px 28px; }
+  .details h2 { margin: 0 0 4px; font-size: 24px; }
+  .details p { margin: 0 0 18px; color: var(--graublau); font-size: 16px; }
+  .fragen { display: grid; gap: 10px; }
+  .fragen button { text-align: left; font: 500 17px "Bricolage Grotesque"; background: var(--flaeche); border: 2px solid transparent; border-radius: 10px; padding: 12px 16px; color: var(--nacht); display: flex; justify-content: space-between; cursor: pointer; }
+  .fragen button:hover, .fragen button:focus-visible { border-color: var(--nacht); outline: none; }
+  .fragen button span { color: var(--graublau); font-weight: 400; }
+  .fragen button.fertig span { color: #2D7A4B; font-weight: 700; }
+
+  .vorlagen h2 { margin: 0 0 12px; font-size: 24px; }
+  .vorlage { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 2px solid var(--himmel); }
+  .vorlage b { font-size: 18px; }
+  .vorlage small { display: block; color: var(--graublau); font-size: 15px; }
+  .vorlage a { font-weight: 700; color: var(--nacht); }
+  .los { display: inline-block; margin-top: 22px; background: var(--sonne); color: var(--nacht); font-weight: 800; font-size: 19px; padding: 14px 26px; border-radius: 999px; text-decoration: none; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --nacht: #E7EEF9; --flaeche: #0E1729; --weiss: #16213A; --himmel: #22345A; --graublau: #A3B1C9; }
+    .hinweis div { background: #22345A; }
+    .los { color: #0E1729; }
+  }
+  @media (max-width: 860px) {
+    header nav { display: none; }
+    .weiter { grid-template-columns: 1fr; }
+    .hinweis div { grid-template-columns: auto 1fr; }
+    .hinweis a { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+<header><b>schuldschein-generator.de</b>
+  <nav><a href="#">Vorlagen</a><a href="#">Was das Gesetz sagt</a><a href="#">Fragen</a><a href="#">English</a></nav></header>
+
+<section class="held">
+  <p class="frage">Wer leiht wem wie viel, und bis wann?</p>
+  <p class="satz"><input class="l" size="5" value="Anna" aria-label="Wer verleiht"> leiht <input class="l" size="5" value="Jonas" aria-label="Wer leiht sich Geld"> <input class="l" size="5" value="2.500" aria-label="Betrag"> Euro bis zum <input class="l offen" size="9" value="Datum" aria-label="Rückzahlungsdatum">.</p>
+</section>
+
+<div class="hinweis" role="note"><div>
+  <span class="zeichen" aria-hidden="true">!</span>
+  <p><b>Das hier ist keine Rechtsberatung.</b>Der Vertrag deckt einfache Fälle ab. Für hohe Beträge, Sicherheiten oder wenn es schon Streit gibt: bitte zur Anwältin oder zum Anwalt.</p>
+  <a href="#">Was das bedeutet</a>
+</div></div>
+
+<section class="weiter">
+  <div class="details">
+    <h2>Noch fünf Fragen, dann ist der Vertrag fertig</h2>
+    <p>Jede Antwort ändert den Vertragstext. Sie sehen ihn am Ende komplett, bevor Sie das PDF speichern.</p>
+    <div class="fragen">
+      <button class="fertig">Vollständige Namen und Anschriften <span>erledigt</span></button>
+      <button>Gibt es Zinsen? <span>offen</span></button>
+      <button>Auf einmal oder in Raten zurück? <span>offen</span></button>
+      <button>Bar oder per Überweisung ausgezahlt? <span>offen</span></button>
+      <button>Soll jemand als Zeuge unterschreiben? <span>freiwillig</span></button>
+    </div>
+    <a class="los" href="#">Nächste Frage</a>
+  </div>
+  <div class="vorlagen">
+    <h2>Lieber auf Papier?</h2>
+    <div class="vorlage"><div><b>Kompakt</b><small>Eine Seite, das Nötigste</small></div><a href="#">PDF</a></div>
+    <div class="vorlage"><div><b>Ausführlich</b><small>Mit Zinsen, Verzug, Kündigung</small></div><a href="#">PDF</a></div>
+    <div class="vorlage"><div><b>Ratenzahlung</b><small>Mit Tilgungsplan zum Eintragen</small></div><a href="#">PDF</a></div>
+    <div class="vorlage"><div><b>Quittung</b><small>Bestätigt die Rückzahlung</small></div><a href="#">PDF</a></div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -10 62 62" role="img" aria-label="Schuldschein-Generator">
+  <style>
+    .rot { fill: #C8102E; }
+    .tinte { fill: #111418; }
+    .zug { stroke: #111418; }
+    @media (prefers-color-scheme: dark) {
+      .rot { fill: #FF5A6E; }
+      .tinte { fill: #ECEDEF; }
+      .zug { stroke: #ECEDEF; }
+    }
+  </style>
+  <!-- Belegrahmen, rechts oben und unten offen -->
+  <path class="rot" d="M0 0H48.7V4.2H4.2V36.8H39V41H0Z"/>
+  <!-- Kaestchenreihe -->
+  <g class="rot">
+    <path d="M8.2 10.2h6.6v6.6H8.2Zm1.6 1.6v3.4h3.4v-3.4Z"/>
+    <path d="M16.4 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4Z"/>
+    <path d="M24.6 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4Z"/>
+    <path d="M32.8 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4Z"/>
+    <path d="M41 10.2h6.6v6.6H41Zm1.6 1.6v3.4h3.4v-3.4Z"/>
+  </g>
+  <!-- Rechte Kante und umgeschlagene Ecke -->
+  <path class="tinte" d="M50.7 0H54.9V29.3L42.2 41H40.4V29.3H50.7Z"/>
+  <!-- Unterschrift -->
+  <path class="zug" d="M25 26.2H29.2C31 26.2 31.6 21.4 33.6 21.4C35.4 21.4 34.6 26.2 36.6 26.2C37.8 26.2 38 24.4 39.2 24.4C40.2 24.4 40.4 26.2 41.6 26.2H45.4" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

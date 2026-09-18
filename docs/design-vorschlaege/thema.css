@@ -1,0 +1,22 @@
+/* Gemeinsam fuer alle Entwuerfe: Logo im Kopf und der Hell/Dunkel-Schalter.
+   Nutzt die Farbvariablen der jeweiligen Seite. */
+.logo { display: block; flex: none; }
+.logo .lr { fill: var(--rot); }
+.logo .lt { fill: var(--schwarz); }
+.logo .lz { fill: none; stroke: var(--schwarz); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.rechts { display: flex; align-items: center; gap: 8px; }
+.thema { width: 44px; height: 44px; flex: none; display: grid; place-items: center; background: none; border: 2px solid var(--schwarz); color: var(--schwarz); cursor: pointer; padding: 0; }
+.thema svg { width: 20px; height: 20px; }
+.thema .sonne { display: none; }
+.thema[aria-pressed="true"] .sonne { display: block; }
+.thema[aria-pressed="true"] .mond { display: none; }
+
+/* Handy: Navigation in eine eigene Zeile, damit jede Seite erreichbar bleibt */
+@media (max-width: 700px) {
+  header .innen { flex-wrap: wrap; row-gap: 6px; }
+  header .rechts { display: contents; }
+  header .thema { order: 2; }
+  header nav { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid var(--linie, #DADAD4); padding-top: 4px; }
+  header .innen nav a { display: block; padding: 10px 4px; font-size: 16px; }
+}

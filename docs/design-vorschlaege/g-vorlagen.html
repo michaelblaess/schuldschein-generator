@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entwurf G - Vorlagen</title>
+<link rel="icon" href="bilder/logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="thema.css">
+<script src="thema.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; --rot: #C8102E; --rosa: #FCEEF0; --weiss: #FFFFFF; --schwarz: #111418; --grau: #585D66; --tisch: #F1F1EE; --linie: #DADAD4; --fokus: #1F5FD6; --auf-rot: #FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--tisch); color: var(--schwarz); font: 17px/1.5 "Barlow Semi Condensed", sans-serif; }
+  :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+
+  header { background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  header .innen, main, .seitenfuss .innen { max-width: 1320px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header .innen { padding-top: 12px; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .marke { display: flex; align-items: center; gap: 10px; color: var(--schwarz); text-decoration: none; }
+  .marke b { font-size: 21px; font-weight: 700; }
+  .marke i { font-style: normal; color: var(--rot); }
+  header nav { display: flex; gap: 2px; font-weight: 500; }
+  header nav a { color: var(--schwarz); text-decoration: none; padding: 6px 10px; }
+  header nav a[aria-current] { background: var(--rot); color: var(--auf-rot); }
+
+  main { padding-top: 28px; padding-bottom: 48px; }
+  h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.02; margin: 0 0 10px; letter-spacing: -.01em; }
+  .lead { margin: 0 0 18px; max-width: 60ch; color: #3b3f46; }
+  .lead a { color: var(--rot); font-weight: 600; }
+  .haftung { background: var(--schwarz); color: #fff; padding: 12px 16px 12px 20px; border-left: 8px solid var(--rot); margin-bottom: 28px; }
+  .haftung b { font-size: 19px; }
+  .haftung span { color: #d8d9dc; }
+
+  /* Vorlagenkarten */
+  .raster { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .karte { background: var(--weiss); border: 1px solid var(--linie); display: flex; flex-direction: column; }
+  .mini { padding: 20px 0 0; background: var(--rosa); border-bottom: 1px solid var(--linie); position: relative; overflow: hidden; }
+  .mini .rahmen { width: 238px; height: 336px; margin: 0 auto 8px; overflow: hidden; box-shadow: 0 10px 24px -14px rgba(0,0,0,.45); background: #fff; }
+  .mini .seite { transform: scale(.3); transform-origin: 0 0; pointer-events: none; }
+  .mini .lupe { position: absolute; right: 12px; bottom: 12px; background: var(--schwarz); color: #fff; font: 600 15px "Barlow Semi Condensed"; padding: 6px 12px; border: 0; cursor: zoom-in; }
+  .mini .lupe::after { content: ""; position: absolute; inset: -400px -12px -12px -400px; }
+  .mini:has(.lupe:focus-visible) .rahmen { outline: 3px solid var(--fokus); outline-offset: 4px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .karte .text { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .karte h2 { margin: 0; font-size: 22px; }
+  .karte .text p { margin: 0; color: var(--grau); }
+  .karte .umfang { font: 500 14px "IBM Plex Mono", monospace; color: var(--grau); }
+  .knoepfe { display: flex; gap: 8px; margin-top: auto; padding-top: 12px; }
+  .knopf { flex: 1; display: grid; place-items: center; height: 46px; background: var(--rot); color: var(--auf-rot); font: 700 17px "Barlow Semi Condensed"; text-decoration: none; border: 2px solid var(--rot); }
+  .knopf.zwei { background: none; color: var(--schwarz); border-color: var(--schwarz); }
+
+  .hinweis-generator { margin-top: 32px; background: var(--weiss); border: 2px solid var(--rot); padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .hinweis-generator p { margin: 0; }
+  .hinweis-generator b { display: block; font-size: 19px; }
+
+  /* Das Dokument selbst, A4 bei 96 dpi */
+  .seite { width: 794px; min-height: 1123px; padding: 76px 72px; background: #fff; color: #111418; font: 16px/1.7 "Barlow Semi Condensed", sans-serif; }
+  .seite h3 { font-size: 30px; margin: 0 0 6px; letter-spacing: .02em; }
+  .seite .unter { color: #585D66; margin: 0 0 26px; }
+  .seite h4 { font-size: 17px; margin: 18px 0 2px; }
+  .seite p { margin: 0 0 10px; }
+  .seite .l { display: inline-block; min-width: 190px; border-bottom: 1px solid #111418; }
+  .seite .l.k { min-width: 90px; }
+  .seite table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .seite th, .seite td { border: 1px solid #111418; padding: 6px 8px; text-align: left; height: 34px; font-size: 15px; }
+  .seite .sig { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px; }
+  .seite .sig div { border-top: 1px solid #111418; padding-top: 4px; font-size: 13px; color: #585D66; }
+  .seite .fuss { margin-top: 40px; border-top: 1px solid #ddd; padding-top: 8px; font-size: 12px; color: #585D66; }
+
+  /* Grosse Vorschau */
+  dialog { border: 0; padding: 0; width: min(880px, 100vw - 24px); max-height: calc(100vh - 24px); background: var(--tisch); }
+  dialog::backdrop { background: rgba(17,20,24,.7); }
+  .dkopf { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; background: var(--weiss); border-bottom: 3px solid var(--rot); }
+  .dkopf b { font-size: 20px; }
+  .dkopf .knoepfe { padding: 0; margin: 0; }
+  .dkopf .knopf { padding: 0 14px; height: 42px; }
+  .schliessen { background: none; border: 2px solid var(--schwarz); height: 42px; padding: 0 14px; font: 700 17px "Barlow Semi Condensed"; color: var(--schwarz); cursor: pointer; }
+  .dinhalt { padding: 16px; overflow: auto; }
+  .dinhalt .seite { width: 100%; max-width: 794px; margin: 0 auto; min-height: 0; padding: clamp(24px, 7vw, 72px); box-shadow: 0 10px 30px -18px rgba(0,0,0,.5); }
+
+  .seitenfuss { border-top: 1px solid var(--linie); }
+  .seitenfuss .innen { padding-top: 20px; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 15px; color: var(--grau); }
+  .seitenfuss .copy { display: flex; align-items: center; gap: 10px; }
+  .seitenfuss img { height: 18px; width: auto; opacity: .6; }
+  .seitenfuss nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  .seitenfuss a { color: var(--grau); }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+    :root:not([data-theme="light"]) .haftung { background: #2A1519; }
+    :root:not([data-theme="light"]) .lead { color: #b9bcc2; }
+    :root:not([data-theme="light"]) .mini .lupe { background: #ECEDEF; color: #121418; }
+    :root:not([data-theme="light"]) .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  }
+  :root[data-theme="dark"] { --weiss: #1B1E24; --rosa: #2A1519; --schwarz: #ECEDEF; --tisch: #121418; --grau: #A0A5AE; --rot: #FF5A6E; --linie: #2a2d33; --fokus: #7FA8FF; --auf-rot: #121418; color-scheme: dark; }
+  :root[data-theme="dark"] .haftung { background: #2A1519; }
+  :root[data-theme="dark"] .lead { color: #b9bcc2; }
+  :root[data-theme="dark"] .mini .lupe { background: #ECEDEF; color: #121418; }
+  :root[data-theme="dark"] .seitenfuss img { filter: invert(1) hue-rotate(180deg); }
+  @media (max-width: 700px) {
+    header .innen, main, .seitenfuss .innen { padding-left: 16px; padding-right: 16px; }
+    .dkopf { flex-wrap: wrap; }
+    .dkopf b { width: 100%; }
+    .dinhalt { padding: 8px; }
+    .seite .sig { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header><div class="innen">
+  <a class="marke" href="f-beleg-einseitig.html"><svg class="logo" viewBox="-3 -10 62 62" width="44" height="44" aria-hidden="true" focusable="false"><path class="lr" d="M0 0H48.7V4.2H4.2V36.8H39V41H0Z"/><path class="lr" d="M8.2 10.2h6.6v6.6H8.2Zm1.6 1.6v3.4h3.4v-3.4ZM16.4 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM24.6 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM32.8 10.2h6.6v6.6h-6.6Zm1.6 1.6v3.4h3.4v-3.4ZM41 10.2h6.6v6.6H41Zm1.6 1.6v3.4h3.4v-3.4Z"/><path class="lt" d="M50.7 0H54.9V29.3L42.2 41H40.4V29.3H50.7Z"/><path class="lz" d="M25 26.2H29.2C31 26.2 31.6 21.4 33.6 21.4C35.4 21.4 34.6 26.2 36.6 26.2C37.8 26.2 38 24.4 39.2 24.4C40.2 24.4 40.4 26.2 41.6 26.2H45.4"/></svg><b>Schuldschein<i>-Generator</i></b></a>
+  <div class="rechts"><nav><a href="f-beleg-einseitig.html">Ausfüllen</a><a href="g-vorlagen.html" aria-current="page">Vorlagen</a><a href="h-rechtslage.html">Rechtslage</a><a href="i-fragen.html">Fragen</a><a class="sprache" href="#">EN</a></nav><button class="thema" type="button" aria-pressed="false" aria-label="Dunkles Design"><svg class="mond" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.6A8.6 8.6 0 0 1 9.4 3.3a8.6 8.6 0 1 0 11.3 11.3Z"/></svg><svg class="sonne" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button></div>
+</div></header>
+
+<main>
+  <h1>Vorlagen zum Ausdrucken</h1>
+  <p class="lead">Leer ausdrucken, von Hand ausfüllen, beide unterschreiben. Die Word-Fassung kannst Du vorher am Rechner anpassen. Lieber gleich am Bildschirm ausfüllen? <a href="f-beleg-einseitig.html">Zum Generator</a></p>
+
+  <div class="haftung" role="note"><b>Keine Rechtsberatung. Keine Haftung.</b> <span>Die Vorlagen passen für einfache Fälle unter Privatleuten.</span></div>
+
+  <ul class="raster">
+    <li class="karte" data-titel="Kompakt">
+      <div class="mini"><div class="rahmen" aria-hidden="true"><div class="seite">
+        <h3>Schuldschein</h3><p class="unter">Darlehen unter Privatleuten</p>
+        <p>Ich, <span class="l"></span>, wohnhaft <span class="l"></span>,</p>
+        <p>bestätige, von <span class="l"></span>, wohnhaft <span class="l"></span>,</p>
+        <p>ein Darlehen über <span class="l k"></span> EUR (in Worten: <span class="l"></span>) in bar / per Überweisung erhalten zu haben.</p>
+        <p>Ich verpflichte mich, den Betrag bis zum <span class="l k"></span> zurückzuzahlen. Eine frühere Rückzahlung ist jederzeit möglich.</p>
+        <p>Das Darlehen ist zinslos / wird mit <span class="l k"></span> % pro Jahr verzinst.</p>
+        <p>Nach vollständiger Rückzahlung wird mir dieser Schuldschein zurückgegeben.</p>
+        <div class="sig"><div>Ort, Datum, Unterschrift Darlehensnehmer/in</div><div>Ort, Datum, Unterschrift Darlehensgeber/in</div></div>
+        <p class="fuss">Vorlage von schuldschein-generator.de. Keine Rechtsberatung. Zweimal ausdrucken, beide Exemplare unterschreiben.</p>
+      </div></div><button class="lupe" type="button">Vergrößern<span class="sr"> Vorlage Kompakt</span></button></div>
+      <div class="text">
+        <h2>Kompakt</h2><p>Das Nötigste auf einer Seite. Reicht für die meisten Fälle in Familie und Freundeskreis.</p><span class="umfang">1 Seite</span>
+        <div class="knoepfe"><a class="knopf" href="#" download>PDF</a><a class="knopf zwei" href="#" download>Word</a></div>
+      </div>
+    </li>
+
+    <li class="karte" data-titel="Ausführlich">
+      <div class="mini"><div class="rahmen" aria-hidden="true"><div class="seite">
+        <h3>Darlehensvertrag</h3><p class="unter">mit Schuldschein, zwischen Privatleuten</p>
+        <h4>§ 1 Vertragsparteien</h4><p>Darlehensgeber/in: <span class="l"></span><br>Darlehensnehmer/in: <span class="l"></span></p>
+        <h4>§ 2 Darlehen und Auszahlung</h4><p>Das Darlehen beträgt <span class="l k"></span> EUR. Es wird am <span class="l k"></span> in bar / auf das Konto <span class="l"></span> ausgezahlt.</p>
+        <h4>§ 3 Zinsen</h4><p>Das Darlehen ist zinslos / wird mit <span class="l k"></span> % pro Jahr verzinst.</p>
+        <h4>§ 4 Rückzahlung</h4><p>Das Darlehen ist bis zum <span class="l k"></span> zurückzuzahlen. Sondertilgungen sind jederzeit möglich.</p>
+        <h4>§ 5 Kündigung</h4><p>Ist kein Termin vereinbart, können beide Seiten mit drei Monaten Frist kündigen.</p>
+        <h4>§ 6 Verzug</h4><p>Bei verspäteter Zahlung gelten die gesetzlichen Verzugszinsen.</p>
+      </div></div><button class="lupe" type="button">Vergrößern<span class="sr"> Vorlage Ausführlich</span></button></div>
+      <div class="text">
+        <h2>Ausführlich</h2><p>Mit Zinsen, Auszahlung, Kündigung, Verzug und Schriftform. Für größere Beträge.</p><span class="umfang">3 Seiten</span>
+        <div class="knoepfe"><a class="knopf" href="#" download>PDF</a><a class="knopf zwei" href="#" download>Word</a></div>
+      </div>
+    </li>
+
+    <li class="karte" data-titel="Ratenzahlung">
+      <div class="mini"><div class="rahmen" aria-hidden="true"><div class="seite">
+        <h3>Schuldschein mit Ratenplan</h3><p class="unter">Darlehen unter Privatleuten</p>
+        <p>Ich, <span class="l"></span>, bestätige, von <span class="l"></span> ein Darlehen über <span class="l k"></span> EUR erhalten zu haben.</p>
+        <p>Ich zahle es in <span class="l k"></span> Raten zu je <span class="l k"></span> EUR zurück, fällig jeweils zum <span class="l k"></span> eines Monats, erstmals am <span class="l k"></span>.</p>
+        <table><thead><tr><th>Nr.</th><th>Fällig am</th><th>Betrag</th><th>Erhalten, Unterschrift</th></tr></thead>
+        <tbody><tr><td>1</td><td></td><td></td><td></td></tr><tr><td>2</td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td></tr><tr><td>5</td><td></td><td></td><td></td></tr><tr><td>6</td><td></td><td></td><td></td></tr></tbody></table>
+      </div></div><button class="lupe" type="button">Vergrößern<span class="sr"> Vorlage Ratenzahlung</span></button></div>
+      <div class="text">
+        <h2>Ratenzahlung</h2><p>Mit Tilgungsplan. Jede Rate wird in der Tabelle quittiert, so gibt es später keinen Streit.</p><span class="umfang">2 Seiten</span>
+        <div class="knoepfe"><a class="knopf" href="#" download>PDF</a><a class="knopf zwei" href="#" download>Word</a></div>
+      </div>
+    </li>
+
+    <li class="karte" data-titel="Quittung">
+      <div class="mini"><div class="rahmen" aria-hidden="true"><div class="seite">
+        <h3>Quittung</h3><p class="unter">über die Rückzahlung eines Darlehens</p>
+        <p>Ich, <span class="l"></span>, bestätige, von <span class="l"></span></p>
+        <p>am <span class="l k"></span> den Betrag von <span class="l k"></span> EUR (in Worten: <span class="l"></span>) als Rückzahlung des Darlehens vom <span class="l k"></span> erhalten zu haben.</p>
+        <p>Das Darlehen ist damit vollständig getilgt / es bleiben <span class="l k"></span> EUR offen.</p>
+        <p>Der Schuldschein wurde zurückgegeben / wird bei vollständiger Tilgung zurückgegeben.</p>
+        <div class="sig"><div>Ort, Datum, Unterschrift Darlehensgeber/in</div></div>
+      </div></div><button class="lupe" type="button">Vergrößern<span class="sr"> Vorlage Quittung</span></button></div>
+      <div class="text">
+        <h2>Quittung</h2><p>Bestätigt, dass Geld zurückgezahlt wurde. Auch für einzelne Raten.</p><span class="umfang">1 Seite</span>
+        <div class="knoepfe"><a class="knopf" href="#" download>PDF</a><a class="knopf zwei" href="#" download>Word</a></div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="hinweis-generator">
+    <p><b>Keine Lust, von Hand auszufüllen?</b>Im Generator tippst Du die Angaben ein und bekommst die Vorlage fertig ausgefüllt.</p>
+    <a class="knopf" style="flex: none; padding: 0 22px;" href="f-beleg-einseitig.html">Zum Generator</a>
+  </div>
+</main>
+
+<dialog id="gross" aria-labelledby="gross-titel">
+  <div class="dkopf">
+    <b id="gross-titel">Vorlage</b>
+    <div class="knoepfe"><a class="knopf" href="#" download>PDF</a><a class="knopf zwei" href="#" download>Word</a><button class="schliessen" type="button" autofocus>Schließen</button></div>
+  </div>
+  <div class="dinhalt"></div>
+</dialog>
+
+<footer class="seitenfuss"><div class="innen">
+  <div class="copy"><img src="bilder/logo-micha5.png" alt="" width="104" height="18"><span>&copy; 2026 Michael Blaess</span></div>
+  <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Nutzungsbedingungen</a><a href="#">Cookie-Einstellungen</a></nav>
+</div></footer>
+
+<script>
+  // Grosse Vorschau: dieselbe Seite wie in der Karte, nur unskaliert
+  const dialog = document.getElementById('gross');
+  document.querySelectorAll('.karte .lupe').forEach((knopf) => knopf.addEventListener('click', () => {
+    const karte = knopf.closest('.karte');
+    document.getElementById('gross-titel').textContent = `Vorlage ${karte.dataset.titel}`;
+    dialog.querySelector('.dinhalt').replaceChildren(karte.querySelector('.seite').cloneNode(true));
+    dialog.showModal();
+  }));
+  dialog.querySelector('.schliessen').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+</script>
+</body>
+</html>
