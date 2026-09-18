@@ -14,7 +14,7 @@ const verzug = BASISZINS.verzug.toLocaleString(sprache === 'de' ? 'de-DE' : 'en-
 const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
 ---
 <h1 class="seite-titel nicht-drucken">{g.titel}</h1>
-<p class="lead nicht-drucken">{g.lead}</p>
+<p class="lead nicht-drucken"><span class="zeile">{g.lead}</span> <span class="zeile">{g.leadZwei}</span></p>
 <div class="haftung gross nicht-drucken" role="note">
   <b>{t(sprache, 'haftung.kurz')}</b>
   <span>{t(sprache, 'haftung.lang')}</span>
@@ -190,7 +190,13 @@ const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
 
 <div class="leiste nicht-drucken">
   <div class="innen rahmen-breite">
-    <div class="stand-text" aria-live="polite"><b id="stand-titel"></b><span id="stand-text"></span></div>
+    <div class="stand-text">
+      <div class="stand-zeile">
+        <div class="fortschritt" id="fortschritt" role="progressbar" aria-valuemin="0" aria-label={g.fortschritt}></div>
+        <b id="stand-titel" aria-live="polite"></b>
+      </div>
+      <span id="stand-text"></span>
+    </div>
     <button class="knopf zwei" type="button" id="drucken">{g.drucken}</button>
     <button class="knopf" type="button" id="pdf" data-text={g.pdf} data-laeuft={g.pdfLaeuft}>{g.pdf}</button>
   </div>

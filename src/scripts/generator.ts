@@ -173,29 +173,36 @@ export function starteGenerator(): void {
     setze('zweck', a.zweck ? g.angegeben : g.nichtAngegeben);
     setze('zeuge', a.zeuge.name || g.keine);
 
-    // Pflichtangaben zaehlen
-    const fehlend: string[] = [];
-    for (const id of ['geber_name', 'geber_adresse', 'nehmer_name', 'nehmer_adresse', 'nehmer_ausweis']) {
-      if (!wert(id)) {
-        fehlend.push(g.pflicht[id]);
-      }
+    // Pflichtangaben: jede Pruefung ein Kaestchen in der Leiste
+    const pflicht: { ok: boolean; name: string }[] = [
+      { ok: !!a.geber.name, name: g.pflicht.geber_name },
+      { ok: !!a.geber.adresse, name: g.pflicht.geber_adresse },
+      { ok: !!a.nehmer.name, name: g.pflicht.nehmer_name },
+      { ok: !!a.nehmer.adresse, name: g.pflicht.nehmer_adresse },
+      { ok: !!a.nehmer.geburt, name: g.pflicht.nehmer_geburt },
+      { ok: !!a.nehmer.ausweis, name: g.pflicht.nehmer_ausweis },
+      { ok: !!a.cent, name: g.pflicht.summe },
+      { ok: a.unbefristet || !!a.zurueck, name: g.pflicht.zurueck },
+    ];
+    if (a.rhythmus !== 'einmal') {
+      pflicht.push({ ok: !!a.ersteRate, name: g.pflicht.erste });
     }
-    if (!a.nehmer.geburt) {
-      fehlend.push(g.pflicht.nehmer_geburt);
-    }
-    if (!a.cent) {
-      fehlend.push(g.pflicht.summe);
-    }
-    if (!a.unbefristet && !a.zurueck) {
-      fehlend.push(g.pflicht.zurueck);
-    }
-    if (a.rhythmus !== 'einmal' && !a.ersteRate) {
-      fehlend.push(g.pflicht.erste);
+    const erledigt = pflicht.filter((p) => p.ok).length;
+    const fehlend = pflicht.filter((p) => !p.ok).map((p) => p.name);
+    const kaestchen = document.getElementById('fortschritt');
+    if (kaestchen) {
+      kaestchen.replaceChildren(...pflicht.map((_, i) => {
+        const k = document.createElement('span');
+        k.className = i < erledigt ? 'voll' : '';
+        return k;
+      }));
+      kaestchen.setAttribute('aria-valuemax', String(pflicht.length));
+      kaestchen.setAttribute('aria-valuenow', String(erledigt));
     }
     const titel = document.getElementById('stand-titel');
     const text = document.getElementById('stand-text');
     if (titel && text) {
-      titel.textContent = fehlend.length === 0 ? g.allesDa : fehlend.length === 1 ? g.nochEins : `${g.nochVor}${fehlend.length}${g.nochNach}`;
+      titel.textContent = fehlend.length === 0 ? g.allesDa : `${erledigt}${g.von}${pflicht.length}${g.pflichtangaben}`;
       text.textContent = fehlend.length === 0 ? g.jetzt : `${g.fehlt}${fehlend.join(', ')}`;
     }
 

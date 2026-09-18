@@ -4,7 +4,8 @@ import type { Sprache } from './i18n';
 export const GT = {
   de: {
     titel: 'Geld verleihen - aber richtig',
-    lead: 'Schuldschein für ein Darlehen nach §§ 488 ff. BGB, komplett in Deinem Browser erstellt. Was Du einträgst, verlässt Dein Gerät nicht.',
+    lead: 'Schuldschein für ein Darlehen nach §§ 488 ff. BGB, komplett in Deinem Browser erstellt.',
+    leadZwei: 'Was Du einträgst, verlässt Dein Gerät nicht.',
     kopfLinks: 'Darlehen unter Privatleuten',
     kopfRechts: 'Pflichtangaben',
     geberName: 'Wer verleiht das Geld?',
@@ -68,9 +69,9 @@ export const GT = {
     keine: 'keine',
     allesDa: 'Alles Nötige ist da',
     jetzt: 'Jetzt ausdrucken oder als PDF speichern',
-    nochEins: 'Noch 1 Pflichtangabe',
-    nochVor: 'Noch ',
-    nochNach: ' Pflichtangaben',
+    von: ' von ',
+    pflichtangaben: ' Pflichtangaben',
+    fortschritt: 'Ausgefüllte Pflichtangaben',
     fehlt: 'Es fehlt: ',
     pflicht: {
       geber_name: 'wer verleiht',
@@ -92,7 +93,8 @@ export const GT = {
   },
   en: {
     titel: 'Lend money - the right way',
-    lead: 'A promissory note for a loan under §§ 488 ff. of the German Civil Code, created entirely in your browser. Nothing you enter leaves your device.',
+    lead: 'A promissory note for a loan under §§ 488 ff. of the German Civil Code, created entirely in your browser.',
+    leadZwei: 'Nothing you enter leaves your device.',
     kopfLinks: 'Loan between private individuals',
     kopfRechts: 'Required',
     geberName: 'Who is lending the money?',
@@ -156,9 +158,9 @@ export const GT = {
     keine: 'none',
     allesDa: 'Everything required is there',
     jetzt: 'Print it or save it as a PDF',
-    nochEins: '1 required field left',
-    nochVor: '',
-    nochNach: ' required fields left',
+    von: ' of ',
+    pflichtangaben: ' required fields',
+    fortschritt: 'Required fields filled in',
     fehlt: 'Missing: ',
     pflicht: {
       geber_name: 'lender',
