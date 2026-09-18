@@ -16,7 +16,7 @@ npm run pruefen
 ```
 
 Tests, Build, Gate (`pruefe-gate.mjs`, 28 Bedingungen), Smoketest und axe gegen den Produktionsbuild.
-Mit Mess-Kennung zusätzlich `PUBLIC_GA_ID=G-... npm run build` und `npm run einwilligung`.
+Die Mess-ID steht in `.env.production` (nicht geheim), der Build hat also immer Analytics mit Einwilligung. Zusätzlich `npm run einwilligung` gegen die Vorschau (`node pruefe-einwilligung.mjs http://localhost:4412`).
 
 ## Wiederkehrend
 

@@ -50,7 +50,7 @@ const urteile = [...URTEILE].sort((a, b) => b.datum.localeCompare(a.datum));
 <p class="stand">{T.stand}</p>
 <div class="haftung" role="note"><b>{t(sprache, 'haftung.kurz').split('.')[0]}.</b> <span>{T.haftung}</span></div>
 
-<section class="kurz" aria-labelledby="h-kurz">
+<section class="kurzfassung" aria-labelledby="h-kurz">
   <h2 id="h-kurz">{T.kurz}</h2>
   <ul>{KURZ[sprache].map((k) => <li>{k}</li>)}</ul>
 </section>

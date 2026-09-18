@@ -123,7 +123,13 @@ await seite.click('#theme-toggle');
 const dunkel = await seite.evaluate(() => getComputedStyle(document.body).backgroundColor);
 pruefe(hell !== dunkel, `Schalter wechselt das Design (${hell} -> ${dunkel})`);
 
-pruefe(fremd.length === 0, `keine Anfrage an fremde Server${fremd.length ? `: ${fremd.slice(0, 3).join(', ')}` : ''}`);
+// Auf dem Papier darf nichts eingefaerbt sein - "linie kurz" erbte einmal die Box ".kurz" der Rechtslage
+await seite.goto(`${basis}/vorlagen/`, { waitUntil: 'networkidle' });
+const bunt = await seite.evaluate(() => [...document.querySelectorAll('.mini .blatt .linie')]
+  .filter((el) => getComputedStyle(el).backgroundColor !== 'rgba(0, 0, 0, 0)').length);
+pruefe(bunt === 0, `Schreiblinien der Vorlagen ohne Hintergrund (${bunt} eingefärbt)`);
+
+pruefe(fremd.length === 0,`keine Anfrage an fremde Server${fremd.length ? `: ${fremd.slice(0, 3).join(', ')}` : ''}`);
 pruefe(konsole.length === 0, `keine Fehler in der Konsole${konsole.length ? `: ${konsole.slice(0, 3).join(' | ')}` : ''}`);
 
 await browser.close();
