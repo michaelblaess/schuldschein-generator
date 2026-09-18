@@ -23,3 +23,6 @@ build/
 # Astro und Werkzeuge
 .astro/
 .playwright-mcp/
+
+# Rechnerlokale Claude-Einstellungen
+.claude/settings.local.json
