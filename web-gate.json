@@ -1,0 +1,12 @@
+{
+  "dist": "dist",
+  "domain": "schuldschein-generator.de",
+  "sprachen": { "de": "", "en": "en" },
+  "rechtsseiten": {
+    "de": ["impressum", "datenschutz"],
+    "en": ["en/legal-notice", "en/privacy"]
+  },
+  "copyright": "© 2026 Michael Blaess",
+  "zaehlung": false,
+  "themeToggleKennung": "theme-toggle"
+}

@@ -19,3 +19,7 @@ build/
 
 # WICHTIG bei GitHub Pages + Domain
 !CNAME
+
+# Astro und Werkzeuge
+.astro/
+.playwright-mcp/

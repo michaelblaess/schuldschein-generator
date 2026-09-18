@@ -1,0 +1,31 @@
+# Kommt aus dem Repo (public/.htaccess) und wird bei jedem Deploy ueberschrieben.
+# Aenderungen hier machen, nicht auf dem Server.
+
+RewriteEngine On
+
+# www und http auf die Hauptadresse mit https
+RewriteCond %{HTTP_HOST} ^www\.schuldschein-generator\.de$ [NC,OR]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://schuldschein-generator.de/$1 [R=301,L]
+
+# Alte Adressen der Fassung von 2025
+RewriteRule ^about/?$ / [R=301,L]
+RewriteRule ^en/about/?$ /en/ [R=301,L]
+RewriteRule ^en/impressum/?$ /en/legal-notice/ [R=301,L]
+RewriteRule ^en/datenschutz/?$ /en/privacy/ [R=301,L]
+RewriteRule ^en/nutzungsbedingungen/?$ /en/terms/ [R=301,L]
+
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  # HTML immer beim Server nachfragen, sonst zeigt der Browser nach einem Deploy den alten Stand
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Gebaute Dateien tragen einen Hash im Namen und aendern sich nie
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

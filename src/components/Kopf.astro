@@ -1,0 +1,72 @@
+---
+import Logo from './Logo.astro';
+import { PFADE, gegenstueck, t, type SeitenSchluessel, type Sprache } from '../lib/i18n';
+
+interface Props {
+  sprache: Sprache;
+  seite: SeitenSchluessel | null;
+}
+const { sprache, seite } = Astro.props;
+const menue: { schluessel: SeitenSchluessel; text: string }[] = [
+  { schluessel: 'start', text: t(sprache, 'nav.start') },
+  { schluessel: 'vorlagen', text: t(sprache, 'nav.vorlagen') },
+  { schluessel: 'rechtslage', text: t(sprache, 'nav.rechtslage') },
+  { schluessel: 'fragen', text: t(sprache, 'nav.fragen') },
+];
+const andere = gegenstueck(seite ?? 'start', sprache);
+---
+<header class="kopf">
+  <div class="innen rahmen-breite">
+    <a class="marke" href={PFADE.start[sprache]}>
+      <Logo />
+      <b>Schuldschein<i>-Generator</i></b>
+    </a>
+    <div class="rechts">
+      <nav class="hauptnav" aria-label={t(sprache, 'nav.haupt')}>
+        {menue.map((m) => (
+          <a href={PFADE[m.schluessel][sprache]} aria-current={m.schluessel === seite ? 'page' : undefined}>{m.text}</a>
+        ))}
+        <a href={andere} hreflang={sprache === 'de' ? 'en' : 'de'} lang={sprache === 'de' ? 'en' : 'de'}>
+          <span aria-hidden="true">{t(sprache, 'nav.andereSprache')}</span>
+          <span class="sr">{t(sprache, 'nav.andereSpracheLang')}</span>
+        </a>
+      </nav>
+      <button class="thema" id="theme-toggle" type="button" aria-pressed="false" aria-label={t(sprache, 'thema.dunkel')}
+        data-titel-dunkel={t(sprache, 'thema.dunkel')} data-titel-hell={t(sprache, 'thema.titelHell')}>
+        <svg class="mond" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.6A8.6 8.6 0 0 1 9.4 3.3a8.6 8.6 0 1 0 11.3 11.3Z" /></svg>
+        <svg class="sonne" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" /></g></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Hell/Dunkel: folgt dem System, bis jemand klickt. Gespeichert wird nur auf diesen Wunsch hin.
+  const root = document.documentElement;
+  const knopf = document.getElementById('theme-toggle');
+  const systemDunkel = window.matchMedia('(prefers-color-scheme: dark)');
+  const istDunkel = () => {
+    const gesetzt = root.getAttribute('data-theme');
+    return gesetzt ? gesetzt === 'dark' : systemDunkel.matches;
+  };
+  const zeige = () => {
+    if (!knopf) {
+      return;
+    }
+    const dunkel = istDunkel();
+    knopf.setAttribute('aria-pressed', dunkel ? 'true' : 'false');
+    knopf.title = (dunkel ? knopf.dataset.titelHell : knopf.dataset.titelDunkel) ?? '';
+  };
+  zeige();
+  knopf?.addEventListener('click', () => {
+    const neu = istDunkel() ? 'light' : 'dark';
+    root.setAttribute('data-theme', neu);
+    try {
+      localStorage.setItem('thema', neu);
+    } catch {
+      // Speicher gesperrt: die Wahl gilt dann bis zum Neuladen
+    }
+    zeige();
+  });
+  systemDunkel.addEventListener('change', zeige);
+</script>

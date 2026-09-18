@@ -1,0 +1,54 @@
+name: Build & Deploy
+
+# Vorerst nur von Hand: erst einrichten, dann scharf schalten.
+# Sobald der erste Deploy geprueft ist, "push: branches: [main]" ergaenzen.
+on:
+  workflow_dispatch:
+    inputs:
+      clean-slate:
+        description: 'Zielordner vor dem Upload komplett leeren (nur beim ersten Deploy, entfernt die Fassung von 2025)'
+        type: boolean
+        default: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Volle Historie: die Sitemap nimmt lastmod aus git log, mit einem Commit trueg jede Seite dasselbe Datum
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit-Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Ohne Kennung baut die Seite fail-closed, ohne Banner und ohne Analytics
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
+
+      - name: Livegang-Gate
+        run: node pruefe-gate.mjs
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Ohne diese Zeile faellt die Action auf unverschluesseltes FTP zurueck
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          dangerous-clean-slate: ${{ inputs.clean-slate == true }}

@@ -1,20 +1,16 @@
-Schuldschein Generator
-Copyright (c) 2025 Michael Blaess
-https://schuldschein-generator.de
-https://github.com/michaelblaess/schuldschein-generator
+Schuldschein-Generator
+Copyright 2025-2026 Michael Blaess
 
-Licensed under the Apache License, Version 2.0.
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
-Disclaimer / Hinweis:
-"Schuldschein Generator" is not a registered trademark.
-This site is not affiliated with financial service providers, banks, or legal advisors.
-Dieses Tool stellt keine Rechtsberatung dar. Nutzung auf eigenes Risiko.
+It bundles or uses the following third-party software:
 
-Third-party components:
+- Astro (MIT) - https://astro.build
+- Tailwind CSS (MIT) - https://tailwindcss.com
+- pdf-lib (MIT) - https://pdf-lib.js.org
+- docx (MIT) - https://docx.js.org
+- vanilla-cookieconsent (MIT) - https://github.com/orestbida/cookieconsent
+- Barlow Semi Condensed (SIL Open Font License 1.1) - via Fontsource
+- IBM Plex Mono (SIL Open Font License 1.1) - via Fontsource
 
-- jsPDF — https://github.com/parallax/jsPDF — MIT (v2.5.1)
-- Tailwind CSS — https://tailwindcss.com/ — MIT (v3.x)
-- DaisyUI — https://daisyui.com/ — MIT (v4.12.x)
-- Astro — https://astro.build/ — MIT (v4.14.x)
-- @astrojs/tailwind — https://github.com/withastro/astro — MIT (integration)
-- @tailwindcss/typography — https://github.com/tailwindlabs/tailwindcss-typography — MIT
+Development only: vitest (MIT), playwright-core (Apache 2.0), axe-core (MPL 2.0).

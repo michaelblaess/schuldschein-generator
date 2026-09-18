@@ -1,0 +1,41 @@
+---
+/**
+ * Stellt Vertragsbausteine als Blatt dar. Gegenstueck im Browser ist src/lib/dokument-dom.ts,
+ * beide erzeugen dasselbe Markup.
+ */
+import type { Baustein, Luecke } from '../lib/vertrag';
+
+interface Props {
+  bausteine: Baustein[];
+  /** vorlage: leere Stellen als Schreiblinie, sonst als Platzhalter mit Hinweis */
+  modus: 'vorlage' | 'generator';
+  klasse?: string;
+}
+const { bausteine, modus, klasse = '' } = Astro.props;
+const leer = (l: Luecke) => !l.wert;
+---
+<article class={`blatt ${klasse}`}>
+  {bausteine.map((b) => {
+    if (b.art === 'titel') return <h3>{b.text}</h3>;
+    if (b.art === 'unter') return <p class="unter">{b.text}</p>;
+    if (b.art === 'ueberschrift') return <h4>{b.text}</h4>;
+    if (b.art === 'fuss') return <p class="fuss">{b.text}</p>;
+    if (b.art === 'unterschriften') return <div class="unterschriften">{b.felder.map((f) => <div>{f}</div>)}</div>;
+    if (b.art === 'tabelle') {
+      return (
+        <table>
+          <thead><tr>{b.kopf.map((k) => <th scope="col">{k}</th>)}</tr></thead>
+          <tbody>{b.zeilen.map((z) => <tr>{z.map((zelle) => <td>{zelle}</td>)}</tr>)}</tbody>
+        </table>
+      );
+    }
+    return (
+      <p>{b.teile.map((teil) => {
+        if (typeof teil === 'string') return teil;
+        if (leer(teil) && modus === 'vorlage') return <span class={`linie ${teil.breite}`} aria-label={teil.hinweis || undefined} role={teil.hinweis ? 'img' : undefined}></span>;
+        if (leer(teil)) return <span class="v leer">{teil.hinweis}</span>;
+        return <span class="v">{teil.wert}</span>;
+      })}</p>
+    );
+  })}
+</article>

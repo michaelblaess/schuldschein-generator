@@ -1,0 +1,138 @@
+/* Der Einwilligungsbanner im Stil der Seite.
+ *
+ * Vorlage aus claude-config/templates/consent, Herkunft happy-watches.de,
+ * 16.08.2026. Hier auf den Beleg-Stil umgestellt: eckig, Belegrot, keine Pillen.
+ *
+ * vanilla-cookieconsent bringt sein Aussehen ueber CSS-Variablen mit. Wir
+ * setzen sie auf die Farben und Formen dieser Seite um, damit der Banner nicht
+ * wie ein Fremdkoerper wirkt: Papiergrund, kraeftige Rahmen, runde Ecken,
+ * Belegrot fuer die Zustimmung.
+ *
+ * Die Variablen des Pakets tragen alle das Praefix --cc-. Sie hier zu setzen
+ * ist der vorgesehene Weg, das mitgelieferte CSS bleibt unveraendert.
+ */
+#cc-main {
+  --cc-font-family: "Barlow Semi Condensed", system-ui, sans-serif;
+  --cc-bg: var(--weiss);
+  --cc-primary-color: var(--schwarz);
+  --cc-secondary-color: var(--grau);
+
+  --cc-btn-primary-bg: var(--rot);
+  --cc-btn-primary-color: var(--auf-rot);
+  --cc-btn-primary-border-color: var(--rot);
+  --cc-btn-primary-hover-bg: var(--schwarz);
+  --cc-btn-primary-hover-color: var(--tisch);
+  --cc-btn-primary-hover-border-color: var(--schwarz);
+
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-color: var(--schwarz);
+  --cc-btn-secondary-border-color: var(--schwarz);
+  --cc-btn-secondary-hover-bg: var(--schwarz);
+  --cc-btn-secondary-hover-color: var(--tisch);
+  --cc-btn-secondary-hover-border-color: var(--schwarz);
+
+  --cc-separator-border-color: var(--linie);
+  --cc-toggle-on-bg: var(--rot);
+  --cc-toggle-off-bg: var(--linie);
+  --cc-toggle-readonly-bg: var(--linie);
+  --cc-toggle-on-knob-bg: var(--weiss);
+  --cc-toggle-off-knob-bg: var(--weiss);
+
+  --cc-cookie-category-block-bg: var(--tisch);
+  --cc-cookie-category-block-border: var(--linie);
+  --cc-cookie-category-block-hover-bg: var(--tisch);
+  --cc-cookie-category-block-hover-border: var(--schwarz);
+  --cc-cookie-category-expanded-block-bg: transparent;
+
+  --cc-overlay-bg: rgb(0 0 0 / 60%);
+  --cc-footer-bg: var(--tisch);
+  --cc-footer-color: var(--grau);
+  --cc-footer-border-color: var(--linie);
+
+  --cc-modal-border-radius: 0;
+  --cc-btn-border-radius: 0;
+}
+
+/* Rahmen wie der Beleg: rote Kontur, Titel in der Seitenschrift ohne Versalien. */
+#cc-main .cm,
+#cc-main .pm {
+  border: 2px solid var(--rot);
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: "Barlow Semi Condensed", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.35em;
+}
+
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+  font-size: 1rem;
+}
+
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+  border-width: 2px;
+  font-weight: 600;
+}
+
+/* Der Farbstreifen der Seite als schmale Kante ueber dem Banner.
+ *
+ * KEIN position:relative hier. Das Paket setzt .cm auf position:fixed, und ein
+ * relative an dieser Stelle hebt die Fixierung auf - der Banner rutscht dann
+ * ans Dokumentende, wo ihn niemand sieht. Am 16.08.2026 passiert und lange
+ * gesucht, weil er im Quelltext vorhanden und nur ausserhalb des Bildschirms
+ * war. Fuer das ::before reicht die fixed-Positionierung als Bezugsrahmen. */
+#cc-main .cm {
+  overflow: hidden;
+}
+
+#cc-main .cm::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 8px;
+  background: var(--rot);
+}
+
+#cc-main .cm__body {
+  padding-top: 1.4rem;
+}
+
+/* Zustimmen und Ablehnen bleiben gleich gross und gleich sichtbar - das
+ * verlangt die Aufsicht, und das Paket sorgt mit equalWeightButtons von sich
+ * aus dafuer. Zwei identisch beerenrote Knoepfe untereinander liest aber
+ * niemand auseinander, deshalb unterscheiden sie sich in der Farbe. Das Paket
+ * markiert die Knoepfe mit data-role, daran haengt die Regel. */
+#cc-main .cm__btn[data-role='necessary'],
+#cc-main .pm__btn[data-role='necessary'] {
+  background: var(--schwarz);
+  border-color: var(--schwarz);
+  color: var(--weiss);
+}
+
+#cc-main .cm__btn[data-role='necessary']:hover,
+#cc-main .pm__btn[data-role='necessary']:hover {
+  background: var(--grau);
+  border-color: var(--grau);
+  color: var(--weiss);
+}
+
+/* Die Abschnittsbloecke im Einstellungen-Dialog nutzen im Paket dieselbe
+ * Variable wie die Knoepfe: --cc-btn-border-radius. Die steht hier auf 999px,
+ * damit die Knoepfe Pillen sind - ohne die folgende Regel werden dadurch auch
+ * die Bloecke zu Kapseln, und die Cookie-Tabelle darin wird an den runden Ecken
+ * abgeschnitten. Am 16.08.2026 von Michael im Browser gefunden, headless war
+ * es nicht aufgefallen. */
+#cc-main .pm__section,
+#cc-main .pm__section--toggle,
+#cc-main .pm__section-title,
+#cc-main .pm__section--toggle .pm__section-desc-wrapper {
+  border-radius: 0;
+}
+
+/* Die Tabelle bekommt Luft zum Rand, sonst klebt die erste Spalte an der Kante. */
+#cc-main .pm__section-table {
+  margin-block: .2em .4em;
+}

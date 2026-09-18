@@ -1,0 +1,10 @@
+---
+import RechtsText from '../../../components/RechtsText.astro';
+import Seite from '../../../layouts/Seite.astro';
+import { DATENSCHUTZ } from '../../../lib/recht';
+
+const seite = DATENSCHUTZ.en;
+---
+<Seite sprache="en" seite="datenschutz" titel={seite.titel} beschreibung={seite.beschreibung}>
+  <RechtsText seite={seite} />
+</Seite>

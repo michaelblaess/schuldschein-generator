@@ -1,0 +1,11 @@
+---
+import Seite from '../layouts/Seite.astro';
+import { PFADE } from '../lib/i18n';
+---
+<Seite sprache="de" seite={null} titel="Seite nicht gefunden" beschreibung="Diese Adresse gibt es auf schuldschein-generator.de nicht.">
+  <div class="fehlerseite">
+    <h1 class="seite-titel">Seite nicht gefunden</h1>
+    <p class="lead">Diese Adresse gibt es hier nicht, vielleicht ist sie veraltet. <span lang="en">This page does not exist.</span></p>
+    <p><a class="knopf" href={PFADE.start.de}>Zum Generator</a> <a class="knopf zwei" href={PFADE.vorlagen.de}>Zu den Vorlagen</a></p>
+  </div>
+</Seite>

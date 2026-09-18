@@ -1,0 +1,22 @@
+---
+import { zaehlungAktiv } from '../lib/analytics';
+import type { RechtsSeite } from '../lib/recht';
+
+interface Props {
+  seite: RechtsSeite;
+}
+const { seite } = Astro.props;
+// Nur die Abschnitte, die zur tatsaechlichen Konfiguration passen
+const abschnitte = seite.abschnitte.filter((a) => (a.nurMitZaehlung ? zaehlungAktiv : a.nurOhneZaehlung ? !zaehlungAktiv : true));
+---
+<h1 class="seite-titel">{seite.titel}</h1>
+<p class="stand">{seite.stand}</p>
+<div class="rechtstext">
+  {abschnitte.map((a) => (
+    <section>
+      <h2>{a.titel}</h2>
+      {a.absaetze.map((p) => <p set:html={p} />)}
+      {a.liste && <ul>{a.liste.map((l) => <li set:html={l} />)}</ul>}
+    </section>
+  ))}
+</div>

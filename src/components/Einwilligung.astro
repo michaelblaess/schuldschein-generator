@@ -1,0 +1,174 @@
+---
+/**
+ * Einwilligungsbanner und Google Analytics.
+ * Vorlage aus claude-config/templates/consent. Herkunft happy-watches.de,
+ * 16.08.2026. Hier angepasst: Dunkelmodus folgt ohne Wahl dem System.
+ *
+ * Selbst gehostet statt Cookiebot: der Gratistarif dort erlaubt nur eine
+ * Domain, und die gehoert michaelblaess.de. Michael baut weitere Seiten, also
+ * einmal selbst bauen statt pro Domain ein Konto zu verwalten (Entscheidung vom
+ * 16.08.2026). Die Bibliothek ist vanilla-cookieconsent (MIT), lokal
+ * gebuendelt - kein CDN, kein Dritter sieht die Besucher.
+ *
+ * Wichtig ist die Reihenfolge im Skript unten. Google Consent Mode v2 verlangt,
+ * dass VOR dem Laden von gtag.js ein Default auf "denied" gesetzt wird. Wir
+ * gehen einen Schritt weiter und laden gtag.js ueberhaupt erst nach der
+ * Zustimmung (Basic Consent Mode): so geht ohne Einwilligung nicht einmal ein
+ * Request an Google raus. Die Modellierung des Advanced Mode braeuchte ohnehin
+ * Fallzahlen, die diese Seite nie erreicht.
+ */
+import { t, type Sprache } from '../lib/i18n';
+import { analyticsId, zaehlungAktiv } from '../lib/analytics';
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../styles/einwilligung.css';
+
+interface Props { sprache: Sprache; }
+const { sprache } = Astro.props;
+
+// Die Texte kommen aus der i18n der Seite, nicht aus einer zweiten Textablage.
+const texte = {
+  titel: t(sprache, 'consent.titel'),
+  text: t(sprache, 'consent.text'),
+  ja: t(sprache, 'consent.ja'),
+  nein: t(sprache, 'consent.nein'),
+  details: t(sprache, 'consent.details'),
+  einstellungenTitel: t(sprache, 'consent.einstellungen.titel'),
+  einstellungenText: t(sprache, 'consent.einstellungen.text'),
+  speichern: t(sprache, 'consent.speichern'),
+  notwendigTitel: t(sprache, 'consent.notwendig.titel'),
+  notwendigText: t(sprache, 'consent.notwendig.text'),
+  statistikTitel: t(sprache, 'consent.statistik.titel'),
+  statistikText: t(sprache, 'consent.statistik.text'),
+  spalteName: t(sprache, 'consent.spalte.name'),
+  spalteDauer: t(sprache, 'consent.spalte.dauer'),
+  zweiJahre: t(sprache, 'consent.zweiJahre'),
+};
+---
+{zaehlungAktiv && (
+  <script define:vars={{ texte, analyticsId, sprache }}>
+    // Bewusst kein Modul-Import im Kopf: dieses Skript laeuft als erstes und
+    // legt den Consent-Default fest, bevor irgendetwas geladen werden kann.
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+
+    // Consent Mode v2: alles verboten, bis der Besucher zustimmt.
+    // wait_for_update haelt Tags an, die frueher feuern wuerden als der Banner.
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      personalization_storage: 'denied',
+      security_storage: 'granted',
+      wait_for_update: 500,
+    });
+
+    window.__einwilligung = { texte, analyticsId, sprache };
+  </script>
+
+  <script>
+    import * as CookieConsent from 'vanilla-cookieconsent';
+
+    const { texte, analyticsId, sprache } = window.__einwilligung;
+
+    // gtag.js wird genau einmal nachgeladen, und nur nach Zustimmung.
+    let geladen = false;
+    const analyticsLaden = () => {
+      if (geladen) return;
+      geladen = true;
+      const tag = document.createElement('script');
+      tag.async = true;
+      tag.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+      document.head.appendChild(tag);
+      window.gtag('js', new Date());
+      // IP-Kuerzung ist bei GA4 nicht abschaltbar, aber die Signale sind es.
+      window.gtag('config', analyticsId, { anonymize_ip: true, allow_google_signals: false });
+    };
+
+    const stand = () => {
+      const erlaubt = CookieConsent.acceptedCategory('analytics');
+      window.gtag('consent', 'update', { analytics_storage: erlaubt ? 'granted' : 'denied' });
+      if (erlaubt) analyticsLaden();
+    };
+
+    CookieConsent.run({
+      guiOptions: {
+        consentModal: { layout: 'box', position: 'bottom left' },
+        preferencesModal: { layout: 'box' },
+      },
+      categories: {
+        necessary: { enabled: true, readOnly: true },
+        analytics: {},
+      },
+      language: {
+        default: sprache,
+        translations: {
+          [sprache]: {
+            consentModal: {
+              title: texte.titel,
+              description: texte.text,
+              acceptAllBtn: texte.ja,
+              acceptNecessaryBtn: texte.nein,
+              showPreferencesBtn: texte.details,
+            },
+            preferencesModal: {
+              title: texte.einstellungenTitel,
+              acceptAllBtn: texte.ja,
+              acceptNecessaryBtn: texte.nein,
+              savePreferencesBtn: texte.speichern,
+              closeIconLabel: texte.speichern,
+              sections: [
+                { description: texte.einstellungenText },
+                {
+                  title: texte.notwendigTitel,
+                  description: texte.notwendigText,
+                  linkedCategory: 'necessary',
+                },
+                {
+                  title: texte.statistikTitel,
+                  description: texte.statistikText,
+                  linkedCategory: 'analytics',
+                  cookieTable: {
+                    // Alle Spalten brauchen einen Titel. Mit leerem Titel bricht
+                    // das Paket beim Aufbau des Modals ab, ohne einen Fehler zu
+                    // melden - am 16.08.2026 eine Stunde gesucht.
+                    headers: { name: texte.spalteName, exp: texte.spalteDauer },
+                    body: [
+                      { name: '_ga', exp: texte.zweiJahre },
+                      { name: `_ga_${analyticsId.replace('G-', '')}`, exp: texte.zweiJahre },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      onFirstConsent: stand,
+      onConsent: stand,
+      onChange: stand,
+    });
+    // Der Link im Seitenfuss oeffnet die Einstellungen wieder. Ohne eine solche
+    // Moeglichkeit waere die Einwilligung nicht widerrufbar.
+    for (const knopf of document.querySelectorAll('[data-einwilligung-oeffnen]')) {
+      knopf.addEventListener('click', (ereignis) => {
+        ereignis.preventDefault();
+        CookieConsent.showPreferences();
+      });
+    }
+
+    // Der Banner soll dem Hell/Dunkel-Schalter der Seite folgen.
+    const modusSetzen = () => {
+      // Ohne ausdrueckliche Wahl folgt die Seite dem System, der Banner auch
+      const gesetzt = document.documentElement.dataset.theme;
+      const dunkel = gesetzt ? 'dark' === gesetzt : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('cc--darkmode', dunkel);
+    };
+    modusSetzen();
+    new MutationObserver(modusSetzen).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  </script>
+)}

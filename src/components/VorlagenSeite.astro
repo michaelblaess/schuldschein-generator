@@ -1,0 +1,119 @@
+---
+import { PDFDocument } from 'pdf-lib';
+import Dokument from './Dokument.astro';
+import { PFADE, t, type Sprache } from '../lib/i18n';
+import { erzeugePdf } from '../lib/pdf';
+import { erzeugeVertrag, leereAngaben } from '../lib/vertrag';
+import { VORLAGEN } from '../lib/vorlagen';
+
+interface Props {
+  sprache: Sprache;
+}
+const { sprache } = Astro.props;
+const de = sprache === 'de';
+const T = de
+  ? {
+      titel: 'Vorlagen zum Ausdrucken',
+      lead: 'Leer ausdrucken, von Hand ausfüllen, beide unterschreiben. Die Word-Fassung kannst Du vorher am Rechner anpassen.',
+      lieber: 'Lieber gleich am Bildschirm ausfüllen?',
+      zumGenerator: 'Zum Generator',
+      haftung: 'Die Vorlagen passen für einfache Fälle unter Privatleuten.',
+      vergroessern: 'Vergrößern',
+      vorlage: 'Vorlage',
+      seite: (n: number) => (n === 1 ? '1 Seite' : `${n} Seiten`),
+      schliessen: 'Schließen',
+      keineLust: 'Keine Lust, von Hand auszufüllen?',
+      keineLustText: 'Im Generator tippst Du die Angaben ein und bekommst den Schuldschein fertig ausgefüllt.',
+      word: 'Word',
+    }
+  : {
+      titel: 'Templates to print',
+      lead: 'Print them blank, fill them in by hand, both sign. You can adjust the Word version on your computer first.',
+      lieber: 'Rather fill it in on screen?',
+      zumGenerator: 'Go to the generator',
+      haftung: 'The templates suit simple cases between private individuals.',
+      vergroessern: 'Enlarge',
+      vorlage: 'Template',
+      seite: (n: number) => (n === 1 ? '1 page' : `${n} pages`),
+      schliessen: 'Close',
+      keineLust: 'Rather not fill it in by hand?',
+      keineLustText: 'In the generator you type in the details and get the promissory note filled in.',
+      word: 'Word',
+    };
+const basis = PFADE.vorlagen[sprache];
+// Seitenzahl aus der echten PDF zaehlen statt von Hand zu schaetzen
+const karten = await Promise.all(VORLAGEN[sprache].map(async (v) => {
+  const bausteine = erzeugeVertrag(leereAngaben(), v.fassung, sprache, true);
+  const seiten = (await PDFDocument.load(await erzeugePdf(bausteine, v.titel))).getPageCount();
+  return { ...v, bausteine, seiten };
+}));
+---
+<h1 class="seite-titel">{T.titel}</h1>
+<p class="lead">{T.lead} {T.lieber} <a href={PFADE.start[sprache]}>{T.zumGenerator}</a></p>
+<div class="haftung" role="note"><b>{t(sprache, 'haftung.kurz')}</b> <span>{T.haftung}</span></div>
+
+<ul class="raster">
+  {karten.map((k) => (
+    <li class="karte" data-titel={k.titel}>
+      <div class="mini">
+        <div class="rahmen-mini" aria-hidden="true">
+          <Dokument bausteine={k.bausteine} modus="vorlage" klasse="a4" />
+        </div>
+        <button class="lupe" type="button">{T.vergroessern}<span class="sr"> {T.vorlage} {k.titel}</span></button>
+      </div>
+      <div class="text">
+        <h2>{k.titel}</h2>
+        <p>{k.text}</p>
+        <span class="umfang">{T.seite(k.seiten)}</span>
+        <div class="knoepfe">
+          <a class="knopf" href={`${basis}${k.datei}.pdf`} download>PDF<span class="sr"> {k.titel}</span></a>
+          <a class="knopf zwei" href={`${basis}${k.datei}.docx`} download>{T.word}<span class="sr"> {k.titel}</span></a>
+        </div>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<div class="hinweis-rot">
+  <p><b>{T.keineLust}</b>{T.keineLustText}</p>
+  <a class="knopf" href={PFADE.start[sprache]}>{T.zumGenerator}</a>
+</div>
+
+<dialog class="gross" id="gross" aria-labelledby="gross-titel">
+  <div class="dkopf">
+    <b id="gross-titel">{T.vorlage}</b>
+    <div class="knoepfe">
+      <a class="knopf" id="gross-pdf" href="#" download>PDF</a>
+      <a class="knopf zwei" id="gross-docx" href="#" download>{T.word}</a>
+      <button class="knopf zwei" type="button" id="gross-zu" autofocus>{T.schliessen}</button>
+    </div>
+  </div>
+  <div class="dinhalt"></div>
+</dialog>
+
+<script>
+  // Grosse Vorschau: dieselbe Seite wie in der Karte, nur unskaliert
+  const dialog = document.getElementById('gross') as HTMLDialogElement | null;
+  document.querySelectorAll<HTMLButtonElement>('.karte .lupe').forEach((knopf) => knopf.addEventListener('click', () => {
+    const karte = knopf.closest<HTMLElement>('.karte');
+    const seite = karte?.querySelector('.a4');
+    if (!dialog || !karte || !seite) {
+      return;
+    }
+    const titel = dialog.querySelector('#gross-titel');
+    if (titel) {
+      titel.textContent = karte.dataset.titel ?? '';
+    }
+    const links = karte.querySelectorAll<HTMLAnchorElement>('.knoepfe a');
+    (dialog.querySelector('#gross-pdf') as HTMLAnchorElement).href = links[0].href;
+    (dialog.querySelector('#gross-docx') as HTMLAnchorElement).href = links[1].href;
+    dialog.querySelector('.dinhalt')?.replaceChildren(seite.cloneNode(true));
+    dialog.showModal();
+  }));
+  dialog?.querySelector('#gross-zu')?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+</script>

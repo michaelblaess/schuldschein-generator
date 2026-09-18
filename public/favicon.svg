@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .rot { fill: #C8102E; }
+    .tinte { fill: #111418; }
+    @media (prefers-color-scheme: dark) {
+      .rot { fill: #FF5A6E; }
+      .tinte { fill: #ECEDEF; }
+    }
+  </style>
+  <!-- Kleinfassung: dicker Rahmen, drei Kaestchen, keine Unterschrift -->
+  <path class="rot" d="M1 5H26V8.5H4.5V23.5H19V27H1Z"/>
+  <g class="rot">
+    <path d="M7 11.5h4.5v4.5H7Zm1.5 1.5v1.5H10V13Z"/>
+    <path d="M13.5 11.5H18v4.5h-4.5Zm1.5 1.5v1.5h1.5V13Z"/>
+    <path d="M20 11.5h4.5v4.5H20Zm1.5 1.5v1.5H23V13Z"/>
+  </g>
+  <path class="tinte" d="M27.5 5H31V20L24 27H21V19.5H27.5Z"/>
+</svg>

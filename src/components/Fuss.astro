@@ -1,0 +1,26 @@
+---
+import { PFADE, t, type Sprache } from '../lib/i18n';
+import { zaehlungAktiv } from '../lib/analytics';
+
+interface Props {
+  sprache: Sprache;
+}
+const { sprache } = Astro.props;
+const jahr = new Date().getFullYear();
+---
+<footer class="seitenfuss">
+  <div class="innen rahmen-breite">
+    <div class="copy">
+      <img src="/bilder/logo-micha5.png" alt="" width="104" height="18" loading="lazy" />
+      <span>&copy; {jahr} Michael Blaess</span>
+    </div>
+    <nav aria-label={t(sprache, 'nav.recht')}>
+      <a href={PFADE.impressum[sprache]}>{t(sprache, 'fuss.impressum')}</a>
+      <a href={PFADE.datenschutz[sprache]}>{t(sprache, 'fuss.datenschutz')}</a>
+      <a href={PFADE.nutzung[sprache]}>{t(sprache, 'fuss.nutzung')}</a>
+      {zaehlungAktiv && (
+        <button type="button" data-einwilligung-oeffnen>{t(sprache, 'consent.widerrufen')}</button>
+      )}
+    </nav>
+  </div>
+</footer>

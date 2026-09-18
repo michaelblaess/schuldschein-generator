@@ -1,9 +1,12 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
-// Minimal Astro config; Styling via CDN in Base layout.
 export default defineConfig({
-  server: { port: 4321 },
+  site: 'https://schuldschein-generator.de',
   output: 'static',
-  integrations: [tailwind({ applyBaseStyles: true })]
+  trailingSlash: 'always',
+  build: { format: 'directory' },
+  // Astro 7 schneidet sonst Leerzeichen zwischen Inline-Elementen weg
+  compressHTML: true,
+  vite: { plugins: [tailwindcss()] },
 });

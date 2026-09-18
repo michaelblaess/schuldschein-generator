@@ -1,302 +1,201 @@
 ---
-import Base from "../layouts/Base.astro";
+import Dokument from './Dokument.astro';
+import { BASISZINS } from '../lib/basiszins';
+import { PFADE, t, type Sprache } from '../lib/i18n';
+import { GT } from '../lib/texte-generator';
+import { erzeugeVertrag, leereAngaben } from '../lib/vertrag';
+
+interface Props {
+  sprache: Sprache;
+}
+const { sprache } = Astro.props;
+const g = GT[sprache];
+const verzug = BASISZINS.verzug.toLocaleString(sprache === 'de' ? 'de-DE' : 'en-GB');
+const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
 ---
-<main class="page-wrap p-4 md:p-6">
-  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-6 items-start">
-    <!-- Formular -->
-    <section id="formSection" class="space-y-4 no-print min-w-0">
-      <!-- Darlehensgeber -->
-       <fieldset class="card bg-base-100 border border-base-300 shadow-lg rounded-xl">
-         <div class="card-body p-6 sm:p-8">
-          <legend class="card-title text-base mb-3" id="label-lender">
-            <span class="inline-flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span data-i18n="label-lender">Darlehensgeber/in</span>
-            </span>
-          </legend>
+<h1 class="seite-titel nicht-drucken">{g.titel}</h1>
+<p class="lead nicht-drucken">{g.lead}</p>
+<div class="haftung gross nicht-drucken" role="note">
+  <b>{t(sprache, 'haftung.kurz')}</b>
+  <span>{t(sprache, 'haftung.lang')}</span>
+</div>
 
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-name-lender" class="label-text" data-i18n="text-name">Name</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="geber_name" data-field="geber_name" type="text" class="input input-bordered input-sm validator" required maxlength="80" />
-            <div class="validator-hint" data-i18n="hint-name-required">Bitte Namen eingeben</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-address-lender" class="label-text" data-i18n="text-address">Adresse</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <textarea id="geber_adresse" data-field="geber_adresse" class="textarea textarea-bordered validator" rows="3" required maxlength="200"></textarea>
-            <div class="validator-hint" data-i18n="hint-address-required">Bitte Adresse eingeben</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-birthdate-lender" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="geber_geburt" data-field="geber_geburt" type="date" class="input input-bordered input-sm validator" required />
-            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-id-lender" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
-            </div>
-            <input id="geber_ausweis" data-field="geber_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-iban-lender" class="label-text" data-i18n="text-iban-return">IBAN für Rückzahlung</span>
-            </div>
-            <input id="geber_iban" data-field="geber_iban" type="text" class="input input-bordered input-sm w-full" maxlength="34" />
-          </label>
+<div class="arbeit" id="generator" data-sprache={sprache}>
+  <div class="eingabe nicht-drucken">
+    <form class="beleg" id="beleg" aria-label={g.kopfLinks} novalidate>
+      <div class="kopfzeile" aria-hidden="true"><span>{g.kopfLinks}</span><span>{g.kopfRechts}</span></div>
+      <div class="reihe">
+        <div class="feld">
+          <label for="geber_name">{g.geberName}</label>
+          <input id="geber_name" name="geber_name" data-pflicht required autocomplete="off" placeholder={g.name} />
         </div>
-      </fieldset>
-
-      <!-- Darlehensnehmer -->
-       <fieldset class="card bg-base-100 border border-base-300 shadow-lg rounded-xl">
-         <div class="card-body p-6 sm:p-8">
-          <legend class="card-title text-base mb-3" id="label-borrower">
-            <span class="inline-flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              <span data-i18n="label-borrower">Darlehensnehmer/in</span>
-            </span>
-          </legend>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-name-borrower" class="label-text" data-i18n="text-name">Name</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="nehmer_name" data-field="nehmer_name" type="text" class="input input-bordered input-sm validator" required maxlength="80" />
-            <div class="validator-hint" data-i18n="hint-name-required">Bitte Namen eingeben</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-address-borrower" class="label-text" data-i18n="text-address">Adresse</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <textarea id="nehmer_adresse" data-field="nehmer_adresse" class="textarea textarea-bordered validator" rows="3" required maxlength="200"></textarea>
-            <div class="validator-hint" data-i18n="hint-address-required">Bitte Adresse eingeben</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-birthdate-borrower" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="nehmer_geburt" data-field="nehmer_geburt" type="date" class="input input-bordered input-sm validator" required />
-            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-id-borrower" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
-            </div>
-            <input id="nehmer_ausweis" data-field="nehmer_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
-          </label>
-        </div>
-      </fieldset>
-
-      <!-- Darlehensdetails -->
-       <fieldset class="card bg-base-100 border border-base-300 shadow-lg rounded-xl">
-         <div class="card-body p-6 sm:p-8">
-           <legend class="card-title text-base mb-3" id="label-loan-details">
-             <span class="inline-flex items-center gap-2">
-               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14,2 14,8 20,8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-               <span data-i18n="label-loan-details">Darlehensdetails</span>
-             </span>
-           </legend>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-loan-amount" class="label-text" data-i18n="text-loan-amount">Darlehenssumme (€)</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="summe" data-field="summe" type="text" class="input input-bordered input-sm validator" value="1.000,00" required maxlength="15" title="Bitte gültigen Betrag eingeben" />
-            <div class="validator-hint" data-i18n="hint-amount-required">Bitte Betrag eingeben (z. B. 1.000,00)</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-interest-rate" class="label-text" data-i18n="text-interest-rate">Zinssatz (% p.a.)</span>
-            </div>
-            <input id="zinssatz" data-field="zinssatz" type="number" min="0" max="100" step="0.01" class="input input-bordered input-sm validator" value="0" title="0–100 % p.a." />
-            <div class="label py-0">
-              <span id="text-interest-default" class="label-text-alt" data-i18n="text-interest-default">Standard: 0% (zinslos)</span>
-            </div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-default-interest" class="label-text" data-i18n="text-default-interest">Verzugszins (% p.a.)</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="verzugszins" data-field="verzugszins" type="number" min="0" max="100" step="0.01" class="input input-bordered input-sm validator" value="5" required title="0–100 % p.a." />
-            <div class="validator-hint" data-i18n="hint-default-interest-required">Bitte Verzugszins angeben (0–100)</div>
-            <div class="label py-0">
-              <span id="text-default-interest-note" class="label-text-alt" data-i18n="text-default-interest-note">Standard: 5% über Basiszinssatz</span>
-            </div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-duration" class="label-text" data-i18n="text-duration">Laufzeit (Monate)</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="laufzeit" data-field="laufzeit" type="number" min="1" max="600" class="input input-bordered input-sm validator" value="6" required title="Mindestens 1 Monat, maximal 600" />
-            <div class="validator-hint" data-i18n="hint-duration-required">Bitte Laufzeit angeben (in Monaten)</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-contract-date" class="label-text" data-i18n="text-contract-date">Vertragsdatum</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="vertragsdatum" data-field="vertragsdatum" type="date" class="input input-bordered input-sm validator" required title="Erforderlich" />
-            <div class="validator-hint" data-i18n="hint-date-required">Bitte Datum wählen</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-due-date" class="label-text" data-i18n="text-due-date">Fälligkeitsdatum</span>
-            </div>
-            <input id="faelligkeitsdatum" data-field="faelligkeitsdatum" type="text" class="input input-bordered input-sm" readonly value="(wird automatisch berechnet)" />
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-repayment-type" class="label-text" data-i18n="text-repayment-type">Rückzahlungsart</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <select id="rueckzahlungsart" data-field="rueckzahlungsart" class="select select-bordered select-sm">
-              <option value="einmal" id="opt-lumpsum">Einmalzahlung</option>
-              <option value="raten" id="opt-installments">Ratenzahlung</option>
-            </select>
-          </label>
-
-          <label class="form-control" id="rhythmus_container" style="display: none">
-            <div class="label py-1">
-              <span id="text-repayment-rhythm" class="label-text" data-i18n="text-repayment-rhythm">Rückzahlungsrhythmus</span>
-            </div>
-            <select id="rhythmus" data-field="rhythmus" class="select select-bordered select-sm">
-              <option value="monatlich" id="opt-monthly">Monatlich</option>
-              <option value="vierteljaehrlich" id="opt-quarterly">Vierteljährlich</option>
-            </select>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-payout-type" class="label-text" data-i18n="text-payout-type">Auszahlungsart</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <select id="auszahlungsart" data-field="auszahlungsart" class="select select-bordered select-sm">
-              <option value="bar" id="opt-cash">Bar</option>
-              <option value="ueberweisung" id="opt-transfer">Überweisung</option>
-              <option value="paypal" id="opt-paypal">PayPal</option>
-              <option value="sonstiges" id="opt-other">Sonstiges</option>
-            </select>
-          </label>
-
-          <label class="form-control" id="nehmer_iban_container" style="display: none">
-            <div class="label py-1">
-              <span id="text-borrower-iban" class="label-text" data-i18n="text-borrower-iban">IBAN der Darlehensnehmerin</span>
-            </div>
-            <input id="nehmer_iban" data-field="nehmer_iban" type="text" class="input input-bordered input-sm validator w-full" maxlength="34" title="Gültige IBAN erforderlich" />
-            <div class="validator-hint" data-i18n="hint-iban-required">Bitte gültige IBAN eingeben</div>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-purpose" class="label-text" data-i18n="text-purpose">Zweck</span>
-            </div>
-            <textarea id="zweck" data-field="zweck" class="textarea textarea-bordered" rows="3" placeholder="z.B. Kauf eines Autos" maxlength="200"></textarea>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-jurisdiction" class="label-text" data-i18n="text-jurisdiction">Gerichtsstand (Ort)</span>
-              <span class="label-text-alt text-error required-indicator">*</span>
-            </div>
-            <input id="gerichtsstand" data-field="gerichtsstand" type="text" class="input input-bordered input-sm validator" required maxlength="64" />
-            <div class="validator-hint" data-i18n="hint-jurisdiction-required">Bitte Ort angeben</div>
-          </label>
-        </div>
-      </fieldset>
-
-      <!-- Zeuge -->
-       <fieldset class="card bg-base-100 border border-base-300 shadow-lg rounded-xl">
-         <div class="card-body p-6 sm:p-8">
-           <legend class="card-title text-base mb-3" id="label-witness">
-             <span class="inline-flex items-center gap-2">
-               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-               <span data-i18n="label-witness">Zeuge/Zeugin (optional)</span>
-             </span>
-           </legend>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-name-witness" class="label-text" data-i18n="text-name">Name</span>
-            </div>
-            <input id="zeuge_name" data-field="zeuge_name" type="text" class="input input-bordered input-sm" maxlength="80" />
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-address-witness" class="label-text" data-i18n="text-address">Adresse</span>
-            </div>
-            <textarea id="zeuge_adresse" data-field="zeuge_adresse" class="textarea textarea-bordered" rows="3" maxlength="200"></textarea>
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-birthdate-witness" class="label-text" data-i18n="text-birthdate">Geburtsdatum</span>
-            </div>
-            <input id="zeuge_geburt" data-field="zeuge_geburt" type="date" class="input input-bordered input-sm" />
-          </label>
-
-          <label class="form-control">
-            <div class="label py-1">
-              <span id="text-id-witness" class="label-text" data-i18n="text-id-number">Personalausweisnummer</span>
-            </div>
-            <input id="zeuge_ausweis" data-field="zeuge_ausweis" type="text" class="input input-bordered input-sm" maxlength="12" />
-          </label>
-
-          <button onclick="resetForm()" class="btn btn-warning w-full mt-2" id="btn-reset"><span id="text-reset">Zurücksetzen</span></button>
-        </div>
-      </fieldset>
-    </section>
-
-    <!-- Divider (Desktop only) -->
-    <div class="hidden lg:flex items-stretch">
-      <div class="divider divider-horizontal mx-0"></div>
-    </div>
-
-     <!-- Vorschau -->
-     <section id="previewSection" class="card bg-base-100 border border-base-300 lg:sticky lg:top-4 h-fit min-w-0 shadow-lg rounded-xl">
-       <div class="card-body p-6 sm:p-8">
-        <div id="preview" class="prose prose-sm max-w-none break-words"></div>
-      </div>
-      <div class="card-body pt-0 p-4">
-        <div class="flex flex-col sm:flex-row gap-2">
-          <button onclick="generatePDF()" class="btn btn-primary flex-1 tooltip" data-tip="Als PDF-Datei speichern" id="btn-pdf"><span id="text-download-pdf">PDF herunterladen</span></button>
-          <button onclick="copyPreviewText()" class="btn btn-outline flex-1 tooltip" data-tip="Vorschau-Text in die Zwischenablage kopieren" id="btn-copy">Text kopieren</button>
+        <div class="feld">
+          <label for="nehmer_name">{g.nehmerName}</label>
+          <input id="nehmer_name" name="nehmer_name" data-pflicht required autocomplete="off" placeholder={g.name} />
         </div>
       </div>
-    </section>
+      <div class="reihe">
+        <div class="feld">
+          <label for="geber_adresse">{g.anschrift}</label>
+          <input id="geber_adresse" name="geber_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
+        </div>
+        <div class="feld">
+          <label for="nehmer_adresse">{g.anschrift}</label>
+          <input id="nehmer_adresse" name="nehmer_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
+        </div>
+      </div>
+      <div class="reihe">
+        <div class="feld">
+          <label for="summe">{g.betrag}</label>
+          <div class="betrag">
+            <input id="summe" name="summe" data-pflicht required inputmode="decimal" maxlength="10" autocomplete="off" aria-describedby="summe-worte summe-fehler" />
+            <span aria-hidden="true">EUR</span>
+          </div>
+          <div class="hilfe" id="summe-worte" aria-live="polite"></div>
+          <div class="fehler" id="summe-fehler" hidden></div>
+        </div>
+        <div class="feld">
+          <label for="zurueck">{g.zurueck}</label>
+          <input id="zurueck" name="zurueck" type="date" data-pflicht required aria-describedby="zurueck-fehler" />
+          <div class="fehler" id="zurueck-fehler" hidden></div>
+          <label class="merken" style="margin-top:8px;color:inherit;font-weight:500">
+            <input type="checkbox" id="unbefristet" name="unbefristet" />
+            <span>{g.unbefristet}</span>
+          </label>
+        </div>
+      </div>
+      <div class="feld">
+        <span class="label" id="l-aus">{g.auszahlung}</span>
+        <div class="wahl" role="radiogroup" aria-labelledby="l-aus">
+          <label><input type="radio" name="auszahlung" value="bar" checked /><span>{g.bar}</span></label>
+          <label><input type="radio" name="auszahlung" value="ueberweisung" /><span>{g.ueberweisung}</span></label>
+          <label><input type="radio" name="auszahlung" value="anders" /><span>{g.anders}</span></label>
+        </div>
+      </div>
+    </form>
+
+    <p class="zwischen">{g.zwischen}</p>
+
+    <details class="streifen">
+      <summary><b>{g.zinsen}</b><em data-zusammenfassung="zinsen">{g.zinslos}</em></summary>
+      <div class="innen-streifen">
+        <div class="feld">
+          <label for="zinssatz">{g.zinssatz}</label>
+          <input id="zinssatz" name="zinssatz" form="beleg" inputmode="decimal" autocomplete="off" placeholder={g.zinsHinweis} aria-describedby="zinssatz-fehler" />
+          <div class="fehler" id="zinssatz-fehler" hidden></div>
+        </div>
+        <p class="hilfe">{g.verzugVor}{verzug}{g.verzugNach} <a href={`${PFADE.rechtslage[sprache]}#zinsen`}>{g.warum}</a></p>
+      </div>
+    </details>
+
+    <details class="streifen">
+      <summary><b>{g.raten}</b><em data-zusammenfassung="raten">{g.einmal}</em></summary>
+      <div class="innen-streifen">
+        <div class="reihe">
+          <div class="feld">
+            <label for="rhythmus">{g.rhythmus}</label>
+            <select id="rhythmus" name="rhythmus" form="beleg">
+              <option value="einmal">{g.einmal}</option>
+              <option value="monatlich">{g.monatlich}</option>
+              <option value="vierteljaehrlich">{g.vierteljaehrlich}</option>
+            </select>
+          </div>
+          <div class="feld">
+            <label for="erste">{g.ersteRate}</label>
+            <input id="erste" name="erste" type="date" form="beleg" aria-describedby="erste-fehler" />
+            <div class="fehler" id="erste-fehler" hidden></div>
+          </div>
+        </div>
+        <p class="hilfe">{g.ratenHinweis}</p>
+      </div>
+    </details>
+
+    <details class="streifen">
+      <summary><b>{g.personen}</b><em data-zusammenfassung="personen">{g.nichtAngegeben}</em></summary>
+      <div class="innen-streifen">
+        <p class="person" data-rolle="geber">{g.rolleGeber}</p>
+        <div class="reihe">
+          <div class="feld"><label for="geber_geburt">{g.geburt}</label><input id="geber_geburt" name="geber_geburt" type="date" form="beleg" /></div>
+          <div class="feld"><label for="geber_ausweis">{g.ausweis}</label><input id="geber_ausweis" name="geber_ausweis" maxlength="12" form="beleg" autocomplete="off" /></div>
+        </div>
+        <p class="person" data-rolle="nehmer">{g.rolleNehmer}</p>
+        <div class="reihe">
+          <div class="feld"><label for="nehmer_geburt">{g.geburt}</label><input id="nehmer_geburt" name="nehmer_geburt" type="date" form="beleg" /></div>
+          <div class="feld"><label for="nehmer_ausweis">{g.ausweis}</label><input id="nehmer_ausweis" name="nehmer_ausweis" maxlength="12" form="beleg" autocomplete="off" /></div>
+        </div>
+        <p class="hilfe">{g.personenHinweis}</p>
+      </div>
+    </details>
+
+    <details class="streifen">
+      <summary><b>{g.bank}</b><em data-zusammenfassung="bank">{g.nichtAngegeben}</em></summary>
+      <div class="innen-streifen">
+        <div class="reihe">
+          <div class="feld">
+            <label for="geber_iban">{g.ibanGeber}</label>
+            <input id="geber_iban" name="geber_iban" form="beleg" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder={g.ibanHinweis} aria-describedby="geber_iban-fehler" />
+            <div class="fehler" id="geber_iban-fehler" hidden></div>
+          </div>
+          <div class="feld">
+            <label for="nehmer_iban">{g.ibanNehmer}</label>
+            <input id="nehmer_iban" name="nehmer_iban" form="beleg" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder={g.ibanHinweis} aria-describedby="nehmer_iban-fehler" />
+            <div class="fehler" id="nehmer_iban-fehler" hidden></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="streifen">
+      <summary><b>{g.zweck}</b><em data-zusammenfassung="zweck">{g.nichtAngegeben}</em></summary>
+      <div class="innen-streifen">
+        <div class="feld"><label for="zweck">{g.zweckFeld}</label><textarea id="zweck" name="zweck" form="beleg" maxlength="300" placeholder={g.zweckHinweis}></textarea></div>
+      </div>
+    </details>
+
+    <details class="streifen">
+      <summary><b>{g.zeuge}</b><em data-zusammenfassung="zeuge">{g.keine}</em></summary>
+      <div class="innen-streifen">
+        <div class="reihe">
+          <div class="feld"><label for="zeuge_name">{g.name}</label><input id="zeuge_name" name="zeuge_name" form="beleg" autocomplete="off" /></div>
+          <div class="feld"><label for="zeuge_adresse">{g.anschrift}</label><input id="zeuge_adresse" name="zeuge_adresse" form="beleg" autocomplete="off" placeholder={g.anschriftHinweis} /></div>
+        </div>
+        <p class="hilfe">{g.zeugeHinweis}</p>
+      </div>
+    </details>
+
+    <label class="merken">
+      <input type="checkbox" id="merken" />
+      <span>{g.merken}<br /><small class="hilfe" style="display:inline">{g.merkenHinweis}</small></span>
+    </label>
+    <button class="knopf-text" type="button" id="leeren">{g.leeren}</button>
   </div>
 
-  <!-- Page-specific scripts: nur im Generator laden -->
-  <script src="/translations/de-de.js" is:inline></script>
-  <script src="/translations/en-us.js" is:inline></script>
-  <script src="/js/TranslationController.js" is:inline></script>
-  <script src="/js/ValidationController.js" is:inline></script>
-  <script src="/js/main.js" is:inline></script>
-  <script src="/js/jsPdfController.js" is:inline></script>
-</main>
+  <div class="ausgabe">
+    <section class="vorschau" aria-labelledby="h-vorschau">
+      <div class="vorschau-kopf nicht-drucken">
+        <h2 id="h-vorschau">{g.vorschau}</h2>
+        <div class="wahl fassung" role="radiogroup" aria-label={g.fassung}>
+          <label><input type="radio" name="fassung" value="kompakt" checked /><span>{g.kompakt}</span></label>
+          <label><input type="radio" name="fassung" value="ausfuehrlich" /><span>{g.ausfuehrlich}</span></label>
+        </div>
+      </div>
+      <div id="dokument" aria-live="off">
+        <Dokument bausteine={start} modus="generator" />
+      </div>
+      <p class="hilfe nicht-drucken" style="margin-top:12px">{g.unterschreiben}</p>
+    </section>
+  </div>
+</div>
+
+<div class="leiste nicht-drucken">
+  <div class="innen rahmen-breite">
+    <div class="stand-text" aria-live="polite"><b id="stand-titel"></b><span id="stand-text"></span></div>
+    <button class="knopf zwei" type="button" id="drucken">{g.drucken}</button>
+    <button class="knopf" type="button" id="pdf" data-text={g.pdf} data-laeuft={g.pdfLaeuft}>{g.pdf}</button>
+  </div>
+</div>
+
+<script>
+  import { starteGenerator } from '../scripts/generator';
+  starteGenerator();
+</script>

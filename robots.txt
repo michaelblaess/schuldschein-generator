@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://schuldschein-generator.de/sitemap.xml

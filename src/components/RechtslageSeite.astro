@@ -1,0 +1,106 @@
+---
+import { BASISZINS } from '../lib/basiszins';
+import { t, type Sprache } from '../lib/i18n';
+import { KURZ, STAND, THEMEN, URTEILE } from '../lib/rechtslage';
+
+interface Props {
+  sprache: Sprache;
+}
+const { sprache } = Astro.props;
+const de = sprache === 'de';
+const T = de
+  ? {
+      titel: 'Was das Gesetz sagt',
+      stand: `Stand: ${STAND}, alle Quellen an diesem Tag geprüft`,
+      haftung: 'Das hier ist eine Zusammenfassung zum Nachlesen. Urteile betreffen immer einen Einzelfall.',
+      kurz: 'Das Wichtigste in Kürze',
+      gesetz: 'Gesetz nach Themen',
+      gesetzText: 'Jeder Absatz verweist auf den Gesetzestext bei gesetze-im-internet.de.',
+      urteile: 'Urteile zum Nachlesen',
+      urteileText: 'Jede Entscheidung im Volltext geöffnet und geprüft. Neueste zuerst.',
+      tabelle: 'Basiszinssatz laut',
+      bundesbank: 'Bundesbank',
+      ab: 'Gültig ab',
+      satz: 'Basiszins',
+      quelle: 'Bundesgerichte über das amtliche Portal rechtsinformationen.bund.de (Testphase), Oberlandesgerichte NRW über nrwe.justiz.nrw.de.',
+    }
+  : {
+      titel: 'What German law says',
+      stand: `As of ${STAND}, all sources checked on that day`,
+      haftung: 'This is a summary for reference. Court decisions always concern an individual case.',
+      kurz: 'The essentials',
+      gesetz: 'The law by topic',
+      gesetzText: 'Every paragraph links to the statute on gesetze-im-internet.de (German).',
+      urteile: 'Court decisions',
+      urteileText: 'Every decision opened and checked in full. Newest first.',
+      tabelle: 'German base rate according to the',
+      bundesbank: 'Bundesbank',
+      ab: 'Valid from',
+      satz: 'Base rate',
+      quelle: 'Federal courts via the official portal rechtsinformationen.bund.de (test phase), North Rhine-Westphalia courts via nrwe.justiz.nrw.de. All decisions are in German.',
+    };
+const fmt = (p: number) => `${p.toLocaleString(de ? 'de-DE' : 'en-GB')} %`;
+const datum = (iso: string) => {
+  const [j, m, tag] = iso.split('-');
+  return de ? `${tag}.${m}.${j}` : `${tag}/${m}/${j}`;
+};
+const urteile = [...URTEILE].sort((a, b) => b.datum.localeCompare(a.datum));
+---
+<h1 class="seite-titel">{T.titel}</h1>
+<p class="stand">{T.stand}</p>
+<div class="haftung" role="note"><b>{t(sprache, 'haftung.kurz').split('.')[0]}.</b> <span>{T.haftung}</span></div>
+
+<section class="kurz" aria-labelledby="h-kurz">
+  <h2 id="h-kurz">{T.kurz}</h2>
+  <ul>{KURZ[sprache].map((k) => <li>{k}</li>)}</ul>
+</section>
+
+<div class="spalten">
+  <section aria-labelledby="h-gesetz">
+    <h2 id="h-gesetz">{T.gesetz}</h2>
+    <p>{T.gesetzText}</p>
+    {THEMEN.map((th) => (
+      <details class="streifen hell" id={th.id}>
+        <summary><b>{th.titel[sprache]}</b><em>{th.marke[sprache]}</em></summary>
+        <div class="innen-streifen text-streifen">
+          {th.absaetze[sprache].map((a) => <p set:html={a} />)}
+          {th.basiszinsTabelle && (
+            <table class="zins-tabelle">
+              <caption>{T.tabelle} <a href={BASISZINS.quelle}>{T.bundesbank}</a></caption>
+              <thead><tr><th scope="col">{T.ab}</th><th scope="col">{T.satz}</th></tr></thead>
+              <tbody>{BASISZINS.verlauf.map((z) => <tr><td>{z.ab}</td><td>{fmt(z.prozent)}</td></tr>)}</tbody>
+            </table>
+          )}
+        </div>
+      </details>
+    ))}
+  </section>
+
+  <section aria-labelledby="h-urteile">
+    <h2 id="h-urteile">{T.urteile}</h2>
+    <p>{T.urteileText}</p>
+    <ul class="urteile">
+      {urteile.map((u) => (
+        <li class="urteil">
+          <div class="meta"><b>{u.gericht[sprache]}</b><span>{datum(u.datum)}</span><span>{u.az}</span></div>
+          <h3>{u.titel[sprache]}</h3>
+          <p>{u.text[sprache]}</p>
+          <a href={u.url} hreflang="de">{u.link[sprache]}<span class="sr"> {u.az}</span></a>
+        </li>
+      ))}
+    </ul>
+    <p class="quelle">{T.quelle}</p>
+  </section>
+</div>
+
+<script>
+  // Ein Sprung auf #zinsen und Co. soll das Thema gleich aufgeklappt zeigen
+  const oeffne = () => {
+    const ziel = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    if (ziel instanceof HTMLDetailsElement) {
+      ziel.open = true;
+    }
+  };
+  oeffne();
+  window.addEventListener('hashchange', oeffne);
+</script>

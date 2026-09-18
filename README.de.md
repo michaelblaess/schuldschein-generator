@@ -1,4 +1,4 @@
-# 🧾 Schuldschein-Generator
+# Schuldschein-Generator
 
 <p align="center">
   <img src="docs/flags/gb.svg" height="13" alt=""> <a href="README.md">English</a> ·
@@ -7,140 +7,69 @@
 
 ---
 
-[![Stars](https://img.shields.io/github/stars/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=fbbf24)](https://github.com/michaelblaess/schuldschein-generator/stargazers)
-[![Forks](https://img.shields.io/github/forks/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=34d399)](https://github.com/michaelblaess/schuldschein-generator/network/members)
-[![Issues](https://img.shields.io/github/issues/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=f87171)](https://github.com/michaelblaess/schuldschein-generator/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/schuldschein-generator?logo=github&logoColor=white&color=a78bfa)](https://github.com/michaelblaess/schuldschein-generator/pulls)
+[![Lizenz](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
+[![Astro](https://img.shields.io/badge/astro-7-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
+[![Letzter Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
 
-[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
-[![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
-[![Astro](https://img.shields.io/badge/astro-4.x-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
+Geld verleihen, schriftlich festhalten: ein Schuldschein nach deutschem Recht, auf einer Seite ausgefüllt, als PDF gespeichert oder gedruckt. Kostenlos, ohne Anmeldung, und was Du einträgst, verlässt den Browser nicht.
 
-Privater Schuldschein in **2 Minuten** als PDF – **Free & Open Source** loan agreement generator under German law.
+Live unter **[schuldschein-generator.de](https://schuldschein-generator.de)**, auf Deutsch und Englisch.
 
-> **DE:** Erstelle einen privaten Schuldschein als PDF – kostenlos, anonym, ohne Server.  
-> **EN:** Create a private promissory note as PDF – free, anonymous, no server.
+![Generator](docs/bilder/generator.png)
 
----
+## Haftungshinweis
 
-## 🚀 Funktionen
+**Das ist keine Rechtsberatung.** Generator, Vorlagen und die Zusammenfassung der Rechtslage sind für einfache Darlehen unter Privatleuten gedacht. Ob ein Dokument im Einzelfall wirksam und passend ist, kann nur eine Anwältin oder ein Anwalt beurteilen. Die Software wird ohne jede Gewähr bereitgestellt, siehe [LICENSE](LICENSE). Nutzung auf eigene Verantwortung.
 
-- Formular → **Live-Vorschau** → **PDF-Download** (100 % client-seitig)
-- **Keine Speicherung**, keine Cookies, kein Tracking
-- **Dark/Light Mode** mit Toggle (lokal gemerkt)
-- **Deutsch/Englisch** umschaltbar
-- Automatische **Fälligkeit** (Vertragsdatum + Laufzeit)
-- **IBAN-Plausibilitätscheck**, Betrag-Formatierung, Betrag in Worten
-- Optional: **Zeuge/Zeugin**, **anpassbarer Dokumenttitel**, **Wasserzeichen** im PDF
-- PDF-Engine: **jsPDF** (austauschbar)
+## Was er kann
 
----
+- **Eine Seite, kein Assistent.** Die Pflichtangaben stehen auf einem Beleg im Stil eines Überweisungsträgers. Zinsen, Raten, Geburtsdaten, Bankverbindungen, Zweck und Zeuge klappen nur bei Bedarf auf, und jeder Streifen zeigt auch zugeklappt, was eingestellt ist.
+- **Live-Vorschau** des Schuldscheins, kompakt oder ausführlich, mit Betrag in Worten (Deutsch und Englisch, samt Cent).
+- **PDF und Druck** direkt aus dem Browser. Das PDF enthält echten Text und echte Unterschriftslinien.
+- **Vorlagen** auf eigener Seite: kompakt, ausführlich, Ratenzahlung und Quittung, als PDF und Word, mit Vorschau.
+- **Rechtslage**: Gesetz nach Themen und 12 Urteile, jedes am 18.09.2026 im Volltext geprüft, mit Aktenzeichen und Link.
+- **Häufige Fragen** mit der Grundlage jeder Antwort, zusätzlich als strukturierte Daten.
+- **Hell und dunkel**, folgt dem System, bis Du wählst.
+- **Datenschutz durch Bauart:** Eingaben werden nur mit dem Häkchen "merken" gespeichert, das Design erst nach Klick auf den Schalter, die Sprache steckt in der Adresse. Google Analytics wird nur mit Mess-Kennung eingebaut und lädt erst nach Einwilligung.
 
-## 📁 Projektstruktur (aktuell)
+## Bildschirmfotos
+
+| Vorlagen | Rechtslage | Mobil, dunkel |
+| --- | --- | --- |
+| ![Vorlagen](docs/bilder/vorlagen.png) | ![Rechtslage](docs/bilder/rechtslage.png) | ![Mobil](docs/bilder/generator-mobil.png) |
+
+## Technik
+
+Astro 7 (statisch), Tailwind 4, TypeScript. `pdf-lib` für das PDF, `docx` für die Word-Vorlagen, `vanilla-cookieconsent` für den Einwilligungsbanner. Die Schriften liegen lokal über Fontsource (Barlow Semi Condensed, IBM Plex Mono).
+
+Der Vertragstext hat genau eine Quelle, `src/lib/vertrag.ts`. Vorschau, Druck, PDF, Word und die leeren Vorlagen entstehen alle daraus und können deshalb nicht auseinanderlaufen.
 
 ```
-.
-├── index.html
-├── css/
-│   └── styles.css                # Styles inkl. Dark/Light
-├── js/
-│   ├── main.js                   # App-Logik & UI (Haupteinstieg)
-│   ├── jsPdfController.js        # PDF-Generierung (jsPDF)
-│   └── ValidationController.js   # Validierungen (z. B. IBAN)
-└── translations/
-    ├── de-de.js                  # DE-Uebersetzungen (JS, empfohlen)
-    ├── en-us.js                  # EN-Uebersetzungen (JS, empfohlen)
-    ├── i18n.js                   # kleiner i18n-Loader
-    ├── de.json (optional Backup) # JSON nur als Referenz/Backup
-    └── en.json (optional Backup)
+src/
+  lib/          Vertragstext, Betrag in Worten, Datum (§ 188 BGB), IBAN, Raten, PDF, Word, Rechtstexte
+  components/   Generator, Vorlagen, Rechtslage, Fragen, Kopf, Fuß
+  pages/        Deutsch unter /, Englisch unter /en/, Vorlagen als PDF und DOCX beim Bauen
+  scripts/      der Generator im Browser
+tests/          vitest für die reinen Funktionen
+tools/          Smoketest, Barrierefreiheit, Erzeugung von Icons und Teilerbild
+docs/           Designentwürfe, Codeprüfung der alten Fassung, Rechtsrecherche
 ```
 
-> **Hinweis zu Übersetzungen:**  
-> Lokale `file://`-Aufrufe blockieren `fetch()` auf JSON. Deshalb werden Übersetzungen **als JS-Dateien** geladen (`de-de.js`, `en-us.js`). JSON-Dateien sind optional als **Backup**/Referenz vorhanden.
+## Entwicklung
 
----
-
-## 🌍 Internationalisierung (i18n)
-
-- `translations/de-de.js`, `translations/en-us.js` registrieren Dictionaries unter `window.TRANSLATIONS[locale]`.
-- `translations/i18n.js` stellt `i18n.t('key')` und `i18n.setLocale('de-DE'|'en-US')` bereit.
-- Sprache wird in `localStorage` gemerkt; Fallback anhand `navigator.language`.
-
----
-
-## UI & Styling
-
-Dieses Projekt nutzt **Astro**, **Tailwind CSS** und **DaisyUI** für alle Seiten. Theming via `data-theme`.  
-Bitte **kein** eigenes Dark-Mode-CSS hinzufügen.
-
----
-
-## 🧪 Verwendung
-
-1. **Lokal öffnen:** `index.html` im Browser (kein Server nötig)  
-   _(Für CORS-freies Testen ist der lokale Aufruf ausreichend, da Übersetzungen per JS eingebunden sind.)_
-2. **Formular ausfüllen:** Pflichtfelder beachten
-3. **Vorschau prüfen:** Rechte Spalte aktualisiert sich live
-4. **PDF generieren:** Button „PDF herunterladen“
-
----
-
-## 🔧 Anpassungen
-
-- **Styles:** `css/styles.css` (Farben, Abstände, Dark/Light)
-- **PDF-Engine:** `js/jsPdfController.js` (jsPDF austauschbar)
-- **Translations:** `translations/de-de.js` / `en-us.js` (Keys erweitern/übersetzen)
-
-Neue Sprache hinzufügen:
-
-```js
-// translations/fr-fr.js
-window.TRANSLATIONS = window.TRANSLATIONS || {};
-window.TRANSLATIONS["fr-FR"] = {
-  /* ... keys wie de-DE/en-US ... */
-};
+```bash
+npm install
+npm run dev          # http://localhost:4321
+npm test             # 48 Unit-Tests
+npm run pruefen      # Tests, Build, Livegang-Gate, Browser-Smoketest, Barrierefreiheit
 ```
 
-Dann in `index.html` einbinden und im Language-Toggle anbieten.
+`npm run pruefen` braucht ein Playwright-Chromium unter `~/AppData/Local/ms-playwright`. Analytics bleibt aus, solange der Build ohne `PUBLIC_GA_ID` läuft.
 
----
+## Deployment
 
-## 🐛 Bekannte Einschränkungen
+GitHub Actions baut die Seite und lädt `dist/` per FTPS auf den Webspace. Der Workflow wird vorerst von Hand gestartet (`workflow_dispatch`) und braucht die Repository-Secrets `FTP_HOST`, `FTP_USER` und `FTP_PASSWORD`. Weiterleitungen und Caching stehen in `public/.htaccess`.
 
-- PDF-Layout ist „vertraglich“ optimiert, aber kein Satzsystem (jsPDF)
-- Keine Server-Validierung (alles client-seitig)
-- Moderne Browser empfohlen (2020+)
+## Lizenz
 
-Siehe ggf. `offene_punkte.md` für To-dos/Ideen.
-
----
-
-## 🔒 Datenschutz
-
-- **Keine Server-Verbindung**
-- **Keine Speicherung**, **keine Cookies**
-- Alle Eingaben bleiben im **Browser** (Client-side only)
-
----
-
-## ⚖️ Rechtlicher Hinweis
-
-„Schuldschein Generator“ ist **kein eingetragenes Warenzeichen**.  
-Diese Website steht in **keinem Zusammenhang** mit Finanzdienstleistern, Banken oder Rechtsberatern.  
-**Disclaimer:** Keine Rechtsberatung. Nutzung auf eigenes Risiko.
-
----
-
-## 🪪 Lizenz
-
-Apache-2.0 © 2025 Michael Blaess  
-Siehe `LICENSE` (unverändert) und `NOTICE` (Attribution & Hinweise).
-
----
-
-## 📫 Kontakt
-
-**info@schuldschein-generator.de**
-
-Repo: https://github.com/michaelblaess/schuldschein-generator  
-Website: https://schuldschein-generator.de
+[Apache 2.0](LICENSE). Lizenzen von Drittsoftware in [NOTICE](NOTICE).
