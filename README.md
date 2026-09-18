@@ -11,7 +11,7 @@
 [![Astro](https://img.shields.io/badge/astro-7-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
 [![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
 
-Put a private loan in writing: a promissory note under German law, filled in on one page, saved as a PDF or printed. Free, no sign-up, and nothing you enter leaves the browser.
+Lend money, the right way: a promissory note under German law, filled in on one page, saved as a PDF or printed. Free, no sign-up, and nothing you enter leaves the browser.
 
 Live at **[schuldschein-generator.de](https://schuldschein-generator.de)**, in German and English.
 
@@ -23,7 +23,7 @@ Live at **[schuldschein-generator.de](https://schuldschein-generator.de)**, in G
 
 ## What it does
 
-- **One page, no wizard.** The required details sit on a slip styled after a German bank transfer form. Interest, instalments, dates of birth, bank accounts, purpose and witness fold out only when needed, and each strip shows its state even when closed.
+- **One page, no wizard.** The required details sit on a slip styled after a German bank transfer form, one block per person. For the borrower, date of birth and ID number are required so that it is clear who received the money. Interest, instalments, bank accounts, purpose and witness fold out only when needed, and each strip shows its state even when closed.
 - **Live preview** of the promissory note, short or detailed version, with the amount in words (German and English, cents included).
 - **PDF and print** straight from the browser. The PDF contains real text and real signature lines.
 - **Templates** on their own page: short, detailed, instalments and receipt, as PDF and Word, with a preview.

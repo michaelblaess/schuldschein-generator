@@ -128,6 +128,8 @@ function beispiel(): Angaben {
   a.geber.adresse = 'Lindenweg 12, 04109 Leipzig';
   a.nehmer.name = 'Jonas Keller';
   a.nehmer.adresse = 'Am Markt 3, 04109 Leipzig';
+  a.nehmer.geburt = { jahr: 1986, monat: 11, tag: 2 };
+  a.nehmer.ausweis = 'L01X00T47';
   a.cent = 250000;
   a.zurueck = { jahr: 2027, monat: 12, tag: 31 };
   return a;
@@ -136,10 +138,28 @@ function beispiel(): Angaben {
 describe('erzeugeVertrag', () => {
   it('bestätigt den Empfang und nennt Betrag in Worten', () => {
     const text = alsText(erzeugeVertrag(beispiel(), 'kompakt', 'de'));
-    expect(text).toContain('Jonas Keller, wohnhaft Am Markt 3, 04109 Leipzig (Darlehensnehmer/in), bestätigt, von Anna Berger');
+    expect(text).toContain('Jonas Keller, wohnhaft Am Markt 3, 04109 Leipzig, geboren am 02.11.1986, Ausweisnummer L01X00T47 (Darlehensnehmer/in), bestätigt, von Anna Berger');
+    expect(text).toContain('Bei verspäteter Zahlung gelten die gesetzlichen Verzugszinsen (§ 288 BGB).');
+    expect(text).toMatch(/Vorlage © \d{4} Michael Blaess\.$/);
     expect(text).toContain('ein Darlehen über 2.500,00 EUR (in Worten: zweitausendfünfhundert Euro) in bar erhalten zu haben.');
     expect(text).toContain('Das Darlehen ist bis zum 31.12.2027 in einer Summe zurückzuzahlen.');
     expect(text).toContain('Das Darlehen ist zinslos.');
+  });
+
+  it('Geburtsdatum und Ausweis des Schuldners stehen auch leer als Lücke im Text', () => {
+    const a = beispiel();
+    a.nehmer.geburt = null;
+    a.nehmer.ausweis = '';
+    const text = alsText(erzeugeVertrag(a, 'kompakt', 'de'));
+    expect(text).toContain('geboren am ____, Ausweisnummer ____ (Darlehensnehmer/in)');
+    // beim Geber nur, wenn angegeben
+    expect(text).not.toContain('Leipzig, geboren am ____, Ausweisnummer ____ (Darlehensgeber/in)');
+  });
+
+  it('nennt Zeugin mit Anschrift, Geburtsdatum und Ausweis', () => {
+    const a = beispiel();
+    a.zeuge = { name: 'Eva Lang', adresse: 'Ring 1, 04109 Leipzig', geburt: { jahr: 1970, monat: 5, tag: 1 }, ausweis: 'T22000129' };
+    expect(alsText(erzeugeVertrag(a, 'kompakt', 'de'))).toContain('Zeuge/Zeugin: Eva Lang, wohnhaft Ring 1, 04109 Leipzig, geboren am 01.05.1970, Ausweisnummer T22000129');
   });
 
   it('enthält keine Gerichtsstandsklausel', () => {

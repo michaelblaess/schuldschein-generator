@@ -11,7 +11,7 @@
 [![Astro](https://img.shields.io/badge/astro-7-3b82f6?logo=astro&logoColor=white)](https://astro.build/)
 [![Letzter Commit](https://img.shields.io/github/last-commit/michaelblaess/schuldschein-generator?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/schuldschein-generator/commits/main)
 
-Geld verleihen, schriftlich festhalten: ein Schuldschein nach deutschem Recht, auf einer Seite ausgefüllt, als PDF gespeichert oder gedruckt. Kostenlos, ohne Anmeldung, und was Du einträgst, verlässt den Browser nicht.
+Geld verleihen, aber richtig: ein Schuldschein nach deutschem Recht, auf einer Seite ausgefüllt, als PDF gespeichert oder gedruckt. Kostenlos, ohne Anmeldung, und was Du einträgst, verlässt den Browser nicht.
 
 Live unter **[schuldschein-generator.de](https://schuldschein-generator.de)**, auf Deutsch und Englisch.
 
@@ -23,7 +23,7 @@ Live unter **[schuldschein-generator.de](https://schuldschein-generator.de)**, a
 
 ## Was er kann
 
-- **Eine Seite, kein Assistent.** Die Pflichtangaben stehen auf einem Beleg im Stil eines Überweisungsträgers. Zinsen, Raten, Geburtsdaten, Bankverbindungen, Zweck und Zeuge klappen nur bei Bedarf auf, und jeder Streifen zeigt auch zugeklappt, was eingestellt ist.
+- **Eine Seite, kein Assistent.** Die Pflichtangaben stehen auf einem Beleg im Stil eines Überweisungsträgers, mit einem Block je Person. Beim Schuldner sind Geburtsdatum und Ausweisnummer Pflicht, damit eindeutig ist, wer das Geld erhalten hat. Zinsen, Raten, Bankverbindungen, Zweck und Zeuge klappen nur bei Bedarf auf, und jeder Streifen zeigt auch zugeklappt, was eingestellt ist.
 - **Live-Vorschau** des Schuldscheins, kompakt oder ausführlich, mit Betrag in Worten (Deutsch und Englisch, samt Cent).
 - **PDF und Druck** direkt aus dem Browser. Das PDF enthält echten Text und echte Unterschriftslinien.
 - **Vorlagen** auf eigener Seite: kompakt, ausführlich, Ratenzahlung und Quittung, als PDF und Word, mit Vorschau.

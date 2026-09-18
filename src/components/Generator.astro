@@ -24,25 +24,38 @@ const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
   <div class="eingabe nicht-drucken">
     <form class="beleg" id="beleg" aria-label={g.kopfLinks} novalidate>
       <div class="kopfzeile" aria-hidden="true"><span>{g.kopfLinks}</span><span>{g.kopfRechts}</span></div>
-      <div class="reihe">
-        <div class="feld">
-          <label for="geber_name">{g.geberName}</label>
-          <input id="geber_name" name="geber_name" data-pflicht required autocomplete="off" placeholder={g.name} />
-        </div>
-        <div class="feld">
-          <label for="nehmer_name">{g.nehmerName}</label>
-          <input id="nehmer_name" name="nehmer_name" data-pflicht required autocomplete="off" placeholder={g.name} />
-        </div>
-      </div>
-      <div class="reihe">
-        <div class="feld">
-          <label for="geber_adresse">{g.anschrift}</label>
-          <input id="geber_adresse" name="geber_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
-        </div>
-        <div class="feld">
-          <label for="nehmer_adresse">{g.anschrift}</label>
-          <input id="nehmer_adresse" name="nehmer_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
-        </div>
+      <div class="personen">
+        <fieldset class="person-block">
+          <legend>{g.geberName}</legend>
+          <div class="feld">
+            <label for="geber_name">{g.name}</label>
+            <input id="geber_name" name="geber_name" data-pflicht required autocomplete="off" />
+          </div>
+          <div class="feld">
+            <label for="geber_adresse">{g.anschrift}</label>
+            <input id="geber_adresse" name="geber_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
+          </div>
+          <div class="reihe eng">
+            <div class="feld"><label for="geber_geburt">{g.geburt}<span class="klein">{g.freiwillig}</span></label><input id="geber_geburt" name="geber_geburt" type="date" /></div>
+            <div class="feld"><label for="geber_ausweis">{g.ausweis}<span class="klein">{g.freiwillig}</span></label><input id="geber_ausweis" name="geber_ausweis" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" /></div>
+          </div>
+        </fieldset>
+        <fieldset class="person-block">
+          <legend>{g.nehmerName}</legend>
+          <div class="feld">
+            <label for="nehmer_name">{g.name}</label>
+            <input id="nehmer_name" name="nehmer_name" data-pflicht required autocomplete="off" />
+          </div>
+          <div class="feld">
+            <label for="nehmer_adresse">{g.anschrift}</label>
+            <input id="nehmer_adresse" name="nehmer_adresse" data-pflicht required autocomplete="off" placeholder={g.anschriftHinweis} />
+          </div>
+          <div class="reihe eng">
+            <div class="feld"><label for="nehmer_geburt">{g.geburt}</label><input id="nehmer_geburt" name="nehmer_geburt" type="date" data-pflicht required /></div>
+            <div class="feld"><label for="nehmer_ausweis">{g.ausweis}</label><input id="nehmer_ausweis" name="nehmer_ausweis" maxlength="12" data-pflicht required autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="nehmer-hinweis" /></div>
+          </div>
+          <p class="hilfe" id="nehmer-hinweis">{g.nehmerHinweis}</p>
+        </fieldset>
       </div>
       <div class="reihe">
         <div class="feld">
@@ -110,22 +123,6 @@ const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
       </div>
     </details>
 
-    <details class="streifen">
-      <summary><b>{g.personen}</b><em data-zusammenfassung="personen">{g.nichtAngegeben}</em></summary>
-      <div class="innen-streifen">
-        <p class="person" data-rolle="geber">{g.rolleGeber}</p>
-        <div class="reihe">
-          <div class="feld"><label for="geber_geburt">{g.geburt}</label><input id="geber_geburt" name="geber_geburt" type="date" form="beleg" /></div>
-          <div class="feld"><label for="geber_ausweis">{g.ausweis}</label><input id="geber_ausweis" name="geber_ausweis" maxlength="12" form="beleg" autocomplete="off" /></div>
-        </div>
-        <p class="person" data-rolle="nehmer">{g.rolleNehmer}</p>
-        <div class="reihe">
-          <div class="feld"><label for="nehmer_geburt">{g.geburt}</label><input id="nehmer_geburt" name="nehmer_geburt" type="date" form="beleg" /></div>
-          <div class="feld"><label for="nehmer_ausweis">{g.ausweis}</label><input id="nehmer_ausweis" name="nehmer_ausweis" maxlength="12" form="beleg" autocomplete="off" /></div>
-        </div>
-        <p class="hilfe">{g.personenHinweis}</p>
-      </div>
-    </details>
 
     <details class="streifen">
       <summary><b>{g.bank}</b><em data-zusammenfassung="bank">{g.nichtAngegeben}</em></summary>
@@ -158,6 +155,10 @@ const start = erzeugeVertrag(leereAngaben(), 'kompakt', sprache);
         <div class="reihe">
           <div class="feld"><label for="zeuge_name">{g.name}</label><input id="zeuge_name" name="zeuge_name" form="beleg" autocomplete="off" /></div>
           <div class="feld"><label for="zeuge_adresse">{g.anschrift}</label><input id="zeuge_adresse" name="zeuge_adresse" form="beleg" autocomplete="off" placeholder={g.anschriftHinweis} /></div>
+        </div>
+        <div class="reihe">
+          <div class="feld"><label for="zeuge_geburt">{g.geburt}</label><input id="zeuge_geburt" name="zeuge_geburt" type="date" form="beleg" /></div>
+          <div class="feld"><label for="zeuge_ausweis">{g.ausweis}</label><input id="zeuge_ausweis" name="zeuge_ausweis" maxlength="12" form="beleg" autocomplete="off" autocapitalize="characters" spellcheck="false" /></div>
         </div>
         <p class="hilfe">{g.zeugeHinweis}</p>
       </div>

@@ -14,7 +14,7 @@ const SPEICHER = 'schuldschein-eingaben';
 const TEXTFELDER = [
   'geber_name', 'nehmer_name', 'geber_adresse', 'nehmer_adresse', 'summe', 'zurueck', 'zinssatz', 'rhythmus', 'erste',
   'geber_geburt', 'geber_ausweis', 'nehmer_geburt', 'nehmer_ausweis', 'geber_iban', 'nehmer_iban', 'zweck',
-  'zeuge_name', 'zeuge_adresse',
+  'zeuge_name', 'zeuge_adresse', 'zeuge_geburt', 'zeuge_ausweis',
 ];
 
 function feld(id: string): HTMLInputElement {
@@ -124,7 +124,7 @@ export function starteGenerator(): void {
     a.geber.ausweis = wert('geber_ausweis');
     a.nehmer.ausweis = wert('nehmer_ausweis');
     a.zweck = wert('zweck');
-    a.zeuge = { name: wert('zeuge_name'), adresse: wert('zeuge_adresse') };
+    a.zeuge = { name: wert('zeuge_name'), adresse: wert('zeuge_adresse'), geburt: leseIso(wert('zeuge_geburt')), ausweis: wert('zeuge_ausweis') };
     a.auszahlung = (gewaehlt('auszahlung') || 'bar') as Auszahlung;
     a.rhythmus = (wert('rhythmus') || 'einmal') as Rhythmus;
 
@@ -169,24 +169,19 @@ export function starteGenerator(): void {
     };
     setze('zinsen', a.zinssatz ? `${a.zinssatz.toLocaleString(sprich(sprache))}${g.proJahr}` : g.zinslos);
     setze('raten', a.rhythmus === 'monatlich' ? g.monatlich : a.rhythmus === 'vierteljaehrlich' ? g.vierteljaehrlich : g.einmal);
-    const personen = [a.geber.geburt, a.nehmer.geburt, a.geber.ausweis, a.nehmer.ausweis].some(Boolean);
-    setze('personen', personen ? g.angegeben : g.nichtAngegeben);
     setze('bank', a.geber.iban || a.nehmer.iban ? g.angegeben : g.nichtAngegeben);
     setze('zweck', a.zweck ? g.angegeben : g.nichtAngegeben);
     setze('zeuge', a.zeuge.name || g.keine);
-    for (const [rolle, name, text] of [['geber', a.geber.name, g.rolleGeber], ['nehmer', a.nehmer.name, g.rolleNehmer]] as const) {
-      const el = document.querySelector(`[data-rolle="${rolle}"]`);
-      if (el) {
-        el.textContent = name ? `${text}: ${name}` : text;
-      }
-    }
 
     // Pflichtangaben zaehlen
     const fehlend: string[] = [];
-    for (const id of ['geber_name', 'nehmer_name', 'geber_adresse', 'nehmer_adresse']) {
+    for (const id of ['geber_name', 'geber_adresse', 'nehmer_name', 'nehmer_adresse', 'nehmer_ausweis']) {
       if (!wert(id)) {
         fehlend.push(g.pflicht[id]);
       }
+    }
+    if (!a.nehmer.geburt) {
+      fehlend.push(g.pflicht.nehmer_geburt);
     }
     if (!a.cent) {
       fehlend.push(g.pflicht.summe);

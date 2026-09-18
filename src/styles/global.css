@@ -136,7 +136,16 @@
   .fehler { color: var(--rot); font-size: 15px; font-weight: 600; margin-top: 3px; }
   .hilfe { font-size: 15px; color: var(--grau); margin-top: 4px; }
 
+  .personen { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin-bottom: 14px; }
+  .person-block { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 10px; align-content: start; }
+  .person-block legend { padding: 0; margin-bottom: 8px; font-size: 18px; font-weight: 700; color: var(--schwarz); }
+  .reihe.eng { margin-bottom: 0; gap: 10px; grid-template-columns: 1fr; }
+  .person-block .hilfe { margin: 0; }
+  .klein { font-weight: 400; color: var(--grau); }
   .betrag { display: flex; align-items: stretch; }
+  /* Fokus um Feld und EUR gemeinsam, sonst endet der Rahmen mitten am Kaestchen */
+  .betrag:focus-within { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  .betrag input:focus-visible { outline: none; }
   .betrag input { --zelle: 30px; height: 50px; width: calc(var(--zelle) * 10 + 2px); flex: none; font-size: 24px; padding: 0 0 0 7px; letter-spacing: calc(var(--zelle) - .6em);
     background: var(--weiss) repeating-linear-gradient(90deg, transparent 0 calc(var(--zelle) - 1px), var(--kaestchen) calc(var(--zelle) - 1px) var(--zelle)); }
   .betrag span { display: grid; place-items: center; padding: 0 12px; border: 1px solid var(--rot); border-left: 0; background: var(--weiss); font-weight: 700; color: var(--rot); }
@@ -300,7 +309,8 @@
 }
 
 @media (max-width: 560px) {
-  .reihe { grid-template-columns: 1fr; }
+  .reihe, .personen { grid-template-columns: 1fr; }
+  .personen { gap: 22px; }
   .leiste .stand-text { display: none; }
   .leiste .innen { grid-template-columns: 1fr auto; }
   .betrag input { --zelle: 26px; font-size: 21px; }

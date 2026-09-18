@@ -33,7 +33,7 @@ export interface Angaben {
   rhythmus: Rhythmus;
   ersteRate: Tag | null;
   zweck: string;
-  zeuge: { name: string; adresse: string };
+  zeuge: { name: string; adresse: string; geburt: Tag | null; ausweis: string };
 }
 
 export type Fassung = 'kompakt' | 'ausfuehrlich' | 'raten' | 'quittung';
@@ -72,7 +72,7 @@ export function leereAngaben(): Angaben {
     rhythmus: 'einmal',
     ersteRate: null,
     zweck: '',
-    zeuge: { name: '', adresse: '' },
+    zeuge: { name: '', adresse: '', geburt: null, ausweis: '' },
   };
 }
 
@@ -90,6 +90,8 @@ const W = {
     worte: 'Betrag in Worten',
     datum: 'Datum',
     anzahl: 'Anzahl',
+    geburt: 'Geburtsdatum',
+    ausweisHinweis: 'Ausweisnummer',
     wohnhaft: ', wohnhaft ',
     geboren: ', geboren am ',
     ausweis: ', Ausweisnummer ',
@@ -133,6 +135,7 @@ const W = {
     nehmerDoppel: 'Darlehensnehmer/in: ',
     gewaehrt: 'Darlehensgeber/in gewährt Darlehensnehmer/in ein Darlehen über ',
     empfang: '). Darlehensnehmer/in bestätigt mit der Unterschrift, den Betrag',
+    verzugKurz: 'Bei verspäteter Zahlung gelten die gesetzlichen Verzugszinsen (§ 288 BGB).',
     verzug: 'Wird eine Zahlung nicht rechtzeitig geleistet, gelten die gesetzlichen Verzugszinsen (§ 288 BGB). Ist für die Zahlung ein Kalendertag bestimmt, bedarf es keiner Mahnung (§ 286 BGB).',
     quittung: 'Für jede Zahlung stellt Darlehensgeber/in auf Verlangen eine Quittung aus. Nach vollständiger Rückzahlung wird dieser Schuldschein zurückgegeben (§§ 368, 371 BGB).',
     schluss: 'Änderungen und Ergänzungen dieses Vertrags müssen schriftlich festgehalten werden. Jede Seite erhält eine unterschriebene Ausfertigung.',
@@ -143,6 +146,7 @@ const W = {
     uZeuge: 'Ort, Datum, Unterschrift Zeuge/Zeugin',
     fuss: 'Erstellt mit schuldschein-generator.de. Keine Rechtsberatung. Zweimal ausdrucken, beide Exemplare eigenhändig unterschreiben.',
     fussVorlage: 'Vorlage von schuldschein-generator.de. Keine Rechtsberatung. Zweimal ausdrucken, beide Exemplare eigenhändig unterschreiben.',
+    copyright: 'Vorlage',
     qIch: 'Ich, ',
     qVon: ', bestätige, von ',
     qAm: ' am ',
@@ -164,6 +168,8 @@ const W = {
     worte: 'Amount in words',
     datum: 'Date',
     anzahl: 'Number',
+    geburt: 'Date of birth',
+    ausweisHinweis: 'ID number',
     wohnhaft: ', residing at ',
     geboren: ', born on ',
     ausweis: ', ID card number ',
@@ -207,6 +213,7 @@ const W = {
     nehmerDoppel: 'Borrower: ',
     gewaehrt: 'The lender grants the borrower a loan of ',
     empfang: '). By signing, the borrower confirms having received the amount',
+    verzugKurz: 'If a payment is late, statutory default interest applies (§ 288 German Civil Code).',
     verzug: 'If a payment is not made on time, statutory default interest applies (§ 288 German Civil Code). Where a calendar date is set for the payment, no reminder is required (§ 286 German Civil Code).',
     quittung: 'For every payment the lender issues a receipt on request. Once the loan has been repaid in full, this promissory note is returned (§§ 368, 371 German Civil Code).',
     schluss: 'Changes and additions to this agreement must be made in writing. Each party receives a signed copy.',
@@ -217,6 +224,7 @@ const W = {
     uZeuge: 'Place, date, signature of the witness',
     fuss: 'Created with schuldschein-generator.de. Not legal advice. Print twice and sign both copies by hand.',
     fussVorlage: 'Template from schuldschein-generator.de. Not legal advice. Print twice and sign both copies by hand.',
+    copyright: 'Template',
     qIch: 'I, ',
     qVon: ', confirm having received from ',
     qAm: ' on ',
@@ -244,15 +252,19 @@ function prozent(wert: number, sprache: Sprache): string {
   return wert.toLocaleString(sprache === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: 3 });
 }
 
-/** Name, Anschrift und die freiwilligen Angaben einer Person als Teile eines Satzes. */
-function person(p: Person, s: Sprache): Teil[] {
+/**
+ * Name, Anschrift, Geburtsdatum und Ausweisnummer einer Person als Teile eines Satzes.
+ * Mit luecken = true stehen Geburtsdatum und Ausweis auch leer im Text (Pflicht beim Schuldner,
+ * Schreiblinie in der Vorlage), sonst nur, wenn sie angegeben sind.
+ */
+function person(p: Person, s: Sprache, luecken: boolean): Teil[] {
   const w = W[s];
   const teile: Teil[] = [l(p.name, w.name), w.wohnhaft, l(p.adresse, w.anschrift, 'lang')];
-  if (p.geburt) {
-    teile.push(`${w.geboren}${formatiereTag(p.geburt, s)}`);
+  if (p.geburt || luecken) {
+    teile.push(w.geboren, l(p.geburt ? formatiereTag(p.geburt, s) : '', w.geburt, 'kurz'));
   }
-  if (p.ausweis.trim()) {
-    teile.push(`${w.ausweis}${p.ausweis.trim()}`);
+  if (p.ausweis.trim() || luecken) {
+    teile.push(w.ausweis, l(p.ausweis.trim(), w.ausweisHinweis, 'mittel'));
   }
   return teile;
 }
@@ -344,7 +356,13 @@ function unterschriften(a: Angaben, s: Sprache): Baustein[] {
   if (a.zeuge.name.trim()) {
     const zeuge: Teil[] = [w.zeuge, a.zeuge.name.trim()];
     if (a.zeuge.adresse.trim()) {
-      zeuge.push(`, ${a.zeuge.adresse.trim()}`);
+      zeuge.push(`${w.wohnhaft}${a.zeuge.adresse.trim()}`);
+    }
+    if (a.zeuge.geburt) {
+      zeuge.push(`${w.geboren}${formatiereTag(a.zeuge.geburt, s)}`);
+    }
+    if (a.zeuge.ausweis.trim()) {
+      zeuge.push(`${w.ausweis}${a.zeuge.ausweis.trim()}`);
     }
     bausteine.push({ art: 'absatz', teile: zeuge });
     felder.push(w.uZeuge);
@@ -372,8 +390,8 @@ export function erzeugeVertrag(a: Angaben, fassung: Fassung, s: Sprache, vorlage
   if (fassung === 'ausfuehrlich') {
     b.push(
       { art: 'ueberschrift', text: w.p1 },
-      { art: 'absatz', teile: [w.geberDoppel, ...person(a.geber, s)] },
-      { art: 'absatz', teile: [w.nehmerDoppel, ...person(a.nehmer, s)] },
+      { art: 'absatz', teile: [w.geberDoppel, ...person(a.geber, s, vorlage)] },
+      { art: 'absatz', teile: [w.nehmerDoppel, ...person(a.nehmer, s, true)] },
       { art: 'ueberschrift', text: w.p2 },
       { art: 'absatz', teile: [w.gewaehrt, ...betragTeile(a, s), w.empfang, mitLeer(auszahlung(a, s, vorlage)), w.erhalten] },
       ...zweck,
@@ -394,13 +412,14 @@ export function erzeugeVertrag(a: Angaben, fassung: Fassung, s: Sprache, vorlage
       {
         art: 'absatz',
         teile: [
-          ...person(a.nehmer, s), w.rolleNehmer, w.bestaetigt, ...person(a.geber, s), w.rolleGeber,
+          ...person(a.nehmer, s, true), w.rolleNehmer, w.bestaetigt, ...person(a.geber, s, vorlage), w.rolleGeber,
           w.darlehenUeber, ...betragTeile(a, s), ')', mitLeer(aus), w.erhalten,
         ],
       },
       ...zweck,
       { art: 'absatz', teile: zinsSatz(a, s, vorlage) },
       ...rueckzahlung(a, s, vorlage, fassung).map((teile): Baustein => ({ art: 'absatz', teile })),
+      { art: 'absatz', teile: [w.verzugKurz] },
       { art: 'absatz', teile: [w.rueckgabe] },
     );
   }
@@ -408,8 +427,14 @@ export function erzeugeVertrag(a: Angaben, fassung: Fassung, s: Sprache, vorlage
   if (tabelle) {
     b.push(tabelle);
   }
-  b.push(...unterschriften(a, s), { art: 'fuss', text: vorlage ? w.fussVorlage : w.fuss });
+  b.push(...unterschriften(a, s), { art: 'fuss', text: fussText(s, vorlage) });
   return b;
+}
+
+/** Fusszeile des Dokuments mit Michaels Copyright an der Vorlage, das Jahr laeuft mit. */
+function fussText(s: Sprache, vorlage: boolean): string {
+  const w = W[s];
+  return `${vorlage ? w.fussVorlage : w.fuss} ${w.copyright} © ${new Date().getFullYear()} Michael Blaess.`;
 }
 
 function quittung(a: Angaben, s: Sprache): Baustein[] {
@@ -427,7 +452,7 @@ function quittung(a: Angaben, s: Sprache): Baustein[] {
     { art: 'absatz', teile: [w.qGetilgt, l('', w.betrag, 'kurz'), w.qOffen] },
     { art: 'absatz', teile: [w.qSchein] },
     { art: 'unterschriften', felder: [w.uGeber] },
-    { art: 'fuss', text: w.fussVorlage },
+    { art: 'fuss', text: fussText(s, true) },
   ];
 }
 

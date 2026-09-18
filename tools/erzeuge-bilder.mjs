@@ -51,7 +51,7 @@ await bild(`<html><head><style>
   <div class="band"></div>
   <div class="text">
     <div style="width:120px;height:120px">${marke.replace('<svg ', '<svg width="120" height="120" ')}</div>
-    <h1>Geld verleihen, schriftlich festhalten</h1>
+    <h1>Geld verleihen - aber richtig</h1>
     <p>Kostenlos ausfüllen, als PDF speichern oder drucken.</p>
   </div>
   <div class="beleg"><div class="zeile"></div><div class="zeile"></div><div class="zeile"></div>
