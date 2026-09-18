@@ -28,7 +28,8 @@ seite.on('pageerror', (e) => konsole.push(e.message));
 seite.on('console', (m) => m.type() === 'error' && konsole.push(m.text()));
 seite.on('request', (r) => {
   const url = new URL(r.url());
-  if (!['localhost', '127.0.0.1'].includes(url.hostname) && !url.protocol.startsWith('data') && !url.protocol.startsWith('blob')) {
+  // Eigener Host zaehlt nicht als fremd, sonst schlaegt die Pruefung gegen die Live-Seite falsch an
+  if (url.hostname !== new URL(basis).hostname &&!url.protocol.startsWith('data') && !url.protocol.startsWith('blob')) {
     fremd.push(r.url());
   }
 });
